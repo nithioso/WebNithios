@@ -1,0 +1,67 @@
+---
+/**
+ * Tarjeta de proyecto del portafolio (data-driven desde src/data/projects.ts).
+ * Visual: <ProjectArt variant="card"> (cover → illustration → monograma; ver ProjectArt.astro).
+ * Muestra `statusLabel` como chip cuando el proyecto es un prototipo.
+ * <ProjectCard project={p} />
+ * <ProjectCard project={p} size="lg" headingLevel="h2" />
+ */
+import Icon from './Icon.astro';
+import ProjectArt from './ProjectArt.astro';
+import type { Project } from '@/data/projects';
+
+interface Props {
+  project: Project;
+  size?: 'md' | 'lg';
+  headingLevel?: 'h2' | 'h3';
+  revealDelay?: number;
+  class?: string;
+}
+
+const { project: p, size = 'md', headingLevel: H = 'h3', revealDelay = 0, class: className } = Astro.props;
+---
+
+<article
+  class:list={[
+    'group relative flex flex-col overflow-hidden rounded-(--radius-card) hairline bg-ink-850 transition-[transform,border-color] duration-500 ease-(--ease-apple) hover:-translate-y-1 hover:border-line-strong has-[a:focus-visible]:border-gold-400/60',
+    className,
+  ]}
+  data-reveal
+  style={revealDelay ? `--reveal-delay:${revealDelay}ms` : undefined}
+>
+  <div class:list={['relative overflow-hidden', size === 'lg' ? 'aspect-[16/10]' : 'aspect-[16/11]']}>
+    <ProjectArt project={p} variant="card" />
+  </div>
+  <div class:list={['flex flex-1 flex-col border-t border-line', size === 'lg' ? 'p-8 md:p-10' : 'p-7']}>
+    <p class="mb-3 flex flex-wrap items-center gap-2 text-xs font-medium">
+      <span class="uppercase tracking-[0.14em] text-smoke">{p.category}</span>
+      {
+        p.status === 'prototipo' && (
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-line-gold bg-gold-500/8 px-2.5 py-1 text-gold-200">
+            <Icon name="sparkle" size={12} />
+            Prototipo
+          </span>
+        )
+      }
+    </p>
+    <H class:list={[size === 'lg' ? 'text-display-sm' : 'text-2xl', 'font-semibold tracking-[-0.025em]']}>
+      <a href={p.path} class="after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-solid focus-visible:after:-outline-offset-2 focus-visible:after:outline-gold-400">
+        {p.name}
+      </a>
+    </H>
+    <p class="mt-3 text-mist leading-relaxed">{p.tagline}</p>
+    {
+      p.highlights.length > 0 && (
+        <ul class="mt-6 flex flex-wrap gap-2" aria-label={`Características de ${p.name}`}>
+          {p.highlights.slice(0, 3).map((h) => (
+            <li class="rounded-full border border-line px-3 py-1 text-xs text-mist">{h}</li>
+          ))}
+        </ul>
+      )
+    }
+    <span class="mt-auto inline-flex items-center gap-1.5 pt-8 text-sm font-medium text-gold-300" aria-hidden="true">
+      Ver caso
+      <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+    </span>
+  </div>
+</article>

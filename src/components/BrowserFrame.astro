@@ -1,0 +1,47 @@
+---
+/**
+ * Marco tipo ventana de navegador para capturas e ilustraciones del portafolio.
+ * <BrowserFrame label="Dragon Global Trade"><Image … /></BrowserFrame>
+ * Decorativo: la barra es aria-hidden; el contenido (slot) aporta el alt/aria.
+ */
+interface Props {
+  /** Texto de la barra de dirección (decorativo). */
+  label?: string;
+  /** Halo dorado detrás del marco. */
+  glow?: boolean;
+  class?: string;
+}
+
+const { label, glow = false, class: className } = Astro.props;
+---
+
+<div class:list={['relative', className]}>
+  {
+    glow && (
+      <div
+        class="pointer-events-none absolute inset-x-[6%] -top-10 bottom-1/3 -z-10 rounded-full bg-gold-500/15 blur-[90px]"
+        aria-hidden="true"
+      />
+    )
+  }
+  <div class="overflow-hidden rounded-[1.125rem] border border-line-strong bg-ink-800 shadow-soft md:rounded-[1.375rem]">
+    <div class="flex h-9 items-center gap-3 border-b border-line bg-ink-700/90 px-4 md:h-11" aria-hidden="true">
+      <span class="flex gap-1.5">
+        <span class="size-2.5 rounded-full bg-ink-500"></span>
+        <span class="size-2.5 rounded-full bg-ink-500"></span>
+        <span class="size-2.5 rounded-full bg-gold-600/70"></span>
+      </span>
+      {
+        label && (
+          <span class="mx-auto hidden max-w-[60%] truncate rounded-full border border-line bg-ink-850 px-4 py-1 text-[0.6875rem] text-smoke sm:block">
+            {label}
+          </span>
+        )
+      }
+      <span class="hidden w-[2.875rem] sm:block"></span>
+    </div>
+    <div class="relative bg-ink-850">
+      <slot />
+    </div>
+  </div>
+</div>

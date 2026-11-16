@@ -1,0 +1,108 @@
+---
+/**
+ * Hero estándar de páginas internas (contiene el ÚNICO <h1> de la página).
+ * <PageHero
+ *   eyebrow="Servicios"
+ *   title="Consultoría tecnológica para empresas"
+ *   intro="…"
+ *   breadcrumbs={[{ name: 'Servicios', path: '/servicios/' }]}
+ *   whatsappMessage="Hola, quiero…"
+ *   secondary={{ label: 'Ver portafolio', href: '/portafolio/' }}
+ * />
+ * Slot por defecto: contenido extra bajo los CTA (chips, imagen…).
+ * Slot `aside` (opcional): visual a la derecha en ≥lg (grid 1.1fr/0.9fr), oculto en móvil. Ej.: <ServiceHeroArt slot="aside" …/>.
+ * align="center": hero centrado (contacto, FAQ), coherente con la home.
+ * El contenido del hero NO usa data-reveal (está sobre el pliegue y es el LCP): entra con .hero-in (CSS puro).
+ */
+import Breadcrumbs from './Breadcrumbs.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import Button from './Button.astro';
+import type { Crumb } from '@/lib/schema';
+
+interface Props {
+  title: string;
+  /** Alternativa a title con marcado inline confiable (p. ej. <span class="text-gold">). */
+  titleHtml?: string;
+  eyebrow?: string;
+  intro?: string;
+  breadcrumbs?: Crumb[];
+  /** Mensaje de WhatsApp del CTA principal. Pasa `false` para ocultar el CTA. */
+  whatsappMessage?: string | false;
+  ctaLabel?: string;
+  secondary?: { label: string; href: string };
+  align?: 'left' | 'center';
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  title,
+  titleHtml,
+  eyebrow,
+  intro,
+  breadcrumbs,
+  whatsappMessage,
+  ctaLabel,
+  secondary,
+  align = 'left',
+  size = 'lg',
+  class: className,
+} = Astro.props;
+
+const center = align === 'center';
+const hasAside = Astro.slots.has('aside');
+---
+
+<section
+  class:list={[
+    'relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] md:pt-[calc(var(--header-h)+5rem)]',
+    size === 'lg' ? 'pb-20 md:pb-28' : 'pb-14 md:pb-20',
+    className,
+  ]}
+>
+  <div class="pointer-events-none absolute inset-0 -z-10 glow-gold" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-0 -z-10 grid-lines opacity-60" aria-hidden="true"></div>
+  <div class="container-x">
+    {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} class:list={['mb-10', center && 'flex justify-center']} />}
+    <div class:list={[hasAside && 'lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16']}>
+    <div class:list={['max-w-4xl', center && 'mx-auto text-center']}>
+      {eyebrow && <p class="hero-in eyebrow mb-5">{eyebrow}</p>}
+      {
+        titleHtml ? (
+          <h1
+            class:list={['hero-in hero-in-1', size === 'lg' ? 'text-display-xl' : 'text-display-lg', 'font-semibold']}
+            set:html={titleHtml}
+          />
+        ) : (
+          <h1 class:list={['hero-in hero-in-1', size === 'lg' ? 'text-display-xl' : 'text-display-lg', 'font-semibold']}>
+            {title}
+          </h1>
+        )
+      }
+      {
+        intro && (
+          <p class:list={['hero-in hero-in-2 mt-7 text-lead text-mist max-w-2xl', center && 'mx-auto']}>
+            {intro}
+          </p>
+        )
+      }
+      {
+        (whatsappMessage !== false || secondary) && (
+          <div
+            class:list={['hero-in hero-in-3 mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap', center && 'sm:justify-center']}
+          >
+            {whatsappMessage !== false && <WhatsAppButton message={whatsappMessage} label={ctaLabel} size="lg" />}
+            {secondary && (
+              <Button href={secondary.href} variant="glass" size="lg" iconRight="arrow-right">
+                {secondary.label}
+              </Button>
+            )}
+          </div>
+        )
+      }
+      <slot />
+    </div>
+    {hasAside && <div class="hero-in hero-in-3 hidden lg:block"><slot name="aside" /></div>}
+    </div>
+  </div>
+</section>

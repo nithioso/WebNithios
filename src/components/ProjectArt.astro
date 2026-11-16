@@ -1,0 +1,87 @@
+---
+/**
+ * Arte de un proyecto: ÚNICA lógica de selección de visual del portafolio (la usan ProjectCard y ProjectVisual).
+ * Prioridad: `cover` (captura real, astro:assets) → `illustration` (mapa `illustrations`) → arte con monograma.
+ * Nueva ilustración = componente nuevo + entrada en `illustrations` + valor en el tipo `Project['illustration']`.
+ * <ProjectArt project={p} variant="card" />                       // dentro de un contenedor con aspect-ratio
+ * <ProjectArt project={p} variant="frame" priority sizes="…" />   // dentro de BrowserFrame
+ */
+import { Image } from 'astro:assets';
+import KrystalMockup from './KrystalMockup.astro';
+import type { Project } from '@/data/projects';
+
+interface Props {
+  project: Project;
+  /** card: rellena el contenedor de la tarjeta (decorativo, con hover). frame: visual principal del caso. */
+  variant?: 'card' | 'frame';
+  widths?: number[];
+  sizes?: string;
+  /** Por encima del pliegue (carga inmediata, fetchpriority alta). */
+  priority?: boolean;
+}
+
+const illustrations = { krystal: KrystalMockup } satisfies Record<NonNullable<Project['illustration']>, unknown>;
+
+const { project: p, variant = 'frame', priority = false } = Astro.props;
+const isCard = variant === 'card';
+// Móvil: la tarjeta escala la captura ×1.6 y el marco la muestra al 165 % → candidatos y sizes acordes.
+const widths = Astro.props.widths ?? [640, 960, 1280, 1920];
+const sizes =
+  Astro.props.sizes ??
+  (isCard
+    ? '(min-width: 1024px) 50vw, (min-width: 768px) 100vw, 160vw'
+    : '(min-width: 1280px) 720px, (min-width: 1024px) 55vw, (min-width: 768px) 100vw, 165vw');
+const Illustration = p.illustration ? illustrations[p.illustration] : undefined;
+---
+
+{
+  p.cover ? (
+    isCard ? (
+      <Image
+        src={p.cover}
+        alt={p.coverAlt ?? p.name}
+        widths={widths}
+        sizes={sizes}
+        class="size-full object-cover object-left-top transition-[scale] duration-[1.2s] ease-(--ease-apple) max-md:origin-top-left max-md:scale-[1.6] md:group-hover:scale-[1.03]"
+      />
+    ) : (
+      <div class="overflow-hidden max-md:aspect-[4/3]">
+        <Image
+          src={p.cover}
+          alt={p.coverAlt ?? `Interfaz de ${p.name}`}
+          widths={widths}
+          sizes={sizes}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : 'auto'}
+          class="block h-auto w-full max-md:h-full max-md:w-[165%] max-md:max-w-none max-md:object-cover max-md:object-left-top"
+        />
+      </div>
+    )
+  ) : Illustration ? (
+    isCard ? (
+      <div class="absolute inset-0 flex items-center justify-center overflow-hidden bg-ink-800 p-5 sm:p-7" aria-hidden="true">
+        <div class="w-full max-w-[34rem] transition-transform duration-[1.2s] ease-(--ease-apple) group-hover:scale-[1.02]">
+          <Illustration />
+        </div>
+      </div>
+    ) : (
+      <Illustration />
+    )
+  ) : isCard ? (
+    <div class="absolute inset-0 bg-ink-800" aria-hidden="true">
+      <div class="absolute inset-0 grid-lines opacity-80" />
+      <div class="absolute left-1/2 top-1/2 size-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/15 blur-3xl transition-transform duration-[1.2s] ease-(--ease-apple) group-hover:scale-110" />
+      <span class="absolute inset-0 flex items-center justify-center font-display text-[min(38vw,11rem)] font-semibold leading-none tracking-[-0.06em] text-gold transition-transform duration-[1.2s] ease-(--ease-apple) group-hover:scale-105">
+        {p.monogram}
+      </span>
+    </div>
+  ) : (
+    <div class="relative aspect-[16/10] w-full bg-ink-800" role="img" aria-label={`Arte gráfico de ${p.name}`}>
+      <div class="absolute inset-0 grid-lines opacity-80" aria-hidden="true" />
+      <div class="absolute left-1/2 top-1/2 size-[60%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/15 blur-3xl" aria-hidden="true" />
+      <span class="absolute inset-0 flex items-center justify-center font-display text-[min(30vw,10rem)] font-semibold leading-none tracking-[-0.06em] text-gold" aria-hidden="true">
+        {p.monogram}
+      </span>
+    </div>
+  )
+}

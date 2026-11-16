@@ -1,0 +1,257 @@
+---
+/**
+ * Formulario de contacto que NO envía datos a ningún servidor.
+ * - Con JS: valida con mensajes amables, compone el texto y abre wa.me en una pestaña nueva.
+ * - Sin JS: el <form> hace GET a https://wa.me/<número> enviando solo el campo `text` (el mensaje),
+ *   y además hay un enlace directo de respaldo.
+ * <ContactForm />
+ * Contenido: src/data/contact.ts (contactPage.form, serviceOptions) · ciudades: site.ts.
+ */
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import { site, cities } from '@/data/site';
+import { contactPage } from '@/data/contact';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+const f = contactPage.form;
+
+const field =
+  'block w-full min-h-12 rounded-2xl border border-white/35 bg-ink-800/80 px-4 py-3 text-base text-pearl placeholder:text-smoke transition-[border-color,box-shadow] duration-300 ease-(--ease-apple) hover:border-white/50 focus:border-gold-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400/50 aria-[invalid=true]:border-red-400/80';
+const label = 'mb-2 block text-sm font-medium text-pearl';
+const hint = 'font-normal text-smoke';
+const error = 'mt-2 hidden text-sm text-red-300';
+---
+
+<div class:list={['gold-ring relative overflow-hidden rounded-(--radius-card) bg-ink-850 p-6 sm:p-8 md:p-10', className]} data-reveal="scale">
+  <h2 id="formulario-titulo" class="text-display-sm font-semibold">{f.title}</h2>
+  <p class="mt-3 text-mist">{f.intro}</p>
+
+  <form
+    id="contact-form"
+    class="mt-8 grid gap-6"
+    action={`https://wa.me/${site.whatsapp.number}`}
+    method="get"
+    target="_blank"
+    {...{ rel: 'noopener noreferrer' } /* rel es válido en <form> (HTML), pero falta en los tipos de Astro */}
+    aria-labelledby="formulario-titulo"
+    data-astro-reload
+  >
+    <p id="contact-form-status" class="sr-only" role="status" aria-live="polite"></p>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div>
+        <label for="cf-nombre" class={label}>Nombre <span class={hint}>(obligatorio)</span></label>
+        <input
+          id="cf-nombre"
+          type="text"
+          autocomplete="name"
+          maxlength="80"
+          class={field}
+          aria-describedby="cf-nombre-error"
+          data-required="Cuéntanos tu nombre para saber cómo dirigirnos a ti."
+        />
+        <p id="cf-nombre-error" class={error}></p>
+      </div>
+      <div>
+        <label for="cf-empresa" class={label}>Empresa <span class={hint}>(opcional)</span></label>
+        <input id="cf-empresa" type="text" autocomplete="organization" maxlength="100" class={field} />
+      </div>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2">
+      <div>
+        <label for="cf-ciudad" class={label}>Ciudad <span class={hint}>(opcional)</span></label>
+        <input
+          id="cf-ciudad"
+          type="text"
+          autocomplete="address-level2"
+          list="cf-ciudades"
+          maxlength="60"
+          class={field}
+          placeholder="Ej.: Bogotá"
+        />
+        <datalist id="cf-ciudades">
+          {cities.map((c) => <option value={c} />)}
+        </datalist>
+      </div>
+      <div>
+        <label for="cf-servicio" class={label}>Servicio de interés <span class={hint}>(opcional)</span></label>
+        <div class="relative">
+          <select id="cf-servicio" class:list={[field, 'appearance-none pr-12']}>
+            <option value="" selected>Selecciona una opción</option>
+            {contactPage.serviceOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+          </select>
+          <Icon name="chevron-down" size={18} class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gold-300" />
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label for="cf-mensaje" class={label}>¿Qué quieres lograr? <span class={hint}>(obligatorio)</span></label>
+      <textarea
+        id="cf-mensaje"
+        name="text"
+        rows="5"
+        required
+        minlength="10"
+        maxlength="1000"
+        class:list={[field, 'min-h-36 resize-y leading-relaxed']}
+        aria-describedby="cf-mensaje-ayuda cf-mensaje-error"
+        placeholder="Ej.: Queremos digitalizar el seguimiento de pedidos y conectar ventas con inventario."
+        data-required="Cuéntanos en pocas palabras qué necesitas; así llegamos a la conversación con contexto."
+        data-minlength="Danos un poco más de detalle (al menos 10 caracteres) para entender tu necesidad."
+      ></textarea>
+      <p id="cf-mensaje-ayuda" class="mt-2 text-sm text-smoke">Un par de frases es suficiente. No incluyas contraseñas ni datos sensibles.</p>
+      <p id="cf-mensaje-error" class={error}></p>
+    </div>
+
+    <noscript>
+      <p class="rounded-2xl border border-line-gold bg-gold-500/5 p-4 text-sm text-mist">{f.noJsNote}</p>
+    </noscript>
+
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+      <Button type="submit" variant="gold" size="lg" icon="whatsapp" class="shrink-0 whitespace-nowrap">{f.submitLabel}</Button>
+      <p class="flex min-w-0 items-start gap-2 text-sm text-smoke">
+        <Icon name="lock" size={16} class="mt-0.5 shrink-0 text-gold-400" />
+        <span>Se abre WhatsApp en una pestaña nueva.</span>
+      </p>
+    </div>
+
+    <div id="contact-form-done" class="hidden rounded-2xl border border-line-gold bg-gold-500/5 p-5">
+      <p class="flex items-start gap-3 text-pearl">
+        <Icon name="check-circle" size={22} class="mt-0.5 shrink-0 text-gold-300" />
+        <span>Listo. Abrimos WhatsApp con tu mensaje; solo revísalo y presiona enviar.</span>
+      </p>
+      <p class="mt-2 pl-9 text-sm text-mist">
+        ¿No se abrió? <a id="contact-form-link" href={`https://wa.me/${site.whatsapp.number}`} target="_blank" rel="noopener noreferrer" class="link-inline">Abre WhatsApp aquí</a>.
+      </p>
+    </div>
+  </form>
+
+  <div class="mt-8 hairline-t pt-6">
+    <p class="flex items-start gap-2 text-sm text-smoke">
+      <Icon name="shield" size={16} class="mt-0.5 shrink-0 text-gold-400" />
+      <span>{f.privacyNote} <a href="/politica-de-privacidad/" class="link-inline">Política de privacidad</a>.</span>
+    </p>
+    <div class="mt-5">
+      <WhatsAppButton message={contactPage.whatsappMessage} label={f.fallbackLabel} variant="outline" />
+    </div>
+  </div>
+</div>
+
+<script>
+  import { waLink } from '@/data/site';
+
+  let controller: AbortController | undefined;
+
+  function compose(form: HTMLFormElement): string {
+    const val = (id: string) => (form.querySelector<HTMLInputElement>(`#${id}`)?.value ?? '').trim().replace(/\s+/g, ' ');
+    const nombre = val('cf-nombre');
+    const empresa = val('cf-empresa');
+    const ciudad = val('cf-ciudad');
+    const servicio = val('cf-servicio');
+    const mensaje = (form.querySelector<HTMLTextAreaElement>('#cf-mensaje')?.value ?? '').trim();
+
+    let intro = `Hola Nithios, soy ${nombre}`;
+    if (empresa) intro += ` de ${empresa}`;
+    if (ciudad) intro += ` (${ciudad})`;
+    intro += '.';
+    const lines = [intro];
+    if (servicio) lines.push(`Me interesa: ${servicio}.`);
+    lines.push('', mensaje);
+    return lines.join('\n');
+  }
+
+  function setError(el: HTMLInputElement | HTMLTextAreaElement, message: string) {
+    const out = document.getElementById(`${el.id}-error`);
+    if (message) {
+      el.setAttribute('aria-invalid', 'true');
+      if (out) {
+        out.textContent = message;
+        out.classList.remove('hidden');
+      }
+    } else {
+      el.removeAttribute('aria-invalid');
+      if (out) {
+        out.textContent = '';
+        out.classList.add('hidden');
+      }
+    }
+  }
+
+  function validateField(el: HTMLInputElement | HTMLTextAreaElement): boolean {
+    const value = el.value.trim();
+    const min = Number(el.getAttribute('minlength') ?? 0);
+    if (!value && el.dataset.required) {
+      setError(el, el.dataset.required);
+      return false;
+    }
+    if (value && min && value.length < min && el.dataset.minlength) {
+      setError(el, el.dataset.minlength);
+      return false;
+    }
+    setError(el, '');
+    return true;
+  }
+
+  function init() {
+    controller?.abort();
+    const form = document.querySelector<HTMLFormElement>('#contact-form');
+    if (!form) return;
+    controller = new AbortController();
+    const { signal } = controller;
+
+    form.noValidate = true;
+    const required = Array.from(form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-required]'));
+    const status = form.querySelector<HTMLElement>('#contact-form-status');
+    const done = form.querySelector<HTMLElement>('#contact-form-done');
+    const link = form.querySelector<HTMLAnchorElement>('#contact-form-link');
+
+    // Revalida en vivo solo los campos que ya mostraron error (validación amable, sin regañar al escribir).
+    required.forEach((el) =>
+      el.addEventListener(
+        'input',
+        () => {
+          if (el.getAttribute('aria-invalid') === 'true') validateField(el);
+        },
+        { signal },
+      ),
+    );
+
+    form.addEventListener(
+      'submit',
+      (event) => {
+        event.preventDefault();
+        const invalid = required.filter((el) => !validateField(el));
+        if (invalid.length) {
+          if (status) status.textContent = 'Revisa los campos marcados para continuar.';
+          invalid[0].focus();
+          return;
+        }
+
+        const url = waLink(compose(form));
+        if (link) link.href = url;
+
+        // Enlace temporal: abre en pestaña nueva dentro del gesto del usuario (no lo bloquean los popups).
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        if (status) status.textContent = 'Abrimos WhatsApp con tu mensaje listo para enviar.';
+        done?.classList.remove('hidden');
+      },
+      { signal },
+    );
+  }
+
+  document.addEventListener('astro:page-load', init);
+</script>

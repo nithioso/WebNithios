@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/Button.astro';
+import WhatsAppButton from '@/components/WhatsAppButton.astro';
+import { nav } from '@/data/site';
+
+const title = 'Página no encontrada';
+const description =
+  'La página que buscas no existe o cambió de dirección. Vuelve al inicio de Nithios o escríbenos por WhatsApp y te ayudamos a encontrar lo que necesitas.';
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path="/404/"
+  noindex
+  whatsappMessage="Hola Nithios, llegué a una página que no existe en su sitio y necesito ayuda."
+>
+  <section class="relative isolate flex min-h-[calc(100dvh-var(--header-h))] items-center overflow-hidden pt-(--header-h)">
+    <div class="pointer-events-none absolute inset-0 -z-10 glow-gold" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-0 -z-10 grid-lines" aria-hidden="true"></div>
+    <div class="container-x py-24 text-center">
+      <p class="font-display text-[clamp(7rem,28vw,16rem)] font-semibold leading-none tracking-[-0.06em] text-gold" aria-hidden="true">
+        404
+      </p>
+      <h1 class="mx-auto mt-6 max-w-2xl text-display-md font-semibold">Esta página no existe, pero tu proyecto sí puede.</h1>
+      <p class="mx-auto mt-6 max-w-xl text-lead text-mist">
+        Es posible que el enlace haya cambiado o que la dirección tenga un error. Vuelve al inicio o cuéntanos qué
+        buscabas.
+      </p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <WhatsAppButton size="lg" message="Hola Nithios, llegué a una página que no existe en su sitio y necesito ayuda." />
+        <Button href="/" variant="glass" size="lg" icon="arrow-left">Volver al inicio</Button>
+      </div>
+      <nav aria-label="Secciones del sitio" class="mt-14">
+        <ul class="flex flex-wrap justify-center gap-2">
+          {
+            nav.map((item) => (
+              <li>
+                <a href={item.href} class="inline-flex min-h-11 items-center rounded-full border border-line px-5 text-sm text-mist transition-colors hover:border-line-strong hover:text-pearl">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </section>
+</BaseLayout>

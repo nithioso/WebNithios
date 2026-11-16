@@ -1,0 +1,341 @@
+---
+/**
+ * /jonathan-osorio/ — Hoja de vida del CEO y Fundador.
+ * Todo el contenido sale de src/data/ceo.ts (`ceo` + `ceoPage`).
+ * Trayectoria, formación, certificaciones, logros, sectores y cita se renderizan
+ * SOLO si tienen datos reales (hoy vacíos; ver docs/PENDIENTES.md).
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import WhatsAppButton from '@/components/WhatsAppButton.astro';
+import Button from '@/components/Button.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import Icon from '@/components/Icon.astro';
+import FaqList from '@/components/FaqList.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import CeoPortrait from '@/components/CeoPortrait.astro';
+import { ceo, ceoPage } from '@/data/ceo';
+import { services } from '@/data/services';
+import { sortedProjects } from '@/data/projects';
+import type { Faq } from '@/data/faqs';
+import { ids, faqPage, type Crumb } from '@/lib/schema';
+
+const path = ceo.path;
+const crumbs: Crumb[] = [{ name: ceo.name, path }];
+// Etiqueta corta en botones (una sola línea a 390 px); la versión larga va como título del CtaBand.
+const ctaLabel = `Habla con ${ceo.givenName}`;
+const ctaTitle = `Agenda una conversación con ${ceo.givenName}.`;
+const qaItems: Faq[] = ceoPage.qa.map((q) => ({ ...q, category: 'general' as const }));
+const featuredProjects = sortedProjects.slice(0, 2);
+const domainSpans = ['md:col-span-4', 'md:col-span-2', 'md:col-span-2', 'md:col-span-4', 'md:col-span-3', 'md:col-span-3'];
+
+const hasExperience = ceo.experience.length > 0;
+const hasEducation = ceo.education.length > 0;
+const hasCertifications = ceo.certifications.length > 0;
+const hasAchievements = ceo.achievements.length > 0;
+const hasSectors = ceo.sectors.length > 0;
+
+/* Alterna fondos (raised/default) entre las secciones condicionales que siguen a #metodo (default). */
+const conditional = {
+  trayectoria: hasExperience,
+  formacion: hasEducation || hasCertifications,
+  logros: hasAchievements,
+  portafolio: featuredProjects.length > 0,
+  preguntas: true,
+};
+const tones: Record<string, 'raised' | 'default'> = {};
+let n = 0;
+for (const [key, visible] of Object.entries(conditional)) {
+  if (visible) tones[key] = n++ % 2 === 0 ? 'raised' : 'default';
+}
+---
+
+<BaseLayout
+  title={ceo.seoTitle}
+  description={ceo.seoDescription}
+  path={path}
+  ogType="profile"
+  breadcrumbs={crumbs}
+  pageType={['ProfilePage', 'AboutPage']}
+  mainEntityId={ids.person}
+  jsonLd={[faqPage(qaItems, path)]}
+  whatsappMessage={ceo.whatsappMessage}
+>
+  <!-- HERO editorial: nombre en grande + retrato/monograma -->
+  <section class="relative isolate overflow-hidden pt-[calc(var(--header-h)+3rem)] pb-20 md:pt-[calc(var(--header-h)+5rem)] md:pb-28">
+    <div class="pointer-events-none absolute inset-0 -z-10 glow-gold" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-0 -z-10 grid-lines opacity-60" aria-hidden="true"></div>
+    <div class="container-x">
+      <Breadcrumbs items={crumbs} class="mb-10" />
+      <div class="grid items-center gap-14 lg:grid-cols-[1.25fr_1fr] lg:gap-20">
+        <div>
+          <p class="hero-in eyebrow mb-5">{ceo.jobTitle} · {ceo.company}</p>
+          <h1 class="hero-in hero-in-1 text-display-2xl font-semibold">
+            {ceo.givenName}{' '}<span class="block text-gold">{ceo.familyName}</span>
+          </h1>
+          <p class="hero-in hero-in-2 mt-8 text-display-sm font-medium text-pearl">
+            {ceo.headline}
+          </p>
+          <p class="hero-in hero-in-2 mt-5 max-w-2xl text-lead text-mist">
+            {ceoPage.heroIntro}
+          </p>
+          <div class="hero-in hero-in-3 mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <WhatsAppButton message={ceo.whatsappMessage} label={ctaLabel} size="lg" />
+            <Button href="#perfil" variant="glass" size="lg" iconRight="chevron-down">Ver perfil ejecutivo</Button>
+          </div>
+        </div>
+        <div class="hero-in hero-in-2">
+          <CeoPortrait />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERFIL EJECUTIVO -->
+  <Section id="perfil" eyebrow="Perfil ejecutivo" title={ceoPage.profileTitle} tone="raised">
+    <div class="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+      <div class="prose-nithios" data-reveal>
+        {ceo.bio.map((p) => <p>{p}</p>)}
+        <p>
+          Conoce en detalle las dos líneas que lidera:{' '}<a href="/servicios/consultoria-tecnologica/">consultoría tecnológica para empresas</a>{' '}y{' '}<a href="/servicios/desarrollo-de-software-a-medida/">desarrollo de software a medida en Colombia</a>.
+        </p>
+      </div>
+      <aside class="glass rounded-(--radius-card) p-7 md:p-8" aria-labelledby="ficha-titulo" data-reveal style="--reveal-delay:120ms">
+        <h3 id="ficha-titulo" class="eyebrow text-[0.75rem]">Ficha ejecutiva</h3>
+        <dl class="mt-6 divide-y divide-line">
+          {
+            ceoPage.facts.map((f) => (
+              <div class="flex flex-col gap-1 py-4 first:pt-0 last:pb-0">
+                <dt class="text-sm text-smoke">{f.label}</dt>
+                <dd class="text-lg font-medium tracking-[-0.01em] text-pearl">{f.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </aside>
+    </div>
+    {
+      hasSectors && (
+        <div class="mt-14" data-reveal>
+          <h3 class="text-lg font-semibold text-pearl">Sectores en los que ha trabajado</h3>
+          <ul class="mt-5 flex flex-wrap gap-2.5">
+            {ceo.sectors.map((s) => (
+              <li class="rounded-full border border-line px-4 py-2 text-sm text-mist">{s}</li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </Section>
+
+  <!-- VISIÓN Y FILOSOFÍA DE LIDERAZGO -->
+  <Section id="vision" eyebrow="Visión y liderazgo" title={ceoPage.vision.title} intro={ceoPage.vision.intro}>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {ceoPage.vision.principles.map((p, i) => <Card icon={p.icon} title={p.title} text={p.text} size="sm" revealDelay={i * 80} />)}
+    </div>
+    <figure class="mt-16 border-l-2 border-gold-500/70 pl-6 md:mt-24 md:pl-10" data-reveal>
+      <Icon name="quote" size={32} class="text-gold-400" />
+      <blockquote class="mt-5 max-w-4xl text-display-sm font-medium text-pearl md:text-display-md">
+        <p>{ceoPage.vision.statement}</p>
+      </blockquote>
+      <figcaption class="mt-6 text-sm text-smoke">Postura de {ceo.company}</figcaption>
+    </figure>
+    {
+      ceo.quote && (
+        <figure class="mt-14 border-l-2 border-gold-500/70 pl-6 md:pl-10" data-reveal>
+          <blockquote class="max-w-4xl text-display-sm font-medium text-pearl">
+            <p>{ceo.quote}</p>
+          </blockquote>
+          <figcaption class="mt-6 text-sm text-smoke">
+            {ceo.name}, {ceo.jobTitle} de {ceo.company}
+          </figcaption>
+        </figure>
+      )
+    }
+  </Section>
+
+  <!-- ÁREAS DE DOMINIO -->
+  <Section id="dominio" eyebrow="Áreas que lidera" title={ceoPage.domains.title} intro={ceoPage.domains.intro} tone="raised">
+    <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-6">
+      {
+        ceoPage.domains.items.map((d, i) => (
+          <Card
+            class={domainSpans[i] ?? 'md:col-span-2'}
+            tone={i === 0 ? 'gold' : 'glass'}
+            size={i === 0 ? 'lg' : 'md'}
+            icon={d.icon}
+            title={d.title}
+            text={d.text}
+            revealDelay={(i % 3) * 80}
+          />
+        ))
+      }
+    </div>
+    <Fragment slot="actions">
+      {
+        services.map((s) => (
+          <Button href={s.path} variant="glass" iconRight="arrow-right">
+            {s.shortName}
+          </Button>
+        ))
+      }
+    </Fragment>
+  </Section>
+
+  <!-- CÓMO TRABAJA CON LOS CLIENTES -->
+  <Section id="metodo" eyebrow="Cómo trabaja" title={ceoPage.method.title} intro={ceoPage.method.intro}>
+    <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        ceoPage.method.steps.map((s, i) => (
+          <li class="hairline relative flex flex-col rounded-(--radius-card) bg-ink-850 p-7" data-reveal style={`--reveal-delay:${i * 80}ms`}>
+            <span class="font-display text-display-md font-semibold text-gold" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="mt-6 text-xl font-semibold tracking-[-0.02em] text-pearl">{s.title}</h3>
+            <p class="mt-3 leading-relaxed text-mist">{s.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <Fragment slot="actions">
+      <WhatsAppButton message={ceo.whatsappMessage} label={ctaLabel} />
+    </Fragment>
+  </Section>
+
+  <!-- TRAYECTORIA (solo con datos reales) -->
+  {
+    hasExperience && (
+      <Section id="trayectoria" eyebrow="Trayectoria" title="Experiencia profesional" tone={tones.trayectoria}>
+        <ol class="relative ml-2 border-l border-line-gold pl-8 md:ml-4 md:pl-12">
+          {ceo.experience.map((e, i) => (
+            <li class="relative pb-12 last:pb-0" data-reveal style={`--reveal-delay:${Math.min(i, 5) * 60}ms`}>
+              <span class="absolute -left-[2.35rem] top-1.5 size-3 rounded-full bg-gold shadow-gold md:-left-[3.35rem]" aria-hidden="true" />
+              <p class="text-sm font-medium text-gold-300">{e.period}</p>
+              <h3 class="mt-2 text-display-sm font-semibold text-pearl">{e.role}</h3>
+              <p class="mt-1 text-mist">
+                {e.organization}
+                {e.sector && <span class="text-smoke"> · {e.sector}</span>}
+              </p>
+              {e.description && <p class="mt-4 max-w-3xl leading-relaxed text-mist">{e.description}</p>}
+              {e.achievements && e.achievements.length > 0 && (
+                <ul class="mt-4 space-y-2">
+                  {e.achievements.map((a) => (
+                    <li class="flex gap-3 text-mist">
+                      <Icon name="check" size={18} class="mt-1 shrink-0 text-gold-400" />
+                      <span>{a}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ol>
+      </Section>
+    )
+  }
+
+  <!-- FORMACIÓN Y CERTIFICACIONES (solo con datos reales) -->
+  {
+    (hasEducation || hasCertifications) && (
+      <Section id="formacion" eyebrow="Formación" title="Formación académica y certificaciones" tone={tones.formacion}>
+        <div class:list={['grid gap-10', hasEducation && hasCertifications && 'lg:grid-cols-2']}>
+          {hasEducation && (
+            <div>
+              <h3 class="flex items-center gap-3 text-xl font-semibold text-pearl">
+                <Icon name="graduation" class="text-gold-400" /> Estudios
+              </h3>
+              <ul class="mt-6 divide-y divide-line border-y border-line">
+                {ceo.education.map((ed) => (
+                  <li class="py-5" data-reveal>
+                    <p class="text-lg font-medium text-pearl">{ed.degree}</p>
+                    <p class="mt-1 text-mist">
+                      {ed.institution}
+                      {ed.period && <span class="text-smoke"> · {ed.period}</span>}
+                    </p>
+                    {ed.description && <p class="mt-2 text-sm leading-relaxed text-mist">{ed.description}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {hasCertifications && (
+            <div>
+              <h3 class="flex items-center gap-3 text-xl font-semibold text-pearl">
+                <Icon name="award" class="text-gold-400" /> Certificaciones
+              </h3>
+              <ul class="mt-6 divide-y divide-line border-y border-line">
+                {ceo.certifications.map((c) => (
+                  <li class="py-5" data-reveal>
+                    <p class="text-lg font-medium text-pearl">{c.name}</p>
+                    <p class="mt-1 text-mist">
+                      {c.issuer}
+                      {c.year && <span class="text-smoke"> · {c.year}</span>}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </Section>
+    )
+  }
+
+  <!-- LOGROS (solo con datos reales) -->
+  {
+    hasAchievements && (
+      <Section id="logros" eyebrow="Logros" title="Logros destacados" tone={tones.logros}>
+        <ul class="grid gap-4 md:grid-cols-2">
+          {ceo.achievements.map((a, i) => (
+            <li class="glass flex gap-4 rounded-2xl p-6" data-reveal style={`--reveal-delay:${Math.min(i, 5) * 60}ms`}>
+              <Icon name="check-circle" class="mt-0.5 shrink-0 text-gold-400" />
+              <span class="text-mist">{a}</span>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    )
+  }
+
+  <!-- PORTAFOLIO: lo que construye el equipo que dirige -->
+  {
+    featuredProjects.length > 0 && (
+      <Section
+        id="portafolio"
+        tone={tones.portafolio}
+        eyebrow="Portafolio"
+        title="Software desarrollado por Nithios."
+        intro="Plataformas y aplicaciones a la medida desarrolladas por Nithios. Explora cada caso y lo que resuelve."
+      >
+        <div class="grid gap-5 md:grid-cols-2">
+          {featuredProjects.map((p, i) => (
+            <ProjectCard project={p} revealDelay={i * 100} />
+          ))}
+        </div>
+        <Fragment slot="actions">
+          <Button href="/portafolio/" variant="glass" iconRight="arrow-right">
+            Ver todo el portafolio
+          </Button>
+        </Fragment>
+      </Section>
+    )
+  }
+
+  <!-- PREGUNTAS (GEO) -->
+  <Section id="preguntas" eyebrow="Preguntas" title={`Sobre ${ceo.name}`} width="narrow" tone={tones.preguntas}>
+    <FaqList items={qaItems} openFirst />
+    <p class="mt-8 text-mist">
+      ¿Tienes más dudas sobre cómo trabajamos? Revisa las{' '}<a href="/preguntas-frecuentes/" class="link-inline">preguntas frecuentes</a>{' '}o visita la{' '}<a href="/contacto/" class="link-inline">página de contacto</a>.
+    </p>
+  </Section>
+
+  <CtaBand
+    title={ctaTitle}
+    text="Cuéntale qué quiere lograr tu empresa con la tecnología. La primera conversación es para entender tu negocio y darte claridad sobre el mejor camino. Atención remota en toda Colombia."
+    message={ceo.whatsappMessage}
+    ctaLabel={ctaLabel}
+    secondary={{ label: 'Ver servicios', href: '/servicios/' }}
+  />
+</BaseLayout>

@@ -1,0 +1,87 @@
+---
+/**
+ * Metadatos SEO + GEO completos para <head>. Lo usa BaseLayout (no usar directo en páginas).
+ * - Title: si no contiene "Nithios" se agrega " | Nithios". Objetivo ≤ 60 caracteres.
+ * - Description: objetivo 140–160 caracteres (aviso en consola durante el build si no cumple).
+ * - Canonical absoluto con trailing slash, hreflang es-CO + x-default, Open Graph, Twitter,
+ *   geo meta para Colombia y JSON-LD (@graph) ya construido por BaseLayout.
+ */
+import { site, absoluteUrl } from '@/data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  noindex?: boolean;
+  /** Documento JSON-LD completo (normalmente graph([...])). */
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title: rawTitle,
+  description,
+  path,
+  ogImage = site.defaultOgImage,
+  ogImageAlt = `${site.name} — ${site.tagline}`,
+  ogType = 'website',
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+  noindex = false,
+  jsonLd,
+} = Astro.props;
+
+const title = rawTitle.includes(site.name) ? rawTitle : `${rawTitle} | ${site.name}`;
+const canonical = absoluteUrl(path);
+const image = absoluteUrl(ogImage);
+
+{
+  if (title.length > 60) console.warn(`[seo] title > 60 car. (${title.length}) en ${path}: "${title}"`);
+  if (!noindex && (description.length < 140 || description.length > 160))
+    console.warn(`[seo] description fuera de 140–160 car. (${description.length}) en ${path}`);
+}
+
+// Escapa "<" para que el JSON-LD no pueda cerrar el <script>.
+const jsonLdString = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : undefined;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{!noindex && <link rel="canonical" href={canonical} />}
+<meta
+  name="robots"
+  content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+/>
+{!noindex && <link rel="alternate" hreflang="es-CO" href={canonical} />}
+{!noindex && <link rel="alternate" hreflang="x-default" href={canonical} />}
+
+<!-- Open Graph -->
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content={site.locale} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={image} />
+<meta property="og:image:width" content={String(ogImageWidth)} />
+<meta property="og:image:height" content={String(ogImageHeight)} />
+<meta property="og:image:alt" content={ogImageAlt} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
+
+<!-- GEO -->
+<meta name="geo.region" content="CO" />
+<meta name="geo.placename" content="Colombia" />
+<meta name="language" content="es-CO" />
+<meta name="author" content={site.name} />
+
+{jsonLdString && <script type="application/ld+json" is:inline set:html={jsonLdString} />}

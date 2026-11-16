@@ -1,0 +1,62 @@
+---
+/**
+ * Retrato del CEO en marco premium dorado.
+ * - Si `ceo.photo` existe (ImageMetadata importada en src/data/ceo.ts) → <Image> optimizada.
+ * - Si no → monograma "JO" dorado (arte decorativo, aria-hidden; el nombre ya está en el <h1>).
+ * <CeoPortrait />  ·  <CeoPortrait size="sm" />
+ * Para sustituir por foto: ver docs/PENDIENTES.md (sección Jonathan Osorio).
+ */
+import { Image } from 'astro:assets';
+import Logo from './Logo.astro';
+import { ceo } from '@/data/ceo';
+
+interface Props {
+  size?: 'sm' | 'lg';
+  class?: string;
+}
+
+const { size = 'lg', class: className } = Astro.props;
+const initials = `${ceo.givenName.charAt(0)}${ceo.familyName.charAt(0)}`.toUpperCase();
+---
+
+<figure
+  class:list={[
+    'gold-ring relative isolate mx-auto w-full overflow-hidden rounded-[2.25rem] bg-ink-850 shadow-soft',
+    // Sin foto el monograma ocupa menos alto (no debe dominar la página).
+    ceo.photo ? 'aspect-[4/5]' : size === 'lg' ? 'aspect-[4/4.2]' : 'aspect-square sm:aspect-[4/4.4]',
+    size === 'lg' ? 'max-w-[26rem]' : 'max-w-[16rem] sm:max-w-[18rem]',
+    className,
+  ]}
+>
+  {
+    ceo.photo ? (
+      <Image
+        src={ceo.photo}
+        alt={ceo.photoAlt ?? ceo.name}
+        widths={[360, 540, 720, 1040]}
+        sizes="(min-width: 1024px) 26rem, 90vw"
+        priority
+        class="absolute inset-0 size-full object-cover"
+      />
+    ) : (
+      <div class="absolute inset-0" aria-hidden="true">
+        <div class="absolute inset-0 grid-lines opacity-70" />
+        <div class="absolute left-1/2 top-[38%] size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/16 blur-3xl motion-safe:animate-glow" />
+        <div class="absolute inset-5 rounded-[1.75rem] border border-line-gold/60" />
+        <div class:list={['absolute inset-0 flex flex-col items-center justify-center', size === 'lg' ? 'pb-20' : 'pb-16']}>
+          <span class:list={['font-display font-semibold leading-none tracking-[-0.07em] text-gold', size === 'lg' ? 'text-[clamp(5rem,20vw,8.5rem)]' : 'text-[clamp(4rem,16vw,6rem)]']}>
+            {initials}
+          </span>
+          <span class="mt-5 h-px w-16 bg-gold opacity-70" />
+          <Logo variant="mark" size={size === 'lg' ? 'md' : 'sm'} class="mt-5 opacity-90" />
+        </div>
+      </div>
+    )
+  }
+  <figcaption
+    class="absolute inset-x-4 bottom-4 rounded-2xl glass-strong border border-line px-5 py-4 text-left"
+  >
+    <span class="block text-base font-semibold tracking-[-0.01em] text-pearl">{ceo.name}</span>
+    <span class="mt-0.5 block text-sm text-gold-300">{ceo.jobTitle} · {ceo.company}</span>
+  </figcaption>
+</figure>

@@ -1,0 +1,58 @@
+---
+/**
+ * Botón flotante de WhatsApp. Lo incluye BaseLayout; el mensaje se personaliza por página con la prop
+ * `whatsappMessage` de BaseLayout (por eso NO usa transition:persist: congelaría el mensaje de la primera página).
+ * En móvil se oculta mientras el hero (que ya tiene su CTA de WhatsApp) está en pantalla, para no tapar contenido.
+ */
+import Icon from './Icon.astro';
+import { waLink } from '@/data/site';
+
+interface Props {
+  message?: string;
+}
+
+const { message } = Astro.props;
+---
+
+<a
+  href={waLink(message)}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="wa-fab group fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-40 inline-flex size-14 items-center justify-center rounded-full bg-gold text-ink-950 shadow-gold transition-[transform,opacity,translate] duration-300 ease-(--ease-apple) hover:scale-105 active:scale-95 md:bottom-8 md:right-8 md:size-16 [&.wa-fab--hidden]:pointer-events-none [&.wa-fab--hidden]:translate-y-4 [&.wa-fab--hidden]:opacity-0"
+  aria-label="Escríbenos por WhatsApp (se abre en una pestaña nueva)"
+  data-cta="whatsapp-fab"
+>
+  <span class="absolute inset-0 rounded-full bg-gold-400/40 motion-safe:animate-ping-soft" aria-hidden="true"></span>
+  <Icon name="whatsapp" size={28} class="relative" />
+  <span
+    class="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-full glass-strong border border-line px-4 py-2 text-sm font-medium text-pearl opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block"
+    aria-hidden="true"
+  >
+    Hablemos por WhatsApp
+  </span>
+</a>
+
+<script>
+  /** Móvil: oculta el FAB mientras el primer <section> de <main> (hero con CTA de WhatsApp) es visible. */
+  let io: IntersectionObserver | undefined;
+
+  function initFab() {
+    io?.disconnect();
+    const fab = document.querySelector<HTMLElement>('.wa-fab');
+    const hero = document.querySelector<HTMLElement>('main section');
+    if (!fab || !hero || !('IntersectionObserver' in window)) return;
+    const mobile = window.matchMedia('(max-width: 47.99rem)');
+    io = new IntersectionObserver(
+      ([entry]) => {
+        const hide = mobile.matches && entry.isIntersecting;
+        fab.classList.toggle('wa-fab--hidden', hide);
+        if (hide) fab.setAttribute('tabindex', '-1');
+        else fab.removeAttribute('tabindex');
+      },
+      { threshold: 0, rootMargin: '0px 0px -35% 0px' },
+    );
+    io.observe(hero);
+  }
+
+  document.addEventListener('astro:page-load', initFab);
+</script>

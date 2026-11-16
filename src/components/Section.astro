@@ -1,0 +1,101 @@
+---
+/**
+ * Sección con encabezado opcional (eyebrow + título + intro) y espaciado generoso.
+ * <Section id="servicios" eyebrow="Servicios" title="Tecnología con propósito" intro="…">
+ *   …contenido…
+ *   <Fragment slot="actions"><Button …/></Fragment>
+ * </Section>
+ * El título acepta HTML simple vía `titleHtml` (p. ej. '<span class="text-gold">…</span>').
+ */
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  /** Alternativa a `title` que permite marcado inline (confiable, no de usuario). */
+  titleHtml?: string;
+  intro?: string;
+  headingLevel?: 'h1' | 'h2' | 'h3';
+  align?: 'left' | 'center';
+  /** default: fondo negro · raised: carbón con hairline · glow: halo dorado superior */
+  tone?: 'default' | 'raised' | 'glow';
+  /** Espaciado vertical. */
+  spacing?: 'sm' | 'md' | 'lg' | 'none';
+  /** Ancho del contenedor. */
+  width?: 'default' | 'narrow' | 'full';
+  /** Tamaño del título. */
+  titleSize?: 'md' | 'lg' | 'xl';
+  class?: string;
+  /** aria-label si la sección no tiene título visible. */
+  ariaLabel?: string;
+}
+
+const {
+  id,
+  eyebrow,
+  title,
+  titleHtml,
+  intro,
+  headingLevel: H = 'h2',
+  align = 'left',
+  tone = 'default',
+  spacing = 'lg',
+  width = 'default',
+  titleSize = 'lg',
+  class: className,
+  ariaLabel,
+} = Astro.props;
+
+const hasHeader = Boolean(eyebrow || title || titleHtml || intro);
+const headingId = id ? `${id}-titulo` : undefined;
+const pad = { none: '', sm: 'py-14 md:py-20', md: 'py-20 md:py-28', lg: 'py-20 md:py-36' }[spacing];
+const container = { default: 'container-x', narrow: 'container-narrow', full: 'w-full' }[width];
+const tSize = { md: 'text-display-md', lg: 'text-display-lg', xl: 'text-display-xl' }[titleSize];
+const hasActions = Astro.slots.has('actions');
+---
+
+<section
+  id={id}
+  class:list={[
+    'relative',
+    pad,
+    tone === 'raised' && 'bg-ink-850 hairline-t hairline-b',
+    tone === 'glow' && 'glow-gold',
+    className,
+  ]}
+  aria-labelledby={(title || titleHtml) && headingId ? headingId : undefined}
+  aria-label={!(title || titleHtml) ? ariaLabel : undefined}
+>
+  <div class={container}>
+    {
+      hasHeader && (
+        <header
+          class:list={[
+            'mb-12 md:mb-16 max-w-3xl',
+            align === 'center' && 'mx-auto text-center',
+          ]}
+          data-reveal
+        >
+          {eyebrow && <p class="eyebrow mb-4">{eyebrow}</p>}
+          {titleHtml ? (
+            <H id={headingId} class:list={[tSize, 'font-semibold']} set:html={titleHtml} />
+          ) : (
+            title && (
+              <H id={headingId} class:list={[tSize, 'font-semibold']}>
+                {title}
+              </H>
+            )
+          )}
+          {intro && <p class="mt-6 text-lead text-mist">{intro}</p>}
+        </header>
+      )
+    }
+    <slot />
+    {
+      hasActions && (
+        <div class:list={['mt-12 flex flex-wrap gap-4', align === 'center' && 'justify-center']}>
+          <slot name="actions" />
+        </div>
+      )
+    }
+  </div>
+</section>

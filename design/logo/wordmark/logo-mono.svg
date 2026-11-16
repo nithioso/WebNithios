@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 262 64" role="img" aria-label="Nithios">
+  <path fill="none" stroke="currentColor" stroke-width="8.5" d="M16 55V18M16 37c0-8.3 6.7-15 15-15s15 6.7 15 15v18"/>
+  <path fill="currentColor" d="M46 8.5l6 6-6 6-6-6z"/>
+  <g transform="translate(88 15)" fill="none" stroke="currentColor" stroke-width="4.25">
+    <path d="M2 11.9v28.1M2 26c0-6.6 4.5-12 10-12s10 5.4 10 12v14"/>
+    <path d="M35 12v28"/>
+    <path d="M51 4v36M44 16h14"/>
+    <path d="M68 0v40M68 26c0-6.6 4.5-12 10-12s10 5.4 10 12v14"/>
+    <path d="M101 12v28"/>
+    <circle cx="125.5" cy="27" r="11"/>
+    <path d="M164.5 19c-1-2.5-3.5-3-7-3-4.5 0-7 2-7 5.2 0 3.4 3.5 4.4 7 5.2 4 1 7.5 2.2 7.5 6.2 0 3.4-3 5.4-7.5 5.4-4 0-6.7-1.4-7.7-4.4"/>
+    <path fill="currentColor" stroke="none" d="M35 0l4.5 4.5L35 9l-4.5-4.5zM101 0l4.5 4.5L101 9l-4.5-4.5z"/>
+  </g>
+</svg>

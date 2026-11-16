@@ -1,0 +1,33 @@
+---
+/**
+ * Atajo del CTA principal: "Hablemos por WhatsApp" (botón dorado).
+ * <WhatsAppButton message="Hola, quiero cotizar una app" />
+ * <WhatsAppButton size="lg" label="Escríbenos ahora" variant="outline" />
+ */
+import Button from './Button.astro';
+import { waLink } from '@/data/site';
+
+interface Props {
+  message?: string;
+  label?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'gold' | 'glass' | 'outline';
+  fullWidth?: boolean;
+  class?: string;
+}
+
+const { message, label = 'Hablemos por WhatsApp', size = 'md', variant = 'gold', fullWidth, class: className } = Astro.props;
+---
+
+<Button
+  href={waLink(message)}
+  variant={variant}
+  size={size}
+  icon="whatsapp"
+  external
+  fullWidth={fullWidth}
+  class={className}
+  data-cta="whatsapp"
+>
+  {label}
+</Button>

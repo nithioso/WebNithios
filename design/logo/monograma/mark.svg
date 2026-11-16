@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nithios">
+  <title>Nithios</title>
+  <defs><linearGradient id="nithios-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0d98a"/><stop offset=".5" stop-color="#d4af37"/><stop offset="1" stop-color="#a8822f"/></linearGradient></defs>
+  <rect width="64" height="64" rx="14" fill="#0a0a0a"/>
+  <path fill="url(#nithios-gold)" d="M14 49V15H21L33.73 27.73L27.73 33.73L21 27V49ZM50 15V49H43L30.27 36.27L36.27 30.27L43 37V15Z"/>
+</svg>

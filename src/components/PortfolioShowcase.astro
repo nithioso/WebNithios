@@ -1,0 +1,74 @@
+---
+/**
+ * Fila destacada del índice del portafolio: visual grande + ficha del proyecto. Alterna lado con `reverse`.
+ * <PortfolioShowcase project={p} index={0} />
+ * Enlace principal al caso ("Ver el caso completo"); el visual enlaza también pero fuera del orden de tabulación.
+ */
+import ProjectVisual from './ProjectVisual.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import type { Project } from '@/data/projects';
+
+interface Props {
+  project: Project;
+  index?: number;
+  headingLevel?: 'h2' | 'h3';
+  class?: string;
+}
+
+const { project: p, index = 0, headingLevel: H = 'h2', class: className } = Astro.props;
+const reverse = index % 2 === 1;
+const num = String(index + 1).padStart(2, '0');
+const headingId = `caso-${p.slug}`;
+---
+
+<article
+  class:list={['grid items-center gap-10 lg:grid-cols-12 lg:gap-16', className]}
+  aria-labelledby={headingId}
+>
+  <div class:list={['lg:col-span-7', reverse && 'lg:order-2']} data-reveal="scale">
+    <a href={p.path} class="group block rounded-[1.375rem] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400" tabindex="-1" aria-hidden="true">
+      <ProjectVisual
+        project={p}
+        priority={index === 0}
+        glow={index === 0}
+        class="transition-transform duration-700 ease-(--ease-apple) group-hover:-translate-y-1.5"
+      />
+    </a>
+  </div>
+  <div class:list={['lg:col-span-5', reverse && 'lg:order-1']}>
+    <p class="eyebrow mb-4" data-reveal="fade">
+      <span class="text-smoke">{num}</span>
+      <span aria-hidden="true" class="mx-2 text-smoke">·</span>
+      {p.category}
+    </p>
+    <H id={headingId} class="text-display-md font-semibold" data-reveal>
+      {p.name}
+    </H>
+    <p class="mt-4 text-lead text-pearl/90" data-reveal style="--reveal-delay:80ms">{p.tagline}</p>
+    <p class="mt-4 text-mist leading-relaxed" data-reveal style="--reveal-delay:120ms">{p.summary}</p>
+    {
+      p.status !== 'sin-especificar' && (
+        <p class="mt-6 inline-flex items-center gap-2 rounded-full border border-line-gold bg-gold-500/8 px-3.5 py-1.5 text-xs font-medium text-gold-200" data-reveal style="--reveal-delay:160ms">
+          <Icon name="sparkle" size={14} />
+          {p.statusLabel}
+        </p>
+      )
+    }
+    {
+      p.highlights.length > 0 && (
+        <ul class="mt-7 space-y-3" data-reveal style="--reveal-delay:180ms">
+          {p.highlights.slice(0, 4).map((h) => (
+            <li class="flex gap-3 text-mist">
+              <Icon name="check" size={20} class="mt-0.5 shrink-0 text-gold-400" />
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap" data-reveal style="--reveal-delay:220ms">
+      <Button href={p.path} variant="glass" iconRight="arrow-right" ariaLabel={`Ver el caso completo de ${p.name}`}>Ver el caso completo</Button>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,29 @@
+---
+/**
+ * Envuelve contenido con animación de aparición al hacer scroll.
+ * Funciona con el observador global de BaseLayout. Sin JS / reduced-motion → visible.
+ * <Reveal>…</Reveal>
+ * <Reveal as="li" effect="scale" delay={120} class="…">…</Reveal>
+ */
+import type { HTMLTag } from 'astro/types';
+
+interface Props {
+  as?: HTMLTag;
+  effect?: 'up' | 'fade' | 'scale' | 'blur';
+  /** Retardo en ms (útil para escalonar elementos de una grilla). */
+  delay?: number;
+  class?: string;
+  id?: string;
+}
+
+const { as: Tag = 'div', effect = 'up', delay = 0, class: className, id } = Astro.props;
+---
+
+<Tag
+  id={id}
+  class={className}
+  data-reveal={effect === 'up' ? '' : effect}
+  style={delay ? `--reveal-delay:${delay}ms` : undefined}
+>
+  <slot />
+</Tag>

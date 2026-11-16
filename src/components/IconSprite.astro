@@ -1,0 +1,10 @@
+---
+/**
+ * Sprite SVG oculto con los íconos repetidos (SPRITE_ICONS). Lo incluye BaseLayout una vez por página.
+ * Icon.astro los usa con <use href="#i-<nombre>">; el trazo/relleno se hereda del <svg> que los usa.
+ */
+import { icons, SPRITE_ICONS } from '@/lib/icons';
+const symbols = [...SPRITE_ICONS].map((n) => `<symbol id="i-${n}" viewBox="0 0 24 24">${icons[n]}</symbol>`).join('');
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" class="absolute size-0 overflow-hidden" aria-hidden="true" focusable="false" set:html={symbols} />

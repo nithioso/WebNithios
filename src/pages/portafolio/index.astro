@@ -1,0 +1,168 @@
+---
+/**
+ * /portafolio/ — Índice del portafolio (data-driven desde src/data/projects.ts).
+ * JSON-LD: CollectionPage (vía pageType) + ItemList de proyectos + CreativeWork por proyecto + FAQPage.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import FaqList from '@/components/FaqList.astro';
+import Button from '@/components/Button.astro';
+import PortfolioShowcase from '@/components/PortfolioShowcase.astro';
+import { sortedProjects, portfolioFaqs } from '@/data/projects';
+import { getService } from '@/data/services';
+import { coverage, absoluteUrl } from '@/data/site';
+import { itemList, projectWork, faqPage } from '@/lib/schema';
+import { projectOgImage } from '@/lib/images';
+
+const path = '/portafolio/';
+const title = 'Portafolio de software a medida en Colombia';
+const description =
+  'Conoce el software a medida que desarrolla Nithios en Colombia: Dragon Global Trade para comercio internacional y Krystal para consultorios psicológicos.';
+const whatsappMessage = 'Hola Nithios, vi su portafolio y quiero desarrollar un software a la medida para mi empresa.';
+const crumbs = [{ name: 'Portafolio', path }];
+
+const desarrollo = getService('desarrollo-de-software-a-medida');
+const consultoria = getService('consultoria-tecnologica');
+
+const listId = `${absoluteUrl(path)}#itemlist`;
+const jsonLd = [
+  { ...itemList(sortedProjects.map((p) => ({ name: p.name, path: p.path })), 'Portafolio de Nithios'), '@id': listId },
+  ...(await Promise.all(sortedProjects.map(async (p) => projectWork(p, (await projectOgImage(p))?.src)))),
+  ...(portfolioFaqs.length ? [faqPage(portfolioFaqs, path)] : []),
+];
+
+// Lo que comparten los proyectos: hechos verificables en los datos (roles, idiomas, plataformas).
+const principles = [
+  {
+    icon: 'target' as const,
+    title: 'Primero el proceso, después el código',
+    text: 'Cada proyecto empieza por entender cómo trabaja el negocio: quién hace qué, dónde se pierde tiempo y qué decisión necesita mejor información.',
+  },
+  {
+    icon: 'key' as const,
+    title: 'Roles y permisos desde el diseño',
+    text: 'Dragon Global Trade y Krystal controlan el acceso por rol: cada persona ve y gestiona solo lo que le corresponde.',
+  },
+  {
+    icon: 'translate' as const,
+    title: 'Listos para varios idiomas',
+    text: 'Cinco idiomas en Dragon Global Trade y dos en Krystal: software pensado para equipos, clientes y proveedores en distintos países.',
+  },
+  {
+    icon: 'browser' as const,
+    title: 'Interfaces que se entienden',
+    text: 'Diseño sobrio, jerarquía clara y temas claro y oscuro donde aportan. Un software que tu equipo quiere usar.',
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  breadcrumbs={crumbs}
+  pageType="CollectionPage"
+  mainEntityId={listId}
+  jsonLd={jsonLd}
+  whatsappMessage={whatsappMessage}
+>
+  <PageHero
+    eyebrow="Portafolio"
+    title="Portafolio de software a medida"
+    titleHtml='Portafolio de <span class="text-gold">software a medida</span>'
+    intro="Plataformas y aplicaciones a la medida diseñadas por Nithios: del comercio internacional a la atención psicológica en línea. Mira cómo pensamos, diseñamos y desarrollamos."
+    breadcrumbs={crumbs}
+    whatsappMessage={whatsappMessage}
+    secondary={desarrollo ? { label: 'Desarrollo a medida', href: desarrollo.path } : undefined}
+  />
+
+  <Section id="casos" ariaLabel="Proyectos del portafolio" spacing="none" class="pb-24 md:pb-36">
+    {
+      sortedProjects.length > 0 ? (
+        <div class="space-y-28 md:space-y-40">
+          {sortedProjects.map((p, i) => (
+            <PortfolioShowcase project={p} index={i} />
+          ))}
+        </div>
+      ) : (
+        <p class="text-lead text-mist">Muy pronto publicaremos aquí nuestros proyectos.</p>
+      )
+    }
+  </Section>
+
+  <Section
+    id="como-construimos"
+    eyebrow="Cómo construimos"
+    title="Distintos sectores. El mismo estándar."
+    intro="Comercio internacional y salud mental no se parecen en nada, pero el software que hacemos para cada uno nace del mismo método: entender el proceso, diseñar la experiencia y construir con tecnología moderna y segura."
+    tone="raised"
+  >
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+      {principles.map((c, i) => <Card icon={c.icon} title={c.title} text={c.text} tone={i === 0 ? 'gold' : 'glass'} revealDelay={i * 80} />)}
+    </div>
+  </Section>
+
+  <Section
+    id="tu-proyecto"
+    eyebrow="Tu proyecto"
+    title="El siguiente caso puede ser el tuyo."
+    intro={`Si tu empresa todavía coordina su operación con hojas de cálculo, correos y chats, hay una oportunidad clara de ganar orden y velocidad. ${coverage.long}`}
+  >
+    <div class="grid gap-5 md:grid-cols-2">
+      {
+        consultoria && (
+          <Card
+            href={consultoria.path}
+            eyebrow="¿Aún no sabes qué necesitas?"
+            title={consultoria.shortName}
+            text="Diagnosticamos tus procesos y te decimos qué tecnología adoptar, en qué orden y por qué, antes de invertir en desarrollo."
+            icon="compass"
+            size="lg"
+          />
+        )
+      }
+      {
+        desarrollo && (
+          <Card
+            href={desarrollo.path}
+            eyebrow="¿Ya tienes clara la idea?"
+            title={desarrollo.shortName}
+            text="Diseñamos y desarrollamos tu plataforma web, app móvil o sistema interno a la medida, como Dragon Global Trade y Krystal."
+            icon="code"
+            size="lg"
+            revealDelay={100}
+          />
+        )
+      }
+    </div>
+  </Section>
+
+  {
+    portfolioFaqs.length > 0 && (
+      <Section
+        id="preguntas"
+        eyebrow="Preguntas frecuentes"
+        title="Lo que suelen preguntarnos sobre nuestros desarrollos."
+        width="narrow"
+        tone="raised"
+      >
+        <FaqList items={portfolioFaqs} />
+        <Fragment slot="actions">
+          <Button href="/preguntas-frecuentes/" variant="link" iconRight="arrow-right">
+            Ver todas las preguntas
+          </Button>
+        </Fragment>
+      </Section>
+    )
+  }
+
+  <CtaBand
+    title="¿Tienes un proceso que merece su propio software?"
+    text="Cuéntanos qué quieres resolver. Te respondemos por WhatsApp y te proponemos el siguiente paso, estés en Bogotá, Medellín, Cali o cualquier ciudad de Colombia."
+    message={whatsappMessage}
+    secondary={{ label: 'Ver servicios', href: '/servicios/' }}
+  />
+</BaseLayout>

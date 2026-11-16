@@ -1,0 +1,42 @@
+---
+/**
+ * Migas de pan visibles. El JSON-LD se genera aparte con breadcrumbList() de src/lib/schema.ts
+ * (BaseLayout lo hace automáticamente si se le pasa la prop `breadcrumbs`).
+ * <Breadcrumbs items={[{ name: 'Servicios', path: '/servicios/' }, { name: 'Consultoría', path: '/servicios/consultoria-tecnologica/' }]} />
+ * "Inicio" se antepone automáticamente; el último ítem es la página actual.
+ */
+import Icon from './Icon.astro';
+import type { Crumb } from '@/lib/schema';
+
+interface Props {
+  items: Crumb[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+const all: Crumb[] = [{ name: 'Inicio', path: '/' }, ...items];
+---
+
+<nav aria-label="Migas de pan" class:list={['text-sm', className]}>
+  <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-smoke">
+    {
+      all.map((c, i) => {
+        const last = i === all.length - 1;
+        return (
+          <li class="inline-flex items-center gap-1.5">
+            {i > 0 && <Icon name="chevron-right" size={14} class="text-ink-500" />}
+            {last ? (
+              <span aria-current="page" class="text-mist">
+                {c.name}
+              </span>
+            ) : (
+              <a href={c.path} class="link-underline inline-flex min-h-6 items-center hover:text-pearl">
+                {c.name}
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

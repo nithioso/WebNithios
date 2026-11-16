@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 64" role="img" aria-label="Nithios">
+  <title>Nithios</title>
+  <defs><linearGradient id="nithios-gold-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0d98a"/><stop offset=".5" stop-color="#d4af37"/><stop offset="1" stop-color="#a8822f"/></linearGradient></defs>
+  <path fill="url(#nithios-gold-h)" d="M14 49V15H21L33.73 27.73L27.73 33.73L21 27V49ZM50 15V49H43L30.27 36.27L36.27 30.27L43 37V15Z" transform="translate(-14 0)"/>
+  <g fill="#f5efe0">
+    <path d="M54 40.5V23.5H56.4V40.5ZM66.22 40.5V23.5H68.62V40.5ZM54 23.5H57.41L68.62 40.5H65.21ZM74.82 23.5H77.22V40.5H74.82ZM83.42 23.5H97.02V25.9H83.42ZM89.02 25.9H91.42V40.5H89.02ZM103.22 23.5H105.62V40.5H103.22ZM115.1 23.5H117.5V40.5H115.1ZM105.62 30.8H115.1V33.2H105.62ZM123.7 23.5H126.1V40.5H123.7ZM131.95 32.35A8.85 8.85 0 1 0 149.65 32.35A8.85 8.85 0 1 0 131.95 32.35ZM134.35 32.35A6.449999999999999 6.449999999999999 0 1 1 147.25 32.35A6.449999999999999 6.449999999999999 0 1 1 134.35 32.35Z"/>
+    <path d="M165.39 25.76A4.92 3.8 0 1 0 161.62 32A4.92 3.8 0 1 1 157.85 38.24" fill="none" stroke="#f5efe0" stroke-width="2.4" stroke-linecap="butt"/>
+  </g>
+</svg>

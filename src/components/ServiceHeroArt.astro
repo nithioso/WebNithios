@@ -1,0 +1,58 @@
+---
+/**
+ * Visual de marca para el slot `aside` de PageHero en páginas de servicio (solo ≥lg; decorativo).
+ * Tile de vidrio con borde dorado: ícono grande + entregables reales del servicio (src/data).
+ * <ServiceHeroArt items={[{ icon: s.icon, title: s.shortName, points: d.deliverables.map((x) => x.title) }]} />
+ * Con 2 ítems (hub /servicios/) muestra un tile por línea de servicio.
+ */
+import Icon from './Icon.astro';
+import type { IconName } from '@/lib/icons';
+
+interface Props {
+  items: { icon: IconName; title: string; points: string[] }[];
+  /** Encabezado pequeño sobre la lista de puntos. */
+  pointsLabel?: string;
+}
+
+const { items, pointsLabel = 'Lo que recibes' } = Astro.props;
+const single = items.length === 1;
+---
+
+<div class="relative" aria-hidden="true">
+  <div class="pointer-events-none absolute -inset-10 -z-10 rounded-full bg-gold-500/10 blur-3xl"></div>
+  <div class:list={['grid gap-5', !single && 'xl:pl-8']}>
+    {
+      items.map((it, i) => (
+        <div
+          class:list={[
+            'gold-ring glass-strong relative overflow-hidden rounded-(--radius-card) p-8',
+            !single && i === 1 && 'xl:-ml-8 xl:mr-8',
+          ]}
+        >
+          <div class="absolute inset-0 -z-10 grid-lines opacity-40"></div>
+          <div class="flex items-center gap-5">
+            <span class:list={['inline-flex shrink-0 items-center justify-center rounded-2xl bg-gold text-ink-950 shadow-gold', single ? 'size-20' : 'size-14']}>
+              <Icon name={it.icon} size={single ? 40 : 28} />
+            </span>
+            <p class:list={['font-semibold tracking-[-0.02em] text-pearl', single ? 'text-2xl' : 'text-xl']}>{it.title}</p>
+          </div>
+          {
+            it.points.length > 0 && (
+              <>
+                <p class="mt-8 text-xs font-medium uppercase tracking-[0.16em] text-gold-300">{pointsLabel}</p>
+                <ul class="mt-4 space-y-3">
+                  {it.points.slice(0, single ? 5 : 3).map((pt) => (
+                    <li class="flex items-start gap-3 text-[0.9375rem] leading-snug text-mist">
+                      <Icon name="check" size={16} class="mt-0.5 shrink-0 text-gold-400" />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )
+          }
+        </div>
+      ))
+    }
+  </div>
+</div>

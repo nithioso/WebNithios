@@ -1,0 +1,114 @@
+---
+/**
+ * Ilustración conceptual de Krystal (NO es una captura): calendario de citas + tarjeta de videollamada.
+ * Solo HTML/CSS, sin texto de datos reales. Se reemplaza por capturas cuando existan (ver docs/PENDIENTES.md).
+ * <BrowserFrame label="Krystal"><KrystalMockup /></BrowserFrame>
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Bloques de cita en la semana: [columna 1-5, fila inicio 1-8, duración en filas, tono]
+const appts: [number, number, number, 'gold' | 'soft' | 'line'][] = [
+  [1, 1, 2, 'soft'],
+  [1, 5, 1, 'line'],
+  [2, 2, 2, 'gold'],
+  [2, 6, 2, 'soft'],
+  [3, 1, 1, 'line'],
+  [3, 4, 2, 'soft'],
+  [4, 3, 2, 'soft'],
+  [4, 7, 1, 'line'],
+  [5, 1, 2, 'line'],
+  [5, 5, 2, 'soft'],
+];
+const tone = {
+  gold: 'border-gold-500/60 bg-gold-500/20',
+  soft: 'border-line-strong bg-ink-600',
+  line: 'border-line bg-ink-700',
+};
+---
+
+<div
+  class:list={['relative aspect-[16/10] w-full overflow-hidden bg-ink-850 select-none', className]}
+  role="img"
+  aria-label="Ilustración conceptual de Krystal: a la izquierda, un calendario semanal con citas; a la derecha, una tarjeta de videollamada entre terapeuta y paciente con controles de micrófono, cámara y colgar."
+>
+  <div class="absolute inset-0 grid grid-cols-[7%_1fr_38%] gap-[2.2%] p-[2.6%]" aria-hidden="true">
+    <!-- Barra lateral -->
+    <div class="flex flex-col items-center gap-[12%] rounded-xl border border-line bg-ink-800 py-[40%]">
+      <span class="block aspect-square w-1/2 rounded-lg bg-gold-500/80"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-ink-500"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-gold-500/25 ring-1 ring-gold-500/50"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-ink-500"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-ink-500"></span>
+    </div>
+
+    <!-- Calendario semanal -->
+    <div class="flex min-w-0 flex-col rounded-xl border border-line bg-ink-800 p-[3.5%]">
+      <div class="mb-[4%] flex items-center justify-between">
+        <span class="flex items-center gap-[6%] text-gold-300">
+          <Icon name="calendar" size={16} class="size-[clamp(0.6rem,1.4vw,1rem)]" />
+          <span class="block h-[0.35rem] w-16 rounded-full bg-pearl/70 md:h-2 md:w-24"></span>
+        </span>
+        <span class="flex gap-1">
+          <span class="block h-[0.35rem] w-5 rounded-full bg-ink-500 md:h-2 md:w-8"></span>
+          <span class="block h-[0.35rem] w-5 rounded-full bg-gold-500/60 md:h-2 md:w-8"></span>
+        </span>
+      </div>
+      <div class="mb-[2.5%] grid grid-cols-5 gap-[3%]">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span class:list={['block h-[0.3rem] rounded-full md:h-1.5', i === 1 ? 'bg-gold-400/80' : 'bg-ink-500']}></span>
+        ))}
+      </div>
+      <div class="relative grid flex-1 grid-cols-5 grid-rows-8 gap-x-[3%] gap-y-[3%]">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span class="row-span-8 rounded-md border border-dashed border-line/70" style={`grid-column:${i + 1};grid-row:1 / span 8`}></span>
+        ))}
+        {appts.map(([c, r, len, t]) => (
+          <span
+            class:list={['relative z-10 rounded-md border', tone[t]]}
+            style={`grid-column:${c};grid-row:${r} / span ${len}`}
+          >
+            <span class:list={['absolute left-[12%] top-[22%] block h-[0.25rem] w-1/2 rounded-full md:h-1', t === 'gold' ? 'bg-gold-200/90' : 'bg-pearl/30']}></span>
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Videollamada -->
+    <div class="flex min-w-0 flex-col gap-[4%]">
+      <div class="gold-ring relative flex-1 overflow-hidden rounded-xl bg-[radial-gradient(120%_90%_at_50%_10%,rgb(212_175_55/0.18),transparent_60%),linear-gradient(180deg,#161616,#0a0a0a)]">
+        <span class="absolute left-[6%] top-[6%] flex items-center gap-1 rounded-full bg-ink-950/70 px-2 py-0.5 text-gold-300">
+          <span class="block size-1.5 rounded-full bg-gold-400 motion-safe:animate-pulse-soft"></span>
+          <Icon name="video" size={12} class="size-[clamp(0.5rem,1vw,0.75rem)]" />
+        </span>
+        <!-- Silueta abstracta -->
+        <span class="absolute left-1/2 top-[24%] block aspect-square w-[30%] -translate-x-1/2 rounded-full bg-linear-to-b from-gold-300/70 to-gold-700/50"></span>
+        <span class="absolute -bottom-[6%] left-1/2 block aspect-[2/1] w-[62%] -translate-x-1/2 rounded-t-full bg-linear-to-b from-gold-500/45 to-gold-800/20"></span>
+        <!-- Miniatura propia -->
+        <span class="absolute bottom-[7%] right-[6%] block aspect-[3/4] w-[24%] overflow-hidden rounded-lg border border-line-strong bg-ink-600">
+          <span class="absolute left-1/2 top-[22%] block aspect-square w-[46%] -translate-x-1/2 rounded-full bg-pearl/25"></span>
+          <span class="absolute -bottom-[10%] left-1/2 block aspect-[2/1] w-[80%] -translate-x-1/2 rounded-t-full bg-pearl/15"></span>
+        </span>
+      </div>
+      <div class="flex items-center justify-center gap-[6%] rounded-xl border border-line bg-ink-800 py-[5%] text-mist">
+        <span class="inline-flex aspect-square w-[16%] items-center justify-center rounded-full bg-ink-600">
+          <Icon name="message" size={14} class="size-[clamp(0.5rem,1vw,0.875rem)]" />
+        </span>
+        <span class="inline-flex aspect-square w-[16%] items-center justify-center rounded-full bg-ink-600">
+          <Icon name="video" size={14} class="size-[clamp(0.5rem,1vw,0.875rem)]" />
+        </span>
+        <span class="inline-flex aspect-square w-[16%] items-center justify-center rounded-full bg-gold text-ink-950">
+          <Icon name="phone" size={14} class="size-[clamp(0.5rem,1vw,0.875rem)]" />
+        </span>
+      </div>
+    </div>
+  </div>
+  <span class="absolute bottom-2 left-2 rounded-full border border-line bg-ink-950/80 px-2 py-0.5 text-[0.625rem] font-medium text-mist md:bottom-4 md:left-4 md:px-3 md:py-1 md:text-[0.6875rem]">
+    Ilustración conceptual
+  </span>
+</div>

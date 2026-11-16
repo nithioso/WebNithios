@@ -1,0 +1,96 @@
+---
+/**
+ * Logo de Nithios — monograma «N partida» (v2 final). Fuente: design/logo/final/ (build-logo.mjs).
+ * INTERFAZ ESTABLE:
+ * <Logo />                          → isotipo + wordmark, tamaño md
+ * <Logo variant="mark" size="lg" /> → solo isotipo
+ * <Logo variant="wordmark" />       → solo texto
+ * <Logo tone="mono" />              → monocromo (currentColor)
+ * Si cambias la geometría, regenera con `node design/logo/final/build-logo.mjs` y copia los paths aquí.
+ */
+interface Props {
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'full' | 'mark' | 'wordmark';
+  tone?: 'gold' | 'mono';
+  /** Si se pasa, el logo se vuelve un enlace (p. ej. '/'). */
+  href?: string;
+  class?: string;
+}
+
+const { size = 'md', variant = 'full', tone = 'gold', href, class: className } = Astro.props;
+
+// Geometría (rejilla 64). N: 36×34u. Wordmark: altura de mayúscula 17u (½ de la N).
+const N_LEFT = 'M14 49V15H21L33.52 27.52L27.52 33.52L21 27V49Z';
+const N_RIGHT = 'M50 15V49H43L30.48 36.48L36.48 30.48L43 37V15Z';
+const WORD =
+  'M54 23.5H56.8V40.5H54ZM65.82 23.5H68.62V40.5H65.82ZM54 23.5H57.98L68.62 40.5H64.64ZM74.62 23.5H77.42V40.5H74.62ZM83.42 23.5H97.02V26.3H83.42ZM88.82 26.3H91.62V40.5H88.82ZM103.22 23.5H106.02V40.5H103.22ZM114.7 23.5H117.5V40.5H114.7ZM103.22 30.6H117.5V33.4H103.22ZM123.5 23.5H126.3V40.5H123.5ZM131.95 32.35A8.85 8.85 0 1 0 149.65 32.35A8.85 8.85 0 1 0 131.95 32.35ZM134.89 32.35A5.91 5.91 0 1 1 146.71 32.35A5.91 5.91 0 1 1 134.89 32.35Z';
+const WORD_S = 'M165.39 25.76A4.92 3.8 0 1 0 161.62 32A4.92 3.8 0 1 1 157.85 38.24';
+
+/** Altura de la N en px por tamaño. */
+const h = { sm: 22, md: 26, lg: 36, xl: 52 }[size];
+const box = {
+  full: { vb: '5 15 164.2 34', w: (h * 164.2) / 34, h },
+  mark: { vb: '14 15 36 34', w: (h * 36) / 34, h },
+  wordmark: { vb: '53.6 22.9 115.6 18.9', w: (h * 0.5 * 115.6) / 17, h: (h * 0.5 * 18.9) / 17 },
+}[variant];
+
+const uid = Math.random().toString(36).slice(2, 8);
+const gl = `nithios-l-${uid}`;
+const gr = `nithios-r-${uid}`;
+const gold = tone === 'gold';
+const ink = gold ? 'var(--color-pearl, #f5f1e8)' : 'currentColor';
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag
+  href={href}
+  class:list={['group inline-flex items-center select-none', href && 'min-h-11', className]}
+  aria-label={href ? 'Nithios, ir al inicio' : undefined}
+>
+  <svg
+    width={Math.round(box.w * 10) / 10}
+    height={Math.round(box.h * 10) / 10}
+    viewBox={box.vb}
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+    class="block shrink-0 overflow-visible"
+  >
+    {
+      gold && variant !== 'wordmark' && (
+        <defs>
+          <linearGradient id={gl} x1="14" y1="15" x2="34" y2="49" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#f3e2a6" />
+            <stop offset=".55" stop-color="#d9b64a" />
+            <stop offset="1" stop-color="#c9a24b" />
+          </linearGradient>
+          <linearGradient id={gr} x1="30" y1="15" x2="50" y2="49" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#d4af37" />
+            <stop offset=".6" stop-color="#b8902f" />
+            <stop offset="1" stop-color="#9a7628" />
+          </linearGradient>
+        </defs>
+      )
+    }
+    {
+      variant !== 'wordmark' && (
+        <g
+          transform={variant === 'full' ? 'translate(-9 0)' : undefined}
+          class="transition-[filter] duration-700 ease-(--ease-apple) group-hover:brightness-115"
+        >
+          <path d={N_LEFT} fill={gold ? `url(#${gl})` : 'currentColor'} />
+          <path d={N_RIGHT} fill={gold ? `url(#${gr})` : 'currentColor'} />
+        </g>
+      )
+    }
+    {
+      variant !== 'mark' && (
+        <g>
+          <path d={WORD} fill={ink} />
+          <path d={WORD_S} stroke={ink} stroke-width="2.8" />
+        </g>
+      )
+    }
+  </svg>
+  {!href && <span class="sr-only">Nithios</span>}
+</Tag>

@@ -1,0 +1,99 @@
+---
+/**
+ * Tarjeta premium para bento grids y listados.
+ * <Card title="Diagnóstico" text="…" icon="search" />
+ * <Card href="/servicios/…/" eyebrow="Servicio" title="…" text="…" tone="gold" class="md:col-span-2" />
+ * Slot por defecto para contenido extra; slot "footer" al pie.
+ * Con `href`, toda la tarjeta es clicable (enlace en el título + overlay) manteniendo un solo enlace accesible.
+ */
+import Icon from './Icon.astro';
+import type { IconName } from '@/lib/icons';
+
+interface Props {
+  title?: string;
+  text?: string;
+  eyebrow?: string;
+  icon?: IconName;
+  href?: string;
+  /** glass: vidrio sutil · solid: carbón · gold: borde dorado degradado + halo · outline: solo hairline */
+  tone?: 'glass' | 'solid' | 'gold' | 'outline';
+  headingLevel?: 'h2' | 'h3' | 'h4';
+  size?: 'sm' | 'md' | 'lg';
+  /** Retardo de reveal en ms (escalonado). Usa -1 para desactivar el reveal. */
+  revealDelay?: number;
+  class?: string;
+}
+
+const {
+  title,
+  text,
+  eyebrow,
+  icon,
+  href,
+  tone = 'glass',
+  headingLevel: H = 'h3',
+  size = 'md',
+  revealDelay = 0,
+  class: className,
+} = Astro.props;
+
+const tones = {
+  glass: 'glass',
+  solid: 'bg-ink-800 hairline',
+  gold: 'gold-ring bg-[linear-gradient(160deg,rgb(212_175_55/0.10),rgb(10_10_10/0.9)_45%)]',
+  outline: 'hairline bg-transparent',
+}[tone];
+const pads = { sm: 'p-6', md: 'p-7 md:p-8', lg: 'p-8 md:p-12' }[size];
+const titleSize = { sm: 'text-lg', md: 'text-xl md:text-[1.375rem]', lg: 'text-display-sm' }[size];
+const hasFooter = Astro.slots.has('footer');
+---
+
+<article
+  class:list={[
+    'group relative flex flex-col overflow-hidden rounded-(--radius-card) transition-[transform,border-color,background-color] duration-500 ease-(--ease-apple)',
+    tones,
+    pads,
+    href && 'hover:-translate-y-1 hover:border-line-strong',
+    className,
+  ]}
+  data-reveal={revealDelay >= 0 ? '' : undefined}
+  style={revealDelay > 0 ? `--reveal-delay:${revealDelay}ms` : undefined}
+>
+  {
+    icon && (
+      <span class="mb-6 inline-flex size-12 items-center justify-center rounded-2xl border border-line-gold bg-gold-500/8 text-gold-300">
+        <Icon name={icon} size={24} />
+      </span>
+    )
+  }
+  {eyebrow && <p class="eyebrow mb-3 text-[0.75rem]">{eyebrow}</p>}
+  {
+    title && (
+      <H class:list={[titleSize, 'font-semibold tracking-[-0.02em] text-pearl']}>
+        {href ? (
+          <a href={href} class="after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-solid focus-visible:after:-outline-offset-2 focus-visible:after:outline-gold-400">
+            {title}
+          </a>
+        ) : (
+          title
+        )}
+      </H>
+    )
+  }
+  {text && <p class="mt-3 text-mist leading-relaxed">{text}</p>}
+  <slot />
+  {
+    (hasFooter || href) && (
+      <div class="mt-auto pt-6">
+        {hasFooter ? (
+          <slot name="footer" />
+        ) : (
+          <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300" aria-hidden="true">
+            Ver más
+            <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+        )}
+      </div>
+    )
+  }
+</article>

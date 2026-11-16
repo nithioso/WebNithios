@@ -1,0 +1,60 @@
+---
+/**
+ * Galería de capturas reales de un proyecto (figure + figcaption, marco de navegador).
+ * La primera captura ocupa todo el ancho; el resto va en dos columnas.
+ * Cada captura enlaza al archivo a tamaño completo (en móvil los textos de un dashboard de 1440 px no se leen).
+ * <ProjectGallery images={p.images} label="Dragon Global Trade · prototipo" />
+ */
+import { Image } from 'astro:assets';
+import BrowserFrame from './BrowserFrame.astro';
+import Icon from './Icon.astro';
+import type { ProjectImage } from '@/data/projects';
+
+interface Props {
+  images: ProjectImage[];
+  label?: string;
+  class?: string;
+}
+
+const { images, label, class: className } = Astro.props;
+---
+
+{
+  images.length > 0 && (
+    <ul class:list={['grid gap-x-6 gap-y-14 md:grid-cols-2 md:gap-y-16', className]} role="list">
+      {images.map((img, i) => (
+        <li class:list={[i === 0 && 'md:col-span-2']} data-reveal style={`--reveal-delay:${(i % 2) * 100}ms`}>
+          <figure>
+            <a
+              href={img.src.src}
+              target="_blank"
+              rel="noopener"
+              class="group/zoom relative block rounded-(--radius-card) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400"
+              aria-label={`Ver captura completa (se abre en una pestaña nueva): ${img.alt}`}
+            >
+              <BrowserFrame label={label}>
+                <Image
+                  src={img.src}
+                  alt=""
+                  widths={i === 0 ? [640, 960, 1280, 1920, 2560] : [480, 720, 960, 1280]}
+                  sizes={i === 0 ? '(min-width: 1280px) 1240px, 100vw' : '(min-width: 1280px) 610px, (min-width: 768px) 48vw, 100vw'}
+                  class="block h-auto w-full"
+                />
+              </BrowserFrame>
+              <span
+                class="absolute bottom-3 right-3 inline-flex size-11 items-center justify-center rounded-full glass-strong border border-line-gold text-gold-200 transition-transform duration-300 ease-(--ease-apple) group-hover/zoom:scale-110 md:bottom-5 md:right-5"
+                aria-hidden="true"
+              >
+                <Icon name="search" size={18} />
+              </span>
+            </a>
+            <figcaption class="mt-5 max-w-2xl text-sm leading-relaxed text-mist md:text-base">
+              {img.caption}
+              <span class="mt-1 block text-xs text-smoke md:hidden">Toca la imagen para ampliarla.</span>
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  )
+}

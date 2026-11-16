@@ -1,0 +1,32 @@
+---
+/**
+ * /servicios/consultoria-tecnologica/ — página de detalle del servicio.
+ * Contenido: src/data/services.ts + src/data/service-details.ts · Cuerpo: ServiceDetailContent.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ServiceDetailContent from '@/components/ServiceDetailContent.astro';
+import { getService } from '@/data/services';
+import { getServiceDetail } from '@/data/service-details';
+import { service, faqPage, ids, type Crumb } from '@/lib/schema';
+
+const s = getService('consultoria-tecnologica');
+const d = getServiceDetail('consultoria-tecnologica');
+if (!s || !d) throw new Error('Servicio "consultoria-tecnologica" no encontrado en src/data.');
+
+const crumbs: Crumb[] = [
+  { name: 'Servicios', path: '/servicios/' },
+  { name: s.shortName, path: s.path },
+];
+---
+
+<BaseLayout
+  title={s.seoTitle}
+  description={s.seoDescription}
+  path={s.path}
+  breadcrumbs={crumbs}
+  jsonLd={[service(s), faqPage(d.faqs, s.path)]}
+  mainEntityId={ids.service(s.path)}
+  whatsappMessage={s.whatsappMessage}
+>
+  <ServiceDetailContent service={s} detail={d} breadcrumbs={crumbs} />
+</BaseLayout>

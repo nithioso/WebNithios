@@ -1,0 +1,275 @@
+---
+/**
+ * /portafolio/<slug>/ — Página de caso, generada desde src/data/projects.ts.
+ * Secciones que dependen de datos opcionales se ocultan si están vacías (stack, seguridad, galería, FAQ…).
+ * JSON-LD: CreativeWork (mainEntity) + BreadcrumbList (BaseLayout) + FAQPage del caso.
+ */
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import FaqList from '@/components/FaqList.astro';
+import Icon from '@/components/Icon.astro';
+import Button from '@/components/Button.astro';
+import WhatsAppButton from '@/components/WhatsAppButton.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import ProjectVisual from '@/components/ProjectVisual.astro';
+import ProjectGallery from '@/components/ProjectGallery.astro';
+import { projects, sortedProjects } from '@/data/projects';
+import { getService } from '@/data/services';
+import { projectWork, faqPage, ids } from '@/lib/schema';
+import { projectOgImage } from '@/lib/images';
+
+export const getStaticPaths = (() =>
+  projects.map((project) => ({ params: { slug: project.slug }, props: { project } }))) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+const { project: p } = Astro.props;
+
+const crumbs = [
+  { name: 'Portafolio', path: '/portafolio/' },
+  { name: p.name, path: p.path },
+];
+const service = getService(p.serviceSlug);
+const others = sortedProjects.filter((o) => o.slug !== p.slug);
+// La galería omite la captura que ya se muestra como visual principal.
+const gallery = p.images.filter((img) => img.src !== p.cover);
+const isPrototype = p.status === 'prototipo' && p.stack.length === 0;
+const frameLabel = p.status === 'prototipo' ? `${p.name} · prototipo` : p.name;
+
+// Imagen OG 1200×630 (render propio o captura real). Sin imagen → og-default con alt del caso.
+const og = await projectOgImage(p);
+
+const jsonLd = [projectWork(p, og?.src), ...(p.faqs.length ? [faqPage(p.faqs, p.path)] : [])];
+
+const specs = [
+  { label: 'Categoría', values: [p.category] },
+  { label: 'Plataformas', values: p.platforms },
+  { label: 'Idiomas de la interfaz', values: p.languages },
+].filter((s) => s.values.length > 0);
+---
+
+<BaseLayout
+  title={p.seoTitle}
+  description={p.seoDescription}
+  path={p.path}
+  ogImage={og?.src}
+  ogImageWidth={og?.width}
+  ogImageHeight={og?.height}
+  ogImageAlt={og?.alt ?? `${p.name}, caso de portafolio de Nithios: ${p.headline}`}
+  breadcrumbs={crumbs}
+  mainEntityId={ids.project(p.path)}
+  jsonLd={jsonLd}
+  whatsappMessage={p.whatsappMessage}
+>
+  <PageHero
+    eyebrow="Caso de portafolio"
+    title={`${p.name}: ${p.h1Subtitle}`}
+    titleHtml={`${p.name}<span class="sr-only">: </span><span class="mt-3 block text-display-sm font-medium tracking-[-0.02em] text-gold first-letter:uppercase">${p.h1Subtitle}</span>`}
+    intro={`${p.headline} ${p.summary}`}
+    breadcrumbs={crumbs}
+    whatsappMessage={p.whatsappMessage}
+    ctaLabel="Quiero algo así"
+    secondary={{ label: 'Ver todo el portafolio', href: '/portafolio/' }}
+    size="md"
+  >
+    {
+      (p.status !== 'sin-especificar' || p.platforms.length > 0) && (
+        <ul class="mt-10 flex flex-wrap gap-2" aria-label={`Datos clave de ${p.name}`} data-reveal style="--reveal-delay:300ms">
+          {p.status !== 'sin-especificar' && (
+            <li class="inline-flex items-center gap-2 rounded-full border border-line-gold bg-gold-500/8 px-3.5 py-1.5 text-xs font-medium text-gold-200">
+              <Icon name="sparkle" size={14} />
+              {p.statusLabel}
+            </li>
+          )}
+          {p.platforms.map((pl) => (
+            <li class="rounded-full border border-line px-3.5 py-1.5 text-xs text-mist">{pl}</li>
+          ))}
+        </ul>
+      )
+    }
+  </PageHero>
+
+  <!-- Visual principal -->
+  <section aria-label={`Vista de ${p.name}`} class="relative pb-20 md:pb-28">
+    <div class="container-x">
+      <div data-reveal="scale">
+        <ProjectVisual project={p} priority glow sizes="(min-width: 1280px) 1240px, (min-width: 768px) 100vw, 165vw" />
+      </div>
+      {
+        p.statusNote && (
+          <p class="mx-auto mt-8 flex max-w-3xl items-start gap-3 rounded-2xl border border-line bg-ink-850 px-5 py-4 text-sm leading-relaxed text-mist" data-reveal>
+            <Icon name="check-circle" size={20} class="mt-0.5 shrink-0 text-gold-400" />
+            <span>{p.statusNote}</span>
+          </p>
+        )
+      }
+      {
+        !p.cover && p.illustration && (
+          <p class="mx-auto mt-6 max-w-3xl text-center text-sm text-smoke" data-reveal>
+            Ilustración conceptual de la experiencia. Las capturas reales de {p.name} se publicarán próximamente.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Reto y solución -->
+  <Section id="reto" eyebrow="El reto" title="El problema que resuelve." tone="raised">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5" data-reveal>
+        <p class="text-lead text-pearl/90">{p.challenge}</p>
+      </div>
+      <div class="lg:col-span-7">
+        <h3 class="eyebrow mb-5" data-reveal="fade">La solución</h3>
+        <div class="space-y-5 text-mist leading-relaxed md:text-lg" data-reveal style="--reveal-delay:100ms">
+          {p.solution.map((para) => <p>{para}</p>)}
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Módulos / funcionalidades -->
+  {
+    p.features.length > 0 && (
+      <Section
+        id="funcionalidades"
+        eyebrow={p.slug === 'dragon-global-trade' ? 'Módulos' : 'Funcionalidades'}
+        title={`Qué incluye ${p.name}.`}
+        intro="Cada pieza responde a una necesidad concreta de la operación."
+      >
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {p.features.map((f, i) => (
+            <Card icon={f.icon} title={f.title} text={f.text} size="sm" tone={i === 0 ? 'gold' : 'glass'} revealDelay={(i % 4) * 70} />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  <!-- Galería de capturas reales -->
+  {
+    gallery.length > 0 && (
+      <Section
+        id="capturas"
+        eyebrow="Recorrido"
+        title="Así se ve por dentro."
+        intro={p.statusNote ? 'Capturas del prototipo navegable, en tema oscuro. Los datos que aparecen son ficticios.' : undefined}
+        tone="raised"
+      >
+        <ProjectGallery images={gallery} label={frameLabel} />
+      </Section>
+    )
+  }
+
+  <!-- Tecnología, seguridad y ficha (en un prototipo sin stack confirmado: decisiones de diseño) -->
+  <Section
+    id="tecnologia"
+    eyebrow={isPrototype ? 'Prototipo' : 'Tecnología'}
+    title={isPrototype ? 'Diseño del prototipo.' : 'Construido para durar.'}
+    intro={isPrototype
+      ? 'Decisiones de diseño e interfaz del prototipo navegable.'
+      : 'Las decisiones técnicas que sostienen el producto, explicadas sin rodeos.'}
+  >
+    <div class="grid gap-5 md:grid-cols-6">
+      {
+        p.stack.length > 0 && (
+          <Card class="md:col-span-4" title="Stack tecnológico" icon="code" tone="glass">
+            <ul class="mt-6 flex flex-wrap gap-2" aria-label={`Tecnologías de ${p.name}`}>
+              {p.stack.map((t) => (
+                <li class="rounded-full border border-line-strong bg-ink-800 px-3.5 py-1.5 text-sm text-pearl">{t}</li>
+              ))}
+            </ul>
+          </Card>
+        )
+      }
+      {
+        p.security.length > 0 && (
+          <Card class={p.stack.length > 0 ? 'md:col-span-2' : 'md:col-span-3'} title={isPrototype ? 'Acceso y diseño' : 'Seguridad'} icon="shield" tone="glass" revealDelay={80}>
+            <ul class="mt-5 space-y-3">
+              {(isPrototype ? [...p.security, ...p.highlights.filter((h) => !p.security.includes(h))] : p.security).map((s) => (
+                <li class="flex gap-3 text-mist">
+                  <Icon name="check" size={18} class="mt-1 shrink-0 text-gold-400" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )
+      }
+      <Card class={p.stack.length > 0 ? 'md:col-span-6' : 'md:col-span-3'} title="Ficha del proyecto" icon="layers" tone="outline" revealDelay={120}>
+        <dl class:list={['mt-6 grid gap-6', p.stack.length > 0 ? 'sm:grid-cols-3' : '']}>
+          {specs.map((s) => (
+            <div>
+              <dt class="text-xs font-medium uppercase tracking-[0.14em] text-smoke">{s.label}</dt>
+              <dd class="mt-2 text-pearl">{s.values.join(' · ')}</dd>
+            </div>
+          ))}
+        </dl>
+      </Card>
+    </div>
+  </Section>
+
+  <!-- Valor -->
+  {
+    p.value.length > 0 && (
+      <Section
+        id="valor"
+        eyebrow="Valor para el negocio"
+        title="Lo que gana una empresa con algo así."
+        intro="Beneficios que se desprenden del diseño del producto, no promesas infladas."
+        tone="glow"
+      >
+        <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {p.value.map((v, i) => (
+            <Card icon={v.icon} title={v.title} text={v.text} size="sm" tone="solid" revealDelay={i * 70} />
+          ))}
+        </div>
+        <Fragment slot="actions">
+          <WhatsAppButton message={p.whatsappMessage} label="Quiero algo así para mi empresa" />
+          {service && (
+            <Button href={service.path} variant="glass" iconRight="arrow-right">
+              {service.shortName}
+            </Button>
+          )}
+        </Fragment>
+      </Section>
+    )
+  }
+
+  <!-- Preguntas del caso -->
+  {
+    p.faqs.length > 0 && (
+      <Section id="preguntas" eyebrow="Preguntas frecuentes" title={`Sobre ${p.name}.`} width="narrow" tone="raised">
+        <FaqList items={p.faqs} />
+      </Section>
+    )
+  }
+
+  <!-- Otros proyectos -->
+  {
+    others.length > 0 && (
+      <Section id="mas-proyectos" eyebrow="Portafolio" title="Más proyectos." titleSize="md">
+        <div class="grid gap-6 md:grid-cols-2">
+          {others.slice(0, 2).map((o, i) => (
+            <ProjectCard project={o} revealDelay={i * 100} />
+          ))}
+        </div>
+        <Fragment slot="actions">
+          <Button href="/portafolio/" variant="link" iconRight="arrow-right">
+            Ver todo el portafolio
+          </Button>
+        </Fragment>
+      </Section>
+    )
+  }
+
+  <CtaBand
+    title={`¿Quieres una solución como ${p.name}?`}
+    text="Cuéntanos tu proceso y lo convertimos en software a la medida. Atendemos empresas en toda Colombia, de forma remota."
+    message={p.whatsappMessage}
+    secondary={service ? { label: service.shortName, href: service.path } : { label: 'Ver servicios', href: '/servicios/' }}
+  />
+</BaseLayout>

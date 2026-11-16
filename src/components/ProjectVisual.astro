@@ -1,0 +1,34 @@
+---
+/**
+ * Visual principal de un proyecto del portafolio dentro de un marco de navegador.
+ * Selección del visual en ProjectArt.astro (cover → illustration → monograma).
+ * <ProjectVisual project={p} />
+ * <ProjectVisual project={p} priority glow sizes="(min-width: 1280px) 1240px, (min-width: 768px) 100vw, 165vw" />
+ */
+import BrowserFrame from './BrowserFrame.astro';
+import ProjectArt from './ProjectArt.astro';
+import type { Project } from '@/data/projects';
+
+interface Props {
+  project: Project;
+  /** Imagen por encima del pliegue (carga inmediata, fetchpriority alta). */
+  priority?: boolean;
+  glow?: boolean;
+  sizes?: string;
+  class?: string;
+}
+
+const {
+  project: p,
+  priority = false,
+  glow = false,
+  sizes,
+  class: className,
+} = Astro.props;
+// Etiqueta neutra (no es una URL): no se muestran dominios que no estén confirmados.
+const label = p.status === 'prototipo' ? `${p.name} · prototipo` : p.name;
+---
+
+<BrowserFrame label={label} glow={glow} class={className}>
+  <ProjectArt project={p} variant="frame" priority={priority} sizes={sizes} />
+</BrowserFrame>

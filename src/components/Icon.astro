@@ -1,0 +1,40 @@
+---
+/**
+ * Ícono SVG en línea (decorativo por defecto).
+ * <Icon name="compass" size={24} class="text-gold-400" />
+ * <Icon name="whatsapp" label="WhatsApp" />  → con `label` deja de ser decorativo.
+ * Los íconos de SPRITE_ICONS se dibujan con <use> sobre el sprite de BaseLayout (menos HTML).
+ */
+import { icons, FILLED_ICONS, SPRITE_ICONS, type IconName } from '@/lib/icons';
+
+interface Props {
+  name: IconName;
+  size?: number | string;
+  /** Texto accesible. Si se omite, el ícono es aria-hidden. */
+  label?: string;
+  strokeWidth?: number;
+  class?: string;
+}
+
+const { name, size = 24, label, strokeWidth = 1.6, class: className } = Astro.props;
+const filled = FILLED_ICONS.has(name);
+const inner = SPRITE_ICONS.has(name) ? `<use href="#i-${name}"/>` : icons[name];
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+  width={size}
+  height={size}
+  fill={filled ? 'currentColor' : 'none'}
+  stroke={filled ? 'none' : 'currentColor'}
+  stroke-width={filled ? undefined : strokeWidth}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class:list={['shrink-0', className]}
+  aria-hidden={label ? undefined : 'true'}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  focusable="false"
+  set:html={inner}
+/>

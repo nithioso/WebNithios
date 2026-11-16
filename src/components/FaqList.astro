@@ -1,0 +1,43 @@
+---
+/**
+ * Acordeón accesible de preguntas frecuentes con <details>/<summary> (sin JS).
+ * El JSON-LD FAQPage se agrega aparte: jsonLd={[faqPage(items, path)]} (solo una vez por pregunta en todo el sitio).
+ * La pregunta va como texto dentro de <summary> (rol botón: sus hijos son presentacionales, así que un
+ * encabezado ahí no se expone). Los encabezados quedan para los temas de la página.
+ * En móvil, <summary> reserva 56 px a la derecha para que el «+» no quede bajo el FAB de WhatsApp.
+ * <FaqList items={faqs} />
+ * <FaqList items={faqsByCategory('desarrollo')} openFirst />
+ */
+import Icon from './Icon.astro';
+import type { Faq } from '@/data/faqs';
+
+interface Props {
+  items: Faq[];
+  /** @deprecated Sin efecto: la pregunta ya no es un encabezado (ver nota arriba). */
+  headingLevel?: 'h2' | 'h3' | 'h4';
+  openFirst?: boolean;
+  class?: string;
+}
+
+const { items, openFirst = false, class: className } = Astro.props;
+---
+
+<div class:list={['divide-y divide-line border-y border-line', className]}>
+  {
+    items.map((f, i) => (
+      <details class="group/faq" open={openFirst && i === 0} data-reveal style={`--reveal-delay:${Math.min(i, 6) * 50}ms`}>
+        <summary class="flex min-h-16 cursor-pointer max-md:pr-14 list-none items-center justify-between gap-6 py-6 text-left [&::-webkit-details-marker]:hidden">
+          <span class="text-lg font-medium tracking-[-0.015em] text-pearl transition-colors group-hover/faq:text-gold-200 md:text-xl">
+            {f.question}
+          </span>
+          <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-line text-gold-300 transition-transform duration-500 ease-(--ease-apple) group-open/faq:rotate-45">
+            <Icon name="plus" size={18} />
+          </span>
+        </summary>
+        <div class="pb-7 pr-2 md:pr-16">
+          <p class="text-mist leading-relaxed">{f.answer}</p>
+        </div>
+      </details>
+    ))
+  }
+</div>

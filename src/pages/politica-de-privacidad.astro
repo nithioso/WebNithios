@@ -1,0 +1,105 @@
+---
+/**
+ * /politica-de-privacidad/ — política breve y honesta (Ley 1581 de 2012).
+ * Contenido: src/data/privacy.ts. PENDIENTE: revisión legal, razón social y NIT (docs/PENDIENTES.md).
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import Reveal from '@/components/Reveal.astro';
+import { privacyPolicy as pp } from '@/data/privacy';
+import type { Crumb } from '@/lib/schema';
+
+const path = pp.path;
+const crumbs: Crumb[] = [{ name: 'Política de privacidad', path }];
+const ctrl = pp.controller;
+---
+
+<BaseLayout
+  title={pp.seoTitle}
+  description={pp.seoDescription}
+  path={path}
+  breadcrumbs={crumbs}
+  whatsappMessage={pp.whatsappMessage}
+>
+  <PageHero
+    eyebrow={pp.heroEyebrow}
+    title={pp.heroTitle}
+    intro={pp.intro}
+    breadcrumbs={crumbs}
+    whatsappMessage={false}
+    size="md"
+  >
+    {pp.lastUpdated && <p class="mt-6 text-sm text-smoke">Última actualización: {pp.lastUpdated}</p>}
+  </PageHero>
+
+  <section class="pb-16 md:pb-24" aria-labelledby="resumen-titulo">
+    <div class="container-narrow">
+      <Reveal class="gold-ring rounded-(--radius-card) bg-ink-850 p-7 md:p-10">
+        <h2 id="resumen-titulo" class="text-display-sm font-semibold">En pocas palabras</h2>
+        <ul class="mt-6 grid gap-4" role="list">
+          {
+            pp.summary.map((item) => (
+              <li class="flex items-start gap-3 text-mist">
+                <Icon name="check" size={20} class="mt-0.5 text-gold-400" />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </Reveal>
+    </div>
+  </section>
+
+  <article class="pb-8 md:pb-12">
+    <div class="container-narrow">
+      <nav aria-label="Contenido de la política" class="mb-14 hairline rounded-(--radius-card) p-6 md:p-8">
+        <p class="eyebrow mb-4">Contenido</p>
+        <ol class="grid gap-1 sm:grid-cols-2" role="list">
+          {
+            pp.sections.map((s) => (
+              <li>
+                <a href={`#${s.id}`} class="flex min-h-11 items-center text-mist hover:text-pearl link-underline">
+                  {s.title}
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <div class="prose-nithios">
+        {
+          pp.sections.map((s) => (
+            <section id={s.id} class="scroll-mt-28" aria-labelledby={`${s.id}-titulo`}>
+              <h2 id={`${s.id}-titulo`}>{s.title}</h2>
+              {s.paragraphs?.map((t) => <p>{t}</p>)}
+              {s.id === 'responsable' && (ctrl.legalName || ctrl.nit) && (
+                <ul>
+                  {ctrl.legalName && <li><strong>Razón social:</strong> {ctrl.legalName}</li>}
+                  {ctrl.nit && <li><strong>NIT:</strong> {ctrl.nit}</li>}
+                  <li><strong>Sitio web:</strong> {ctrl.website}</li>
+                  <li><strong>WhatsApp:</strong> {ctrl.whatsapp}</li>
+                </ul>
+              )}
+              {s.list && (
+                <ul>
+                  {s.list.map((li) => <li>{li}</li>)}
+                </ul>
+              )}
+              {s.after?.map((t) => <p>{t}</p>)}
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </article>
+
+  <CtaBand
+    title="¿Dudas sobre tus datos?"
+    text="Escríbenos por WhatsApp para consultar, actualizar o suprimir tu información. Te respondemos dentro de los plazos de ley."
+    message={pp.whatsappMessage}
+    secondary={{ label: 'Ir a contacto', href: '/contacto/' }}
+  />
+</BaseLayout>

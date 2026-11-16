@@ -1,0 +1,101 @@
+# ==========================================================================
+# Nithios — Apache / LiteSpeed (Hostinger) · sitio estático Astro (dist/)
+# Decisiones documentadas en docs/SEO-GEO.md → "Seguridad y .htaccess".
+# ==========================================================================
+
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+ErrorDocument 403 /404.html
+
+AddDefaultCharset utf-8
+AddCharset utf-8 .html .css .js .mjs .txt .xml .json .webmanifest .svg
+AddType application/manifest+json .webmanifest
+AddType text/javascript .js .mjs
+AddType image/avif .avif
+AddType image/webp .webp
+AddType font/woff2 .woff2
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 0) Slash final + HTTPS + dominio raíz en UN solo salto cuando /ruta/index.html existe
+  #    (evita la cadena http://www…/ruta → https://nithios.com/ruta → /ruta/)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.*[^/])$ https://nithios.com/$1/ [L,R=301,NE]
+
+  # 0b) /ruta/index.html → /ruta/ (URL duplicada). THE_REQUEST evita bucles con DirectoryIndex.
+  RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
+  RewriteRule ^(.*/)?index\.html$ https://nithios.com/$1 [L,R=301,NE]
+
+  # 1) HTTPS + dominio raíz en un solo salto (http://, www. → https://nithios.com)
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https [OR]
+  RewriteCond %{HTTP_HOST} ^www\. [NC]
+  RewriteRule ^ https://nithios.com%{REQUEST_URI} [L,R=301,NE]
+
+  # 2) Bloquea archivos ocultos (.git, .env…) salvo /.well-known/
+  RewriteRule (^|/)\.(?!well-known/) - [F,L]
+  # (El slash final se resuelve en la regla 0, en el mismo salto que HTTPS.)
+</IfModule>
+
+<IfModule mod_headers.c>
+  # --- Seguridad -----------------------------------------------------------
+  # HSTS 1 año para el dominio raíz (activar solo con SSL ya emitido). Sin includeSubDomains hasta verificar
+  # HTTPS en todos los subdominios (webmail., etc.); luego añadir includeSubDomains y, después, preload.
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), browsing-topics=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always unset X-Powered-By
+
+  # CSP estricta. script-src: solo archivos propios + el hash del único <script is:inline>
+  # de BaseLayout (añade la clase .js a <html>). `npm run build` verifica el hash (postbuild →
+  # scripts/csp-hashes.mjs) y falla si no está aquí.
+  # style-src mantiene 'unsafe-inline' solo por los atributos style="--reveal-delay:…"/"--i:…" y los
+  # estilos que inyecta <ClientRouter /> durante las transiciones. Astro no incrusta hojas
+  # (build.inlineStylesheets: 'never'). El JSON-LD no se ejecuta: no requiere hash.
+  # form-action: el formulario de /contacto/ sin JS hace GET a wa.me (redirige a api.whatsapp.com).
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-ST5hXlu+RzZCsJHZCtCdToKKYMaGyv+BZPmpmycks/4='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com; frame-ancestors 'none'; upgrade-insecure-requests"
+
+  # --- Caché ---------------------------------------------------------------
+  # HTML y archivos de texto: siempre revalidar (los despliegues se ven al instante)
+  <FilesMatch "\.(html|xml|txt|webmanifest)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  # Activos de /_astro/ (nombre con hash): un año, inmutables → ver public/_astro/.htaccess
+  # (un .htaccess por carpeta funciona igual en Apache y LiteSpeed; las variables [E=] no siempre).
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 7 days"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType text/plain "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
+  ExpiresByType text/xml "access plus 0 seconds"
+  ExpiresByType application/manifest+json "access plus 1 day"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/avif "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/jpeg "access plus 30 days"
+  ExpiresByType image/svg+xml "access plus 30 days"
+  ExpiresByType image/x-icon "access plus 30 days"
+  ExpiresByType image/vnd.microsoft.icon "access plus 30 days"
+</IfModule>
+
+# --- Compresión (LiteSpeed comprime por su cuenta; esto cubre Apache) -------
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/xml text/javascript application/javascript application/json application/ld+json application/xml application/manifest+json image/svg+xml
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml text/javascript application/javascript application/json application/ld+json application/xml application/manifest+json image/svg+xml
+</IfModule>

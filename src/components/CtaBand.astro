@@ -1,0 +1,64 @@
+---
+/**
+ * Banda de cierre con CTA a WhatsApp (usar al final de cada página).
+ * <CtaBand title="¿Listo para…?" text="…" message="Hola Nithios…" secondary={{ label: 'Ver servicios', href: '/servicios/' }} />
+ */
+import WhatsAppButton from './WhatsAppButton.astro';
+import Button from './Button.astro';
+import { site } from '@/data/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+  /** Mensaje prellenado de WhatsApp. */
+  message?: string;
+  ctaLabel?: string;
+  secondary?: { label: string; href: string };
+  headingLevel?: 'h2' | 'h3';
+  /** id de la sección (único por página). */
+  id?: string;
+  class?: string;
+}
+
+const {
+  title = 'Hablemos de tu próximo paso en tecnología.',
+  text = 'Cuéntanos qué quieres lograr y te ayudamos a convertirlo en un plan claro y en software que funcione. Atendemos de forma remota a empresas de toda Colombia.',
+  message,
+  ctaLabel,
+  secondary,
+  headingLevel: H = 'h2',
+  id = 'hablemos',
+  class: className,
+} = Astro.props;
+---
+
+<section class:list={['relative py-20 md:py-28', className]} id={id} aria-labelledby={`${id}-titulo`}>
+  <div class="container-x">
+    <div
+      class="gold-ring noise relative overflow-hidden rounded-[2.25rem] bg-ink-850 px-6 py-16 text-center md:px-16 md:py-24"
+      data-reveal="scale"
+    >
+      <div
+        class="pointer-events-none absolute left-1/2 top-0 -z-10 h-[28rem] w-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/20 blur-[120px] motion-safe:animate-glow"
+        aria-hidden="true"
+      ></div>
+      <H id={`${id}-titulo`} class="mx-auto max-w-3xl text-display-lg font-semibold">
+        {title}
+      </H>
+      <p class="mx-auto mt-6 max-w-2xl text-lead text-mist">{text}</p>
+      <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <WhatsAppButton message={message} label={ctaLabel} size="lg" />
+        {
+          secondary && (
+            <Button href={secondary.href} variant="glass" size="lg" iconRight="arrow-right">
+              {secondary.label}
+            </Button>
+          )
+        }
+      </div>
+      <p class="mt-6 text-sm text-smoke">
+        WhatsApp <a href={`tel:${site.whatsapp.e164}`} class="link-inline">{site.whatsapp.display}</a>
+      </p>
+    </div>
+  </div>
+</section>

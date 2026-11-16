@@ -1,0 +1,216 @@
+---
+/**
+ * Header fijo translúcido (vidrio) con navegación principal y menú móvil accesible.
+ * - aria-current="page" en la sección activa.
+ * - Menú móvil: botón con aria-expanded/aria-controls, cierre con Escape, clic en enlace
+ *   o al ampliar a escritorio; bloquea scroll y devuelve el foco al botón.
+ * Lo incluye BaseLayout; no se usa directamente en páginas.
+ */
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+import { nav, site, waLink } from '@/data/site';
+
+interface Props {
+  /** Ruta actual para marcar el ítem activo (BaseLayout la pasa). */
+  path: string;
+  whatsappMessage?: string;
+}
+
+const { path, whatsappMessage } = Astro.props;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header id="site-header" class="fixed inset-x-0 top-0 z-50" data-header>
+  <div
+    class="header-bar glass-strong border-b border-transparent transition-[border-color,background-color] duration-500"
+  >
+    <div class="container-x flex h-(--header-h) items-center justify-between gap-6">
+      <Logo href="/" size="sm" />
+
+      <nav aria-label="Principal" class="hidden lg:block">
+        <ul class="flex items-center gap-1">
+          {
+            nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  class="relative inline-flex min-h-11 items-center rounded-full px-4 text-[0.9375rem] text-mist transition-colors duration-300 hover:text-pearl aria-[current=page]:text-pearl"
+                >
+                  {item.label}
+                  {isActive(item.href) && (
+                    <span class="absolute inset-x-4 bottom-1.5 h-px bg-gold-500/70" aria-hidden="true" />
+                  )}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <div class="hidden sm:block">
+          <WhatsAppButton message={whatsappMessage} size="sm" />
+        </div>
+        <button
+          type="button"
+          class="inline-flex size-11 items-center justify-center rounded-full text-pearl hover:bg-white/8 lg:hidden"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          data-menu-toggle
+        >
+          <span class="sr-only" data-menu-label>Abrir menú</span>
+          <Icon name="menu" size={22} class="menu-icon-open" />
+          <Icon name="close" size={22} class="menu-icon-close hidden" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="mobile-menu fixed inset-x-0 bottom-0 top-(--header-h) overflow-y-auto bg-ink-950/97 backdrop-blur-xl lg:hidden"
+    hidden
+    data-menu
+  >
+    <nav aria-label="Menú móvil" class="container-x flex min-h-full flex-col pb-10 pt-6">
+      <ul class="flex flex-col">
+        {
+          nav.map((item, i) => (
+            <li class="mobile-menu-item border-b border-line" style={`--i:${i}`}>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class="flex min-h-16 items-center justify-between py-4 text-[1.75rem] font-semibold tracking-[-0.03em] text-pearl aria-[current=page]:text-gold-300"
+              >
+                {item.label}
+                <Icon name="arrow-right" size={22} class="text-smoke" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-auto pt-10">
+        <WhatsAppButton message={whatsappMessage} size="lg" fullWidth />
+        <p class="mt-4 text-center text-sm text-smoke">
+          <a href={waLink(whatsappMessage)} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center hover:text-pearl">
+            {site.whatsapp.display}
+          </a>{' '}
+          · Atención en toda Colombia
+        </p>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header-bar {
+    background-color: rgb(0 0 0 / 0.55);
+  }
+  [data-header].is-scrolled .header-bar {
+    background-color: rgb(8 8 8 / 0.78);
+    border-bottom-color: var(--color-line);
+  }
+  [data-header].menu-open .header-bar {
+    background-color: rgb(0 0 0 / 0.97);
+  }
+  /* Los <svg> los renderiza Icon.astro (otro scope): requieren :global. */
+  [data-header].menu-open :global(.menu-icon-open) {
+    display: none;
+  }
+  [data-header].menu-open :global(.menu-icon-close) {
+    display: block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mobile-menu:not([hidden]) .mobile-menu-item {
+      animation: menu-in 0.6s var(--ease-apple) both;
+      animation-delay: calc(var(--i) * 45ms + 40ms);
+    }
+  }
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  let controller: AbortController | undefined;
+
+  function initHeader() {
+    controller?.abort();
+    controller = new AbortController();
+    const { signal } = controller;
+    document.documentElement.style.overflow = '';
+    for (const sel of ['main', 'body > footer', '.wa-fab']) document.querySelector(sel)?.removeAttribute('inert');
+    const header = document.querySelector<HTMLElement>('[data-header]');
+    const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const menu = document.querySelector<HTMLElement>('[data-menu]');
+    const label = document.querySelector<HTMLElement>('[data-menu-label]');
+    if (!header || !toggle || !menu) return;
+
+    const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true, signal });
+
+    const setOpen = (open: boolean, restoreFocus = true) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+      header.classList.toggle('menu-open', open);
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      if (label) label.textContent = open ? 'Cerrar menú' : 'Abrir menú';
+      // Comportamiento modal: el resto de la página queda fuera del árbol de accesibilidad.
+      for (const sel of ['main', 'body > footer', '.wa-fab']) {
+        document.querySelector(sel)?.toggleAttribute('inert', open);
+      }
+      if (open) {
+        menu.querySelector<HTMLElement>('a')?.focus();
+      } else if (restoreFocus) {
+        toggle.focus();
+      }
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'), { signal });
+    menu.addEventListener(
+      'click',
+      (e) => {
+        if ((e.target as HTMLElement).closest('a')) setOpen(false, false);
+      },
+      { signal },
+    );
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') setOpen(false);
+      },
+      { signal },
+    );
+    // Mantiene el foco dentro del menú + botón mientras está abierto.
+    header.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || menu.hidden) return;
+      const focusables = [toggle, ...menu.querySelectorAll<HTMLElement>('a, button')];
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    }, { signal });
+    const mq = window.matchMedia('(min-width: 64rem)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches && !menu.hidden) setOpen(false, false);
+    }, { signal });
+  }
+
+  // Se re-ejecuta tras cada navegación con View Transitions.
+  document.addEventListener('astro:page-load', initHeader);
+</script>

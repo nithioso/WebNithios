@@ -1,0 +1,385 @@
+---
+/**
+ * Página de inicio de nithios.com.
+ * Hero → propuesta de valor → servicios → proceso → portafolio → liderazgo → por qué Nithios → cobertura → FAQ → CTA.
+ * Todo el contenido factual sale de src/data; aquí solo vive el copy propio de la home.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import HomeHero from '@/components/HomeHero.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import Button from '@/components/Button.astro';
+import WhatsAppButton from '@/components/WhatsAppButton.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import FaqList from '@/components/FaqList.astro';
+import Icon from '@/components/Icon.astro';
+import CeoPortrait from '@/components/CeoPortrait.astro';
+import { cities, coverage } from '@/data/site';
+import { services } from '@/data/services';
+import { sortedProjects } from '@/data/projects';
+import { ceo } from '@/data/ceo';
+import { faqs } from '@/data/faqs';
+import { allServices, itemList } from '@/lib/schema';
+import type { IconName } from '@/lib/icons';
+
+const path = '/';
+const title = 'Consultoría tecnológica y software a medida | Nithios';
+const description =
+  'Empresa de tecnología en Colombia: consultoría tecnológica y desarrollo de software a medida. Apps web, móviles e IA para empresas. Hablemos por WhatsApp.';
+const whatsappMessage = 'Hola Nithios, quiero hablar sobre la tecnología y el software que necesita mi empresa.';
+
+const featuredProjects = sortedProjects.filter((p) => p.featured);
+
+/* FAQ breve: selección por pregunta (si alguna cambia de texto, simplemente no aparece). */
+const homeFaqQuestions = [
+  '¿Qué hace Nithios?',
+  '¿Qué es una consultoría tecnológica y para qué le sirve a mi empresa?',
+  '¿Qué tipo de software desarrollan?',
+  '¿En qué ciudades de Colombia trabajan?',
+  '¿Cuánto cuesta un proyecto con Nithios?',
+];
+const homeFaqs = homeFaqQuestions
+  .map((q) => faqs.find((f) => f.question === q))
+  .filter((f): f is NonNullable<typeof f> => Boolean(f));
+
+const jsonLd = [
+  ...allServices(),
+  ...(featuredProjects.length
+    ? [itemList(featuredProjects.map((p) => ({ name: p.name, path: p.path })), 'Portafolio destacado de Nithios')]
+    : []),
+  // FAQPage solo se marca en /preguntas-frecuentes/ (evita duplicados); aquí el acordeón es solo visible.
+];
+
+const valuePillars: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: 'compass',
+    title: 'Decidir con claridad',
+    text: 'Entendemos tu operación, priorizamos lo que más impacto genera y definimos qué tecnología adoptar y en qué orden.',
+  },
+  {
+    icon: 'code',
+    title: 'Construir a la medida',
+    text: 'Desarrollamos plataformas, aplicaciones e integraciones que se adaptan a tus procesos, no al revés.',
+  },
+  {
+    icon: 'route',
+    title: 'Evolucionar con el negocio',
+    text: 'Entregamos por etapas, medimos el uso real y seguimos mejorando para que la inversión siga rindiendo.',
+  },
+];
+
+const steps = [
+  {
+    title: 'Conversación inicial',
+    text: 'Nos escribes por WhatsApp, nos cuentas tu empresa y lo que quieres lograr. Sin formularios eternos ni compromisos.',
+  },
+  {
+    title: 'Diagnóstico y alcance',
+    text: 'Entendemos a fondo tus procesos, sistemas y objetivos, y definimos un alcance claro con su propuesta.',
+  },
+  {
+    title: 'Diseño y construcción',
+    text: 'Diseñamos la solución y la construimos por entregas incrementales que revisas y validas en cada etapa.',
+  },
+  {
+    title: 'Lanzamiento y evolución',
+    text: 'Acompañamos la puesta en marcha, la adopción por parte de tu equipo y la mejora continua del producto.',
+  },
+];
+
+const reasons: { icon: IconName; title: string; text: string; span: string; tone: 'gold' | 'glass' }[] = [
+  {
+    icon: 'briefcase',
+    title: 'Dirección ejecutiva senior',
+    text: `Nithios está dirigida por ${ceo.name}, ${ceo.jobTitle}, alto ejecutivo de tecnología con ${ceo.experienceSummary.charAt(0).toLowerCase()}${ceo.experienceSummary.slice(1)}. Hablas con quien entiende tanto el negocio como la tecnología.`,
+    span: 'md:col-span-4',
+    tone: 'gold',
+  },
+  {
+    icon: 'shield',
+    title: 'Seguridad por diseño',
+    text: 'Autenticación segura, roles y permisos, validación de datos y buenas prácticas desde la primera línea de código.',
+    span: 'md:col-span-2',
+    tone: 'glass',
+  },
+  {
+    icon: 'cpu',
+    title: 'Tecnologías actuales',
+    text: 'Stacks modernos como React, TypeScript, Node.js y PostgreSQL, e inteligencia artificial donde aporta valor.',
+    span: 'md:col-span-2',
+    tone: 'glass',
+  },
+  {
+    icon: 'target',
+    title: 'Foco en el resultado de negocio',
+    text: 'No vendemos herramientas ni horas: cada recomendación y cada funcionalidad responde a un objetivo concreto de tu empresa, desde la consultoría hasta el software en producción.',
+    span: 'md:col-span-4',
+    tone: 'glass',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} whatsappMessage={whatsappMessage}>
+  <HomeHero whatsappMessage={whatsappMessage} />
+
+  <!-- Propuesta de valor -->
+  <Section
+    id="propuesta"
+    eyebrow="Qué hacemos"
+    titleHtml='La tecnología correcta, <span class="text-gold">construida de la forma correcta.</span>'
+    intro="Nithios es una empresa de tecnología colombiana que acompaña a las organizaciones de principio a fin: desde decidir qué tecnología adoptar para mejorar sus procesos hasta desarrollar el software a la medida que la hace realidad. Una sola visión, sin intermediarios entre la estrategia y la ejecución."
+    titleSize="xl"
+  >
+    <ol class="grid gap-px overflow-hidden rounded-(--radius-card) border border-line bg-line md:grid-cols-3">
+      {
+        valuePillars.map((v, i) => (
+          <li class="bg-ink-950 p-8 md:p-10" data-reveal style={`--reveal-delay:${i * 100}ms`}>
+            <span class="flex items-center justify-between text-gold-300">
+              <Icon name={v.icon} size={28} />
+              <span class="font-display text-sm tabular-nums text-smoke" aria-hidden="true">
+                0{i + 1}
+              </span>
+            </span>
+            <h3 class="mt-8 text-xl font-semibold tracking-[-0.02em] md:text-2xl">{v.title}</h3>
+            <p class="mt-3 leading-relaxed text-mist">{v.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <!-- Líneas de servicio -->
+  <Section
+    id="servicios"
+    tone="raised"
+    eyebrow="Servicios"
+    title="Dos líneas de servicio. Un mismo propósito."
+    intro="Consultoría tecnológica para decidir bien y desarrollo de software a medida para ejecutar mejor. Puedes empezar por cualquiera de las dos o combinarlas en un solo proyecto."
+  >
+    <div class="grid gap-5 lg:grid-cols-2">
+      {
+        services.map((s, i) => (
+          <Card
+            href={s.path}
+            eyebrow={s.shortName}
+            title={s.headline}
+            text={s.summary}
+            icon={s.icon}
+            tone={i === 0 ? 'gold' : 'glass'}
+            size="lg"
+            revealDelay={i * 120}
+          >
+            <ul class="mt-8 grid gap-3 sm:grid-cols-2">
+              {s.capabilities.slice(0, 4).map((c) => (
+                <li class="flex items-start gap-2.5 text-sm text-mist">
+                  <Icon name="check" size={18} class="mt-0.5 shrink-0 text-gold-400" />
+                  <span>{c.title}</span>
+                </li>
+              ))}
+            </ul>
+            <span
+              slot="footer"
+              class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300"
+              aria-hidden="true"
+            >
+              Conocer {s.shortName.toLowerCase()}
+              <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
+          </Card>
+        ))
+      }
+    </div>
+    <Fragment slot="actions">
+      <Button href="/servicios/" variant="glass" iconRight="arrow-right">Ver todos los servicios</Button>
+    </Fragment>
+  </Section>
+
+  <!-- Cómo trabajamos -->
+  <Section
+    id="proceso"
+    eyebrow="Cómo trabajamos"
+    titleHtml='Un método claro, <span class="text-gold">de la idea al resultado.</span>'
+    intro="Trabajar con Nithios es simple y transparente: sabes en qué etapa está tu proyecto, qué se entrega y qué sigue. Así funciona, tanto en consultoría como en desarrollo."
+  >
+    <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        steps.map((step, i) => (
+          <li
+            class="relative flex flex-col rounded-(--radius-card) hairline bg-ink-850 p-7"
+            data-reveal
+            style={`--reveal-delay:${i * 100}ms`}
+          >
+            <span
+              class="inline-flex size-11 items-center justify-center rounded-full border border-line-gold font-display text-base font-semibold text-gold-300"
+              aria-hidden="true"
+            >
+              {i + 1}
+            </span>
+            <h3 class="mt-6 text-lg font-semibold tracking-[-0.015em]">
+              <span class="sr-only">Paso {i + 1}: </span>
+              {step.title}
+            </h3>
+            <p class="mt-3 text-sm leading-relaxed text-mist">{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <Fragment slot="actions">
+      <WhatsAppButton message="Hola Nithios, quiero contarles sobre un proyecto de tecnología para mi empresa y saber cómo empezar." />
+    </Fragment>
+  </Section>
+
+  <!-- Portafolio destacado -->
+  {
+    featuredProjects.length > 0 && (
+      <Section
+        id="portafolio"
+        tone="raised"
+        eyebrow="Portafolio"
+        title="Software que diseñamos y desarrollamos."
+        intro="Plataformas y aplicaciones diseñadas y desarrolladas por Nithios: desde la gestión integral del comercio internacional hasta la atención psicológica remota con videollamadas integradas."
+      >
+        <div class="grid gap-5 lg:grid-cols-2">
+          {featuredProjects.map((p, i) => (
+            <ProjectCard project={p} size="lg" revealDelay={i * 120} />
+          ))}
+        </div>
+        <Fragment slot="actions">
+          <Button href="/portafolio/" variant="glass" iconRight="arrow-right">
+            Explorar el portafolio
+          </Button>
+        </Fragment>
+      </Section>
+    )
+  }
+
+  <!-- Liderazgo -->
+  <Section id="liderazgo" ariaLabel="Liderazgo de Nithios">
+    <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5" data-reveal="scale">
+        <CeoPortrait size="sm" class="lg:max-w-[24rem]" />
+      </div>
+      <div class="lg:col-span-7">
+        <div data-reveal>
+          <p class="eyebrow mb-4">Liderazgo</p>
+          <h2 id="liderazgo-titulo" class="text-display-lg font-semibold">
+            {ceo.headline}
+          </h2>
+          <p class="mt-6 text-lead text-mist">{ceo.summary}</p>
+          {ceo.bio[1] && <p class="mt-5 leading-relaxed text-mist">{ceo.bio[1]}</p>}
+        </div>
+        <p class="mt-10 flex flex-col gap-2 hairline-t pt-8 sm:flex-row sm:items-baseline sm:gap-4" data-reveal style="--reveal-delay:100ms">
+          <span class="whitespace-nowrap text-display-md font-semibold text-gold">Casi 20 años</span>
+          <span class="text-mist">de experiencia en diferentes sectores.</span>
+        </p>
+        {
+          ceo.focusAreas.length > 0 && (
+            <ul class="mt-8 flex flex-wrap gap-2" aria-label="Áreas de liderazgo" data-reveal style="--reveal-delay:160ms">
+              {ceo.focusAreas.map((a) => (
+                <li class="rounded-full border border-line px-3.5 py-1.5 text-sm text-mist">{a}</li>
+              ))}
+            </ul>
+          )
+        }
+        <div class="mt-10 flex flex-col gap-3 sm:flex-row" data-reveal style="--reveal-delay:220ms">
+          <Button href={ceo.path} variant="outline" iconRight="arrow-right">Conoce a {ceo.name}</Button>
+          <WhatsAppButton message={ceo.whatsappMessage} variant="glass" label={`Habla con ${ceo.givenName}`} />
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Por qué Nithios -->
+  <Section
+    id="por-que-nithios"
+    tone="glow"
+    eyebrow="Por qué Nithios"
+    title="Lo que nos hace diferentes."
+    intro="Elegir un aliado de tecnología es una decisión estratégica. Estas son las razones concretas para elegir a Nithios como aliado en la transformación digital de tu empresa."
+  >
+    <div class="grid gap-5 md:grid-cols-6">
+      {
+        reasons.map((r, i) => (
+          <Card
+            class={r.span}
+            tone={r.tone}
+            size={r.tone === 'gold' ? 'lg' : 'md'}
+            icon={r.icon}
+            title={r.title}
+            text={r.text}
+            revealDelay={i * 100}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- Cobertura Colombia -->
+  <Section
+    id="cobertura"
+    tone="raised"
+    eyebrow="Cobertura"
+    titleHtml='Desde Colombia, <span class="text-gold">para toda Colombia.</span>'
+    intro={`${coverage.long} Coordinamos reuniones, avances y entregas en línea, así que la distancia nunca es un obstáculo para tu proyecto.`}
+  >
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" aria-label="Ciudades donde atendemos empresas">
+      {
+        cities.map((c, i) => (
+          <li
+            class="flex min-h-14 items-center gap-3 rounded-2xl hairline bg-ink-950 px-5 py-4 text-pearl"
+            data-reveal
+            style={`--reveal-delay:${i * 50}ms`}
+          >
+            <Icon name="map-pin" size={18} class="shrink-0 text-gold-400" />
+            {c}
+          </li>
+        ))
+      }
+      <li
+        class="flex min-h-14 items-center gap-3 rounded-2xl border border-line-gold bg-gold-500/8 px-5 py-4 text-gold-200"
+        data-reveal
+        style={`--reveal-delay:${cities.length * 50}ms`}
+      >
+        <Icon name="globe" size={18} class="shrink-0" />
+        Y todo el país
+      </li>
+    </ul>
+    <div class="mt-12 grid gap-5 md:grid-cols-2">
+      <p class="leading-relaxed text-mist" data-reveal>
+        ¿Buscas una <a href="/servicios/desarrollo-de-software-a-medida/" class="link-inline">empresa de desarrollo de software en Bogotá o Medellín</a>?
+        Trabajamos de forma remota con equipos en cualquier ciudad, con la misma cercanía y el mismo nivel de exigencia.
+      </p>
+      <p class="leading-relaxed text-mist" data-reveal style="--reveal-delay:100ms">
+        ¿Necesitas <a href="/servicios/consultoria-tecnologica/" class="link-inline">consultoría tecnológica en Colombia</a> para iniciar tu transformación digital o aplicar inteligencia artificial en tu empresa? Empezamos con una conversación.
+      </p>
+    </div>
+  </Section>
+
+  <!-- FAQ breve -->
+  {
+    homeFaqs.length > 0 && (
+      <Section
+        id="preguntas"
+        eyebrow="Preguntas frecuentes"
+        title="Respuestas claras antes de empezar."
+        intro="Lo que más nos preguntan las empresas que quieren adoptar tecnología o desarrollar software a la medida."
+        width="narrow"
+      >
+        <FaqList items={homeFaqs} openFirst />
+        <Fragment slot="actions">
+          <Button href="/preguntas-frecuentes/" variant="link" iconRight="arrow-right">
+            Ver todas las preguntas frecuentes
+          </Button>
+        </Fragment>
+      </Section>
+    )
+  }
+
+  <CtaBand
+    title="Tu próxima ventaja competitiva empieza con una conversación."
+    text="Cuéntanos qué quieres mejorar o construir. Te respondemos por WhatsApp y te ayudamos a convertirlo en un plan claro y en software que funcione."
+    message={whatsappMessage}
+    secondary={{ label: 'Ver portafolio', href: '/portafolio/' }}
+  />
+</BaseLayout>

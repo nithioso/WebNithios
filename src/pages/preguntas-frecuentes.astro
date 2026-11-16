@@ -1,0 +1,118 @@
+---
+/**
+ * /preguntas-frecuentes/ — todas las FAQ agrupadas por tema (faqs.ts) + FAQPage JSON-LD.
+ * Copy de la página: src/data/contact.ts (faqPageContent).
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import FaqList from '@/components/FaqList.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import Icon from '@/components/Icon.astro';
+import { faqs, faqCategories, faqsByCategory, type FaqCategory } from '@/data/faqs';
+import { faqPageContent as p } from '@/data/contact';
+import { faqPage, ids, type Crumb } from '@/lib/schema';
+import type { IconName } from '@/lib/icons';
+
+const path = p.path;
+const crumbs: Crumb[] = [{ name: 'Preguntas frecuentes', path }];
+
+const categoryIcons: Record<FaqCategory, IconName> = {
+  general: 'sparkle',
+  consultoria: 'compass',
+  desarrollo: 'code',
+  proceso: 'route',
+};
+
+/** Enlaces internos sugeridos por tema (rutas existentes del sitio). */
+const categoryLinks: Record<FaqCategory, { label: string; href: string }> = {
+  general: { label: 'Conoce a Jonathan Osorio, CEO y Fundador', href: '/jonathan-osorio/' },
+  consultoria: { label: 'Ver el servicio de consultoría tecnológica', href: '/servicios/consultoria-tecnologica/' },
+  desarrollo: { label: 'Ver el servicio de desarrollo de software a medida', href: '/servicios/desarrollo-de-software-a-medida/' },
+  proceso: { label: 'Ir a la página de contacto', href: '/contacto/' },
+};
+
+const groups = (Object.keys(faqCategories) as FaqCategory[])
+  .map((key) => ({ key, label: faqCategories[key], items: faqsByCategory(key) }))
+  .filter((g) => g.items.length > 0);
+---
+
+<BaseLayout
+  title={p.seoTitle}
+  description={p.seoDescription}
+  path={path}
+  breadcrumbs={crumbs}
+  mainEntityId={ids.faq(path)}
+  jsonLd={[faqPage(faqs, path)]}
+  whatsappMessage={p.whatsappMessage}
+>
+  <PageHero
+    eyebrow={p.heroEyebrow}
+    title={p.heroTitle}
+    titleHtml={p.heroTitleHtml}
+    intro={p.intro}
+    breadcrumbs={crumbs}
+    whatsappMessage={p.whatsappMessage}
+    secondary={{ label: 'Ir a contacto', href: '/contacto/' }}
+    size="md"
+    align="center"
+  >
+    <nav aria-label={p.tocLabel} class="mt-12" data-reveal style="--reveal-delay:300ms">
+      <ul class="flex flex-wrap justify-center gap-3" role="list">
+        {
+          groups.map((g) => (
+            <li>
+              <a
+                href={`#${g.key}`}
+                class="glass inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-sm font-medium text-pearl transition-colors hover:border-line-gold hover:text-gold-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+              >
+                <Icon name={categoryIcons[g.key]} size={16} class="text-gold-400" />
+                {g.label}
+                <span class="text-smoke">({g.items.length})</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </PageHero>
+
+  {
+    groups.map((g, i) => (
+      <Section
+        id={g.key}
+        eyebrow={`Tema ${String(i + 1).padStart(2, '0')}`}
+        title={g.label}
+        tone={i % 2 === 1 ? 'raised' : 'default'}
+        spacing="md"
+        class="scroll-mt-24"
+      >
+        <div class="grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-8">
+            <FaqList items={g.items} openFirst={i === 0} />
+          </div>
+          <aside class="lg:col-span-4" aria-label={`Más sobre ${g.label}`}>
+            <div class="glass rounded-(--radius-card) p-7 lg:sticky lg:top-28" data-reveal="fade">
+              <Icon name={categoryIcons[g.key]} size={28} class="text-gold-400" />
+              <p class="mt-4 text-mist">¿Quieres profundizar en este tema?</p>
+              <a
+                href={categoryLinks[g.key].href}
+                class="group mt-4 inline-flex min-h-11 items-center gap-2 font-medium text-gold-300 hover:text-gold-200"
+              >
+                {categoryLinks[g.key].label}
+                <Icon name="arrow-right" size={18} class="transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+            </div>
+          </aside>
+        </div>
+      </Section>
+    ))
+  }
+
+  <CtaBand
+    title={p.ctaTitle}
+    text={p.ctaText}
+    message={p.whatsappMessage}
+    secondary={{ label: 'Ver servicios', href: '/servicios/' }}
+  />
+</BaseLayout>

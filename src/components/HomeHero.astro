@@ -1,0 +1,149 @@
+---
+/**
+ * Hero de la página de inicio (contiene el ÚNICO <h1> de la home).
+ * Visual 100 % CSS/SVG: eclipse dorado, órbitas, rejilla y partículas sutiles (sin imágenes ni librerías).
+ * <HomeHero whatsappMessage="Hola Nithios…" />
+ */
+import WhatsAppButton from './WhatsAppButton.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { coverage } from '@/data/site';
+
+interface Props {
+  whatsappMessage?: string;
+  class?: string;
+}
+
+const { whatsappMessage, class: className } = Astro.props;
+
+/* Partículas deterministas (mismo HTML en cada build → sin CLS ni hidratación). */
+let seed = 7;
+const rand = () => {
+  seed = (seed * 16807) % 2147483647;
+  return (seed - 1) / 2147483646;
+};
+const particles = Array.from({ length: 42 }, () => ({
+  x: Math.round(rand() * 1200),
+  y: Math.round(rand() * 620),
+  r: +(0.6 + rand() * 1.6).toFixed(2),
+  d: +(rand() * 6).toFixed(2),
+  t: +(4 + rand() * 5).toFixed(2),
+}));
+
+const pillars = ['Consultoría tecnológica', 'Software a medida', 'Inteligencia artificial', coverage.short];
+---
+
+<section
+  class:list={[
+    'home-hero relative isolate flex min-h-[100svh] flex-col overflow-hidden pt-[calc(var(--header-h)+2.5rem)] pb-10 md:pt-[calc(var(--header-h)+4rem)]',
+    className,
+  ]}
+  aria-labelledby="inicio-titulo"
+>
+  <!-- Fondo decorativo -->
+  <div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+    <div class="absolute inset-0 glow-gold"></div>
+    <div class="absolute inset-0 grid-lines opacity-70"></div>
+    <svg
+      class="absolute inset-0 size-full"
+      viewBox="0 0 1200 800"
+      preserveAspectRatio="xMidYMid slice"
+      focusable="false"
+    >
+      <defs>
+        <radialGradient id="hh-halo" cx="50%" cy="100%" r="60%">
+          <stop offset="0%" stop-color="#d4af37" stop-opacity="0.38"></stop>
+          <stop offset="45%" stop-color="#a8842f" stop-opacity="0.10"></stop>
+          <stop offset="100%" stop-color="#000" stop-opacity="0"></stop>
+        </radialGradient>
+        <linearGradient id="hh-rim" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#d4af37" stop-opacity="0"></stop>
+          <stop offset="30%" stop-color="#ead27c" stop-opacity="0.55"></stop>
+          <stop offset="50%" stop-color="#fbf3d9" stop-opacity="0.95"></stop>
+          <stop offset="70%" stop-color="#ead27c" stop-opacity="0.55"></stop>
+          <stop offset="100%" stop-color="#d4af37" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient id="hh-orbit" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f3e2a6" stop-opacity="0.45"></stop>
+          <stop offset="50%" stop-color="#d4af37" stop-opacity="0.05"></stop>
+          <stop offset="100%" stop-color="#d4af37" stop-opacity="0.3"></stop>
+        </linearGradient>
+      </defs>
+
+      <!-- Halo inferior -->
+      <rect x="0" y="300" width="1200" height="500" fill="url(#hh-halo)"></rect>
+
+      <!-- Órbitas -->
+      <g class="hh-orbits" fill="none" stroke="url(#hh-orbit)" stroke-width="1">
+        <ellipse cx="600" cy="660" rx="560" ry="250" opacity="0.5"></ellipse>
+        <ellipse cx="600" cy="660" rx="760" ry="340" opacity="0.32"></ellipse>
+        <ellipse cx="600" cy="660" rx="960" ry="430" opacity="0.18"></ellipse>
+      </g>
+
+      <!-- Eclipse: planeta oscuro con borde de luz dorada -->
+      <circle cx="600" cy="1530" r="900" fill="#000"></circle>
+      <path
+        class="hh-rim"
+        d="M 60 810 A 900 900 0 0 1 1140 810"
+        fill="none"
+        stroke="url(#hh-rim)"
+        stroke-width="1.5"
+      ></path>
+
+      <!-- Partículas -->
+      <g fill="#ead27c">
+        {
+          particles.map((p) => (
+            <circle
+              class="hh-p"
+              cx={p.x}
+              cy={p.y}
+              r={p.r}
+              style={`animation-delay:-${p.d}s;animation-duration:${p.t}s`}
+            />
+          ))
+        }
+      </g>
+    </svg>
+    <div class="absolute inset-x-0 bottom-0 h-40 bg-linear-to-b from-transparent to-ink-950"></div>
+  </div>
+
+  <div class="container-x flex flex-1 flex-col justify-center">
+    <div class="mx-auto max-w-5xl text-center">
+      <h1 id="inicio-titulo" class="font-semibold">
+        <span class="hero-in mb-6 block">
+          <span class="eyebrow">Consultoría tecnológica y desarrollo de software a medida en Colombia</span>
+        </span><span class="sr-only">: </span>
+        <span class="hero-in hero-in-1 block text-display-2xl">
+          Tecnología con <span class="text-gold-shimmer">visión de negocio</span>.
+        </span>
+      </h1>
+      <p class="hero-in hero-in-2 mx-auto mt-8 max-w-2xl text-lead text-mist">
+        En Nithios te asesoramos para adoptar la tecnología que de verdad mejora tus procesos y desarrollamos el
+        software a la medida que tu empresa necesita: plataformas web, aplicaciones móviles e inteligencia artificial.
+      </p>
+      <div
+        class="hero-in hero-in-3 mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center"
+      >
+        <WhatsAppButton message={whatsappMessage} size="lg" />
+        <Button href="/portafolio/" variant="glass" size="lg" iconRight="arrow-right">Ver portafolio</Button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-in hero-in-4 container-x mt-14">
+    <ul
+      class="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-smoke"
+      aria-label="Lo que hacemos"
+    >
+      {
+        pillars.map((p) => (
+          <li class="inline-flex items-center gap-2">
+            <Icon name="check" size={16} class="text-gold-400" />
+            {p}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
