@@ -1,12 +1,12 @@
-// Genera el KIT GRÁFICO de Nithios (logo «Ligadura NT») en design/brand-kit/.
-// Fuente única: design/logo/v2/nt-ligadura/*.svg (solo paths). Uso: npm run kit
+// Genera el KIT GRÁFICO de Nithios (logo oficial K · «NTOS en sello») en design/brand-kit/.
+// Fuente única: design/logo/v3/ntos-sello/*.svg (solo paths). Uso: npm run kit
 // Salida: vectores (SVG + PDF), PNG transparentes y con fondo, favicon/app, redes e impresión.
 import { chromium } from 'playwright';
 import { mkdir, readFile, writeFile, rm, copyFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
-const SRC = join(root, 'design/logo/v2/nt-ligadura');
+const SRC = join(root, 'design/logo/v3/ntos-sello');
 const OUT = join(root, 'design/brand-kit');
 const BLACK = '#000000';
 const IVORY = '#f5f1e8';
@@ -36,7 +36,9 @@ for (const k of Object.keys(src)) {
 const appIcon = await read('app-icon.svg');
 const bgOf = (variant) => (variant === 'negativo' || variant === 'mono-blanco' ? BLACK : IVORY);
 
-await rm(OUT, { recursive: true, force: true });
+// Limpia solo las carpetas generadas: LEEME.md se mantiene (se edita a mano).
+for (const d of ['01-vectores', '02-png-transparente', '03-png-con-fondo', '04-favicon-app', '05-redes-sociales', '06-impresion-alta'])
+  await rm(join(OUT, d), { recursive: true, force: true });
 const dir = async (d) => (await mkdir(join(OUT, d), { recursive: true }), join(OUT, d));
 
 const browser = await chromium.launch();
@@ -96,8 +98,8 @@ for (const s of [16, 32, 48, 64, 96, 180, 192, 256, 512, 1024]) {
   await png(appIcon, file, { w: s, h: s });
   if (s <= 48) icoPngs.push({ s, buf: await readFile(file) });
 }
-// Maskable (Android): arte al 62 % sobre fondo a sangre, dentro de la zona segura.
-await png(src.simbolo.negativo, join(fav, 'icono-maskable-512.png'), { w: 512, h: 512, bg: INK, scale: 0.56 });
+// Maskable (Android): moneda al ~66 % sobre fondo a sangre, dentro del círculo seguro del 80 %.
+await png(src.simbolo.negativo, join(fav, 'icono-maskable-512.png'), { w: 512, h: 512, bg: INK, scale: 0.68 });
 // favicon.ico multirresolución (PNG embebidos 16/32/48).
 {
   const head = Buffer.alloc(6 + 16 * icoPngs.length);
@@ -114,8 +116,8 @@ await png(src.simbolo.negativo, join(fav, 'icono-maskable-512.png'), { w: 512, h
 
 // ---- 05 Redes sociales -----------------------------------------------------
 const social = await dir('05-redes-sociales');
-await png(src.simbolo.negativo, join(social, 'perfil-1080-oscuro.png'), { w: 1080, h: 1080, bg: BLACK, scale: 0.46 });
-await png(src.simbolo.positivo, join(social, 'perfil-1080-claro.png'), { w: 1080, h: 1080, bg: IVORY, scale: 0.46 });
+await png(src.simbolo.negativo, join(social, 'perfil-1080-oscuro.png'), { w: 1080, h: 1080, bg: BLACK, scale: 0.52 });
+await png(src.simbolo.positivo, join(social, 'perfil-1080-claro.png'), { w: 1080, h: 1080, bg: IVORY, scale: 0.52 });
 await png(src.vertical.negativo, join(social, 'post-1080x1350-oscuro.png'), { w: 1080, h: 1350, bg: BLACK, scale: 0.5 });
 await png(src.horizontal.negativo, join(social, 'compartir-1200x630-oscuro.png'), { w: 1200, h: 630, bg: BLACK, scale: 0.6 });
 await png(src.horizontal.negativo, join(social, 'linkedin-portada-1584x396-oscuro.png'), { w: 1584, h: 396, bg: BLACK, scale: 0.42 });

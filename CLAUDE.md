@@ -11,7 +11,8 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 ## Comandos
 - `npm run dev` · `npm run build` (debe pasar sin warnings) · `npm run preview` · `npm run check` (0 errores)
 - `npm run build` ejecuta `postbuild` (`scripts/csp-hashes.mjs`): falla si cambias un `<script is:inline>` y no actualizas su hash en la CSP de `public/.htaccess`.
-- `npm run brand` → regenera favicon e íconos PWA desde los SVG de `design/logo/final/` (logo oficial G «Ligadura NT»; sharp + Playwright, ambos en devDependencies) y luego corre `npm run og`.
+- `npm run brand` → regenera favicon e íconos PWA desde los SVG de `design/logo/final/` (logo oficial K «NTOS en sello», derivados de `design/logo/v3/ntos-sello/`; sharp + Playwright, ambos en devDependencies) y luego corre `npm run og`.
+- `npm run kit` → regenera el kit gráfico `design/brand-kit/` (vectores, PNG, favicon/app, redes, impresión) desde `design/logo/v3/ntos-sello/`.
 - `npm run og` → regenera las OG 1200×630 (`public/og-default.png` + `src/assets/og/*-og.png`) · `npm run verify:images` → auditoría de OG, alt y nombres sobre `dist/`.
 
 ## Mapa de archivos

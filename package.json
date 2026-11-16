@@ -13,6 +13,7 @@
     "brand": "node scripts/generate-brand-assets.mjs && node scripts/generate-og-images.mjs",
     "og": "node scripts/generate-og-images.mjs",
     "verify:images": "node scripts/verify-images.mjs",
+    "kit": "node scripts/build-brand-kit.mjs",
     "astro": "astro"
   },
   "dependencies": {

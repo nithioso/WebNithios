@@ -6,7 +6,7 @@
  *   - public/og-default.png                     → home y páginas sin OG propia (nombre fijo por convención)
  *   - src/assets/og/<nombre-descriptivo>-og.png → una por página / caso (importadas en src/data/og.ts y src/data/projects.ts)
  *
- * Línea visual: negro + dorado, logo oficial «Ligadura NT» (design/logo/final/logo-horizontal.svg),
+ * Línea visual: negro + dorado, logo oficial K «NTOS en sello» (design/logo/final/logo-horizontal.svg),
  * Inter Variable del proyecto (incrustada desde @fontsource-variable/inter) y pie con nithios.com.
  * Las capturas salen de src/assets/portfolio/**; la ilustración de Krystal se captura de dist/ (si existe, tras
  * `npm run build`) en design/og/krystal-ilustracion-agenda-y-videollamada.png y se reutiliza si no hay dist/.
@@ -234,7 +234,7 @@ async function buildPages() {
         .num small{display:block;font-size:15px;font-weight:600;letter-spacing:.14em;color:#d9b64a;margin-bottom:6px}`,
         body:
           copy({ eyebrow: 'Contacto', title: 'Hablemos por <em>WhatsApp</em>', sub: 'Cuéntanos tu proyecto. Atención remota en toda Colombia.' }) +
-          `<div class="chat glass"><header><span>${logo.replace(/viewBox="[^"]+"/, 'viewBox="4 6 56 52"')}</span><div><strong>Nithios</strong><em>WhatsApp</em></div></header>
+          `<div class="chat glass"><header><span>${logo.replace(/viewBox="[^"]+"/, 'viewBox="3 3 58 58"')}</span><div><strong>Nithios</strong><em>WhatsApp</em></div></header>
           <p class="msg">Hola Nithios, quiero contarles sobre un proyecto de tecnología para mi empresa.</p>
           <p class="num"><small>ÚNICO CANAL DE CONTACTO</small>+57 305 302 7559</p></div>`,
       }),

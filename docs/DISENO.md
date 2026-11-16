@@ -112,14 +112,15 @@ Props: `name: IconName`, `size?` (24), `label?` (si falta → aria-hidden), `str
 spark, sparkle, layers, workflow, users, target, bolt, chart, shield, lock, browser, phone, grid, plug, video, globe, map-pin, calendar,
 message, database, cpu, translate, contrast, truck, cart, briefcase, folder, id, heart, clipboard, key, clock, quote, award, graduation, whatsapp).
 
-### Logo (oficial: G · «Ligadura NT» — ver design/logo/DECISION.md)
-Props: `size?: 'sm'|'md'|'lg'|'xl'` (altura del símbolo 28/34/44/60 px; header `sm`, footer `md`), `variant?: 'full'|'mark'|'wordmark'`, `tone?: 'gold'|'mono'`, `href?`, `class?`.
-SVG inline, sin fuente: símbolo NT (N y T fundidas; pieza N con luz diagonal, pieza T con barra iluminada y asta en sombra) + wordmark NITHIOS en marfil (pearl),
-mayúsculas a 0,44 de la altura del símbolo, centradas ópticamente y a 15u. Ids de degradado únicos por instancia (header + footer en la misma página).
-Fuente de verdad: los SVG de `design/logo/final/` (copia de `design/logo/v2/nt-ligadura/`: mark, mark-pos, mark-mono, logo-horizontal(-pos), logo-vertical(-pos),
-logo-mono, wordmark, app-icon, app-icon-square, app-icon-maskable). Si cambia la geometría: actualiza esos SVG, copia los paths a Logo.astro y ejecuta `npm run brand`.
-Zona de respeto: ¼ de la altura del símbolo. Tamaño mínimo: isotipo 16 px (a 16 px el canal desaparece y se lee una «N» con bandera; la T se distingue desde ~32 px), horizontal 24 px de alto.
-Sobre fondos claros usa `tone="mono"` o los SVG `-pos`.
+### Logo (oficial: K · «NTOS en sello» — ver design/logo/DECISION.md)
+Props: `size?: 'sm'|'md'|'lg'|'xl'` (diámetro de la moneda 36/40/50/68 px; header `sm`, footer `md`), `variant?: 'full'|'mark'|'wordmark'`, `tone?: 'gold'|'mono'`, `href?`, `class?`.
+SVG inline, sin fuente: moneda de oro (la O) con la ligadura NT calada y un corte en S que la parte en dos piezas (luz arriba a la izquierda, sombra el resto)
++ wordmark NITHIOS en marfil (pearl), mayúsculas a 0,38 del diámetro, centradas con la moneda y a 13u del canto. Ids de degradado únicos por instancia (header + footer en la misma página).
+`sm`/`md` usan el arte con corte óptico de `app-icon.svg` (≈3,2u) para que la NT respire en el header; `lg`/`xl`, el corte fino de 2,4u.
+Fuente de verdad: los SVG de `design/logo/final/` (derivados de `design/logo/v3/ntos-sello/` con `derive-final.mjs`: mark, mark-pos, mark-mono, logo-horizontal(-pos), logo-vertical(-pos),
+logo-mono, wordmark, app-icon, app-icon-square, app-icon-maskable). Si cambia la geometría: actualiza v3/ntos-sello/, deriva final/, copia los paths a Logo.astro y ejecuta `npm run brand` y `npm run kit`.
+Zona de respeto: ¼ del diámetro. Tamaño mínimo: moneda 24 px con corte óptico (la NT se lee desde ~24–32 px; la S se descubre desde ~64 px; a 16 px es una moneda con una marca oscura), horizontal 32 px de alto.
+Sobre fondos claros usa `tone="mono"` o los SVG `-pos`. La NT es un hueco: deja ver el fondo.
 
 ### Header / Footer / WhatsAppFab / Seo
 Incluidos por BaseLayout. Header: `path`, `whatsappMessage?`. Footer: `whatsappMessage?`. WhatsAppFab: `message?`.

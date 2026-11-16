@@ -1,11 +1,12 @@
 /**
  * Genera los recursos de marca estáticos en /public a partir de design/logo/final/*.svg
- * (logo oficial G · «Ligadura NT»; los SVG de final/ son la fuente de verdad, copiados de design/logo/v2/nt-ligadura/):
+ * (logo oficial K · «NTOS en sello»; los SVG de final/ son la fuente de verdad, derivados de design/logo/v3/ntos-sello/
+ *  con design/logo/v3/ntos-sello/derive-final.mjs):
  *   favicon.svg, favicon.ico (16/32/48), apple-touch-icon.png (180), icon-192.png, icon-512.png,
  *   icon-maskable-512.png. Las OG 1200×630 salen de scripts/generate-og-images.mjs (`npm run brand` lo ejecuta después).
- *   - app-icon.svg          → contenedor redondeado, canal óptico 2,8u (favicon, ícono "any")
- *   - app-icon-square.svg   → a sangre, mismo arte (apple-touch: iOS redondea las esquinas)
- *   - app-icon-maskable.svg → a sangre, símbolo al 66 % dentro del círculo seguro del 80 % (maskable)
+ *   - app-icon.svg          → contenedor redondeado, moneda R 26,5 con corte óptico de 3u (favicon, ícono "any")
+ *   - app-icon-square.svg   → a sangre, mismo arte, moneda al 72 % (apple-touch: iOS redondea las esquinas)
+ *   - app-icon-maskable.svg → a sangre, moneda al 66 % dentro del círculo seguro del 80 % (maskable)
  * Uso: npm run brand   (= node scripts/generate-brand-assets.mjs)
  */
 import sharp from 'sharp';

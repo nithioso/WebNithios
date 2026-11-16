@@ -8,7 +8,8 @@ scripts/generate-brand-assets.mjs   genera favicon/íconos (sharp) y encadena la
 scripts/generate-og-images.mjs      npm run og: OG 1200×630 por página (Playwright) → public/og-default.png + src/assets/og/*-og.png
 scripts/verify-images.mjs           npm run verify:images: auditoría de og:image, alt y nombres de imagen sobre dist/
 scripts/csp-hashes.mjs   postbuild: verifica los hashes sha256 de los <script is:inline> contra la CSP de public/.htaccess; falla el build si falta alguno
-design/logo/            exploración y logo oficial «Ligadura NT» (DECISION.md, final/*.svg → npm run brand; v2/ y monograma/ = archivo)
+design/logo/            exploración y logo oficial K «NTOS en sello» (DECISION.md, v3/ntos-sello/ → final/*.svg → npm run brand; v2/, v3/ y monograma/ = archivo)
+design/brand-kit/       kit gráfico descargable (npm run kit, LEEME.md)
 src/
   data/                 contenido tipado (fuente única)
   lib/schema.ts         JSON-LD builders · lib/images.ts imágenes OG/JSON-LD optimizadas · lib/icons.ts íconos

@@ -63,14 +63,15 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   consultoría y "Protección de la información" como criterio transversal, sin sección ni FAQ propias.
 - [ ] ¿Atención en inglés? Hoy JSON-LD y llms.txt dicen solo español; si se confirma, actualizar `schema.ts` y `public/llms.txt` a la vez.
 - [ ] ¿Dominio público de Dragon / Krystal? Si existe, añadir campo opcional `url` en `projects.ts` (el marco de navegador hoy muestra solo el nombre).
-- [x] Logo definitivo: G · «Ligadura NT» (elegido por el usuario; reemplaza al monograma «N partida»; design/logo/DECISION.md). Pendiente solo la búsqueda de marca (abajo).
+- [x] Logo definitivo: K · «NTOS en sello» (elegido por el usuario; reemplaza a G «Ligadura NT», archivado en design/logo/v2/nt-ligadura/; design/logo/DECISION.md). Integrado en sitio, favicon/íconos, OG y kit gráfico. Pendiente solo la búsqueda de marca (abajo).
+  Límites conocidos: la S se descubre desde ~64 px; a 32 px aguantan N, T y el anillo (con corte óptico); a 16 px es una moneda con una marca oscura. La pieza de luz en «C» podría leerse como «C·NT» o ©.
 - [ ] Razón social / NIT, correo, redes sociales (no publicar hasta confirmar).
 - [ ] Política de propiedad intelectual y entrega de código fuente (para FAQ).
 - [ ] Responsable y datos de contacto para la política de privacidad (Ley 1581 de 2012).
 - [ ] Horario de atención por WhatsApp.
 - [ ] Alta en Google Business Profile / Search Console / Bing Webmaster tras publicar.
 
-- [ ] **Logo: búsqueda de antecedentes marcarios** del monograma «NT» (Ligadura NT) en SIC Colombia y WIPO (Global Brand Database, clases 9, 35 y 42) antes de registrar la marca; los monogramas «NT» en bloque son frecuentes (design/logo/DECISION.md).
+- [ ] **Logo: búsqueda de antecedentes marcarios** del sello K «NTOS en sello» (moneda con NT calada y corte en S) en SIC Colombia y WIPO (Global Brand Database, clases 9, 35 y 42; incluir búsqueda figurativa/Viena de monedas y sellos circulares) antes de registrar la marca; los monogramas «NT» son frecuentes y la «C» de luz puede confundirse con © (design/logo/DECISION.md).
 
 ## Contacto, privacidad y técnico (`src/data/privacy.ts`, `public/.htaccess`)
 - [ ] **Revisión legal** de `/politica-de-privacidad/` (Ley 1581 de 2012 y Decreto 1074 de 2015) por un abogado.

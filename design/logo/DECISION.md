@@ -1,22 +1,45 @@
 # Decisión de logo — Nithios
 
-## Logo oficial: G · «Ligadura NT» (elegido por el usuario)
-Historial: **v1** monograma «N partida» (ganador del jurado, abajo) → refinado v2 → **rondas v2** (design/logo/v2/, contact sheets
-`propuestas-v2.png` y `propuestas-v3.png`) → el usuario elige **G «Ligadura NT»** (`v2/nt-ligadura/`, concepto en su `rationale.md`):
-N y T fundidas en un bloque; el asta derecha de la N es el asta de la T y la barra de la T sale en voladizo.
-Archivadas en `v2/`: las propuestas A, B, D y H (carpetas `monograma/`, `gema/`, `sello/`, `nt-emblema/`) y las descartadas E «Clásico» (`clasico/`) y F «Trazo continuo» (`trazo/`);
-el monograma «N partida» integrado hasta ahora queda en `monograma/final-v2/` (con su `build-logo.mjs`, ya fuera de la tubería,
-y el OG de Krystal anterior `krystal-og-monograma.png`).
+## Logo oficial: K · «NTOS en sello» (elegido por el usuario)
+Moneda de oro = la **O**; dentro va tallada (calada) la ligadura **NT** de G sin cambiar su dibujo; un solo corte dibuja la **S**:
+entra por el canto arriba a la derecha, rodea la NT, baja por la diagonal de la N y sale abajo a la izquierda, partiendo la moneda
+en dos piezas (una «C» de luz y el resto en sombra). Concepto, construcción y límites en `v3/ntos-sello/rationale.md`.
+Nota: el propio rationale recomendaba conservar G como símbolo; el usuario eligió K como logo principal («cambiemos todo por esa opción»).
 
-**Archivos oficiales** (`final/`, copia literal de `v2/nt-ligadura/` + derivados): `mark.svg` (símbolo neg.), `mark-pos.svg`, `mark-mono.svg`,
-`logo-horizontal.svg` (neg.), `logo-horizontal-pos.svg`, `logo-vertical.svg`, `logo-vertical-pos.svg`, `logo-mono.svg` (horizontal currentColor),
-`wordmark.svg`, `app-icon.svg` (contenedor redondeado, canal óptico 2,8u para tamaños pequeños), `app-icon-square.svg` (a sangre, apple-touch)
-y `app-icon-maskable.svg` (a sangre, símbolo al 66 % dentro del círculo seguro del 80 %).
-**Integración:** `src/components/Logo.astro` (paths inline, negativo) y `npm run brand` (`scripts/generate-brand-assets.mjs`) → favicon.svg/.ico,
-apple-touch-icon, icon-192/512, icon-maskable-512 y og-default.png en /public. `src/assets/portfolio/krystal/og.png` se actualizó con el nuevo logo.
-**Límites conocidos:** a 16 px el canal desaparece (se lee una «N» con bandera); la T se distingue desde ~32 px. El wordmark es ligero frente
-al símbolo macizo (contraste deliberado; candidato a versión semibold).
-**Pendiente legal:** búsqueda de antecedentes marcarios del monograma «NT» en SIC Colombia / WIPO antes de registrar (docs/PENDIENTES.md).
+### Historial de propuestas (letras)
+| Letra | Propuesta | Carpeta | Estado |
+|---|---|---|---|
+| A | Monograma «N partida» | `monograma/` (v1), `v2/monograma/` (v2; integrado en `monograma/final-v2/`) | Fue oficial (v1, ganador del jurado); archivado |
+| B | Gema (símbolo facetado) | `simbolo/` (v1), `v2/gema/` | Archivado |
+| C | Wordmark (i con diamante) | `wordmark/` | Descartado |
+| D | Sello | `v2/sello/` | Archivado (su lógica luz/sombra inspira K) |
+| E | Clásico | `v2/clasico/` | Descartado |
+| F | Trazo continuo | `v2/trazo/` | Descartado |
+| G | Ligadura NT | `v2/nt-ligadura/` (+ `final-g/` con los SVG y PNG que estuvieron publicados) | Fue oficial; reemplazado por K |
+| H | NT emblema | `v2/nt-emblema/` | Archivado |
+| I | NTOS en bloque 2×2 | `v3/ntos-bloque/` | Archivado |
+| J | NTOS ligadura lineal | `v3/ntos-lineal/` | Archivado |
+| **K** | **NTOS en sello** | **`v3/ntos-sello/`** | **OFICIAL** |
+Contact sheets: `propuestas.png` (v1), `v2/propuestas-v2.png`, `v2/propuestas-v3.png`, `v3/propuestas-ntos.png`.
+
+### Archivos oficiales
+`final/` se deriva de `v3/ntos-sello/` con `node design/logo/v3/ntos-sello/derive-final.mjs` (conserva los nombres que esperan los scripts):
+`mark.svg` (símbolo neg., moneda R 28, corte 2,4u), `mark-pos.svg`, `mark-mono.svg`, `logo-horizontal.svg` (neg.), `logo-horizontal-pos.svg`,
+`logo-vertical.svg`, `logo-vertical-pos.svg`, `logo-mono.svg` (horizontal currentColor), `wordmark.svg` (NITHIOS, idéntico al de G),
+`app-icon.svg` (contenedor redondeado, moneda R 26,5 con corte óptico de 3u), `app-icon-square.svg` (a sangre, moneda al 72 %, apple-touch)
+y `app-icon-maskable.svg` (a sangre, moneda al 66 % dentro del círculo seguro del 80 %).
+**Integración:** `src/components/Logo.astro` (paths inline, negativo; en `sm`/`md` usa el corte óptico del app-icon escalado a R 28, en `lg`/`xl` el fino),
+`npm run brand` (`scripts/generate-brand-assets.mjs` → favicon.svg/.ico, apple-touch-icon, icon-192/512, icon-maskable-512; luego
+`scripts/generate-og-images.mjs` → og-default.png y todas las OG) y `npm run kit` (`scripts/build-brand-kit.mjs` → `design/brand-kit/`).
+**Límites conocidos:** la NT ocupa ~55 % del diámetro (≈60 % del tamaño que tenía en G): pierde impacto en pequeño. La S solo se descubre
+desde ~64 px; a 32 px aguantan N, T y el anillo (con corte óptico); a 16 px es una moneda con una marca oscura. La pieza de luz en «C»
+puede leerse como «C·NT» o ©. El corte fino (2,4u) roza el «trazo fino»: por debajo de ~48 px usa siempre el corte óptico.
+**Pendiente legal:** búsqueda de antecedentes marcarios del sello K en SIC Colombia / WIPO antes de registrar (docs/PENDIENTES.md).
+
+## Antecedente: G · «Ligadura NT» (fue oficial, archivado en v2/nt-ligadura/)
+N y T fundidas en un bloque; el asta derecha de la N es el asta de la T y la barra de la T sale en voladizo. Sus archivos de `final/`
+(con `app-icon-square`/`maskable`) y los íconos/OG que se publicaron están en `v2/nt-ligadura/final-g/` (`publicados/`).
+Límites que tenía: a 16 px el canal desaparecía (una «N» con bandera); la T se distinguía desde ~32 px.
 
 ---
 
