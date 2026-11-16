@@ -109,7 +109,7 @@ export const ceo: Ceo = {
   bio: [
     'Jonathan Osorio Correa es el CEO y Fundador de Nithios. Se define como CTO/CIO y consultor en Estrategia TI: un alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores y una amplia formación académica que respalda su visión estratégica.',
     'Esa trayectoria le permite conectar dos mundos que muchas veces no se hablan: la estrategia de negocio y la ejecución técnica. Por eso fundó Nithios, una empresa de tecnología colombiana que acompaña a las organizaciones desde la decisión de qué tecnología adoptar hasta la construcción del software que la hace realidad.',
-    'Vive en Medellín, Antioquia, donde nació Nithios, y desde allí acompaña a empresas de toda Colombia de forma remota. Habla español e inglés, su formación incluye la Universidad Pontificia Bolivariana (2022 – actualidad) y cuenta con certificaciones en Scrum como Scrum Master y Product Owner.',
+    'Está radicado en Medellín, Antioquia, y desde allí acompaña a empresas de toda Colombia de forma remota. Habla español e inglés, su formación incluye la Universidad Pontificia Bolivariana (2022 – actualidad) y cuenta con certificaciones en Scrum como Scrum Master y Product Owner.',
     'Bajo su liderazgo, Nithios trabaja en dos líneas complementarias: la asesoría y consultoría tecnológica para empresas que quieren mejorar sus procesos, y el desarrollo de aplicativos a la medida con nuevas tecnologías.',
   ],
   quote: '',
