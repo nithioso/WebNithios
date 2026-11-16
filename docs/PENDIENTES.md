@@ -1,7 +1,7 @@
 # Pendientes (datos reales que faltan — NO inventar)
 
 ## Jonathan Osorio (`src/data/ceo.ts`)
-**Estado (nov 2026):** hoja de vida integrada desde el PDF del usuario, SIN fechas y con EMPLEADORES ANONIMIZADOS (regla del usuario: nunca nombrar empleadores ni sus marcas en `src/` ni `public/`; sí se nombran instituciones de formación y certificadoras). No publicar correo ni teléfono personal. Si en el futuro se autorizan fechas: añadirlas a `ExperienceItem` y `hasCredential`. Los ítems de abajo sobre aportar el LinkedIn/cargos quedan resueltos; siguen pendientes foto (`ceo.photo`) y cita aprobada (`ceo.quote`).
+**Estado (nov 2026):** hoja de vida integrada desde el PDF del usuario, SIN fechas y con EMPLEADORES ANONIMIZADOS (regla del usuario: nunca nombrar empleadores ni sus marcas en `src/` ni `public/`; sí se nombran instituciones de formación y certificadoras). No publicar correo ni teléfono personal. Si en el futuro se autorizan fechas: añadirlas a `ExperienceItem` y `hasCredential`. Los ítems de abajo sobre aportar el LinkedIn/cargos quedan resueltos; sigue pendiente la cita aprobada (`ceo.quote`).
 
 Ya publicado (fuente: vista pública de https://www.linkedin.com/in/jonathan-osorio-correa): nombre completo Jonathan Osorio Correa,
 ubicación Medellín (Antioquia), titular «CTO/CIO y consultor en Estrategia TI», idiomas español e inglés (sin nivel), Universidad Pontificia
@@ -10,7 +10,7 @@ Bolivariana 2022 – actualidad (sin programa) y 6 certificaciones (SMAC, SPOAC,
   `experience`, `sectors`, el `degree` de la UPB y cualquier otro estudio.
 
 La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío. Formato exacto de cada entrada:
-- [ ] **Foto profesional** (vertical 4:5, mín. 1040×1300 px, fondo oscuro ideal). Guardar en `src/assets/ceo/jonathan-osorio.jpg` y en `ceo.ts`:
+- [x] **Foto profesional** (publicada nov 2026: `src/assets/ceo/jonathan-osorio.jpg`, retrato B/N recortado a 4:5) (vertical 4:5, mín. 1040×1300 px, fondo oscuro ideal). Guardar en `src/assets/ceo/jonathan-osorio.jpg` y en `ceo.ts`:
   `import photo from '@/assets/ceo/jonathan-osorio.jpg';` → `photo: photo,`. `CeoPortrait.astro` reemplaza solo el monograma «JO» por la foto optimizada y `person(await ceoPhotoUrl())` (BaseLayout) añade al JSON-LD la versión optimizada 1200 px JPEG, nunca el original.
 - [ ] **Trayectoria** (`experience`, más reciente primero):
   `{ role: 'Cargo', organization: 'Empresa', period: '2018 – 2024', sector: 'Sector (opcional)', description: 'Qué lideró (opcional)', achievements: ['Logro verificable (opcional)'] }`
