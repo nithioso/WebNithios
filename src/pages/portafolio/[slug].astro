@@ -37,6 +37,7 @@ const others = sortedProjects.filter((o) => o.slug !== p.slug);
 // La galería omite la captura que ya se muestra como visual principal.
 const gallery = p.images.filter((img) => img.src !== p.cover);
 const isPrototype = p.status === 'prototipo' && p.stack.length === 0;
+const inSentence = p.nameInSentence || p.name;
 const frameLabel = p.status === 'prototipo' ? `${p.name} · prototipo` : p.name;
 
 // Imagen OG 1200×630 (render propio o captura real). Sin imagen → og-default con alt del caso.
@@ -137,7 +138,7 @@ const specs = [
       <Section
         id="funcionalidades"
         eyebrow={p.status === 'prototipo' ? 'Módulos' : 'Funcionalidades'}
-        title={`Qué incluye ${p.name}.`}
+        title={`Qué incluye ${inSentence}.`}
         intro="Cada pieza responde a una necesidad concreta de la operación."
       >
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -242,7 +243,7 @@ const specs = [
   <!-- Preguntas del caso -->
   {
     p.faqs.length > 0 && (
-      <Section id="preguntas" eyebrow="Preguntas frecuentes" title={`Sobre ${p.name}.`} width="narrow" tone="raised">
+      <Section id="preguntas" eyebrow="Preguntas frecuentes" title={`Sobre ${inSentence}.`} width="narrow" tone="raised">
         <FaqList items={p.faqs} />
       </Section>
     )
@@ -267,7 +268,7 @@ const specs = [
   }
 
   <CtaBand
-    title={`¿Quieres una solución como ${p.name}?`}
+    title={`¿Quieres una solución como ${inSentence}?`}
     text="Cuéntanos tu proceso y lo convertimos en software a la medida. Atendemos empresas en toda Colombia, de forma remota."
     message={p.whatsappMessage}
     secondary={service ? { label: service.shortName, href: service.path } : { label: 'Ver servicios', href: '/servicios/' }}

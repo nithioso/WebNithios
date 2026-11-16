@@ -25,7 +25,7 @@ const columns = [
   },
   {
     title: 'Portafolio',
-    links: [{ label: 'Ver portafolio', href: '/portafolio/' }, ...sortedProjects.map((p) => ({ label: p.name, href: p.path }))],
+    links: [{ label: 'Ver portafolio', href: '/portafolio/' }, ...sortedProjects.map((p) => ({ label: p.shortName || p.name, href: p.path }))],
   },
   {
     title: 'Nithios',

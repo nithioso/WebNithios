@@ -14,18 +14,18 @@ import dragonProyectos from '@/assets/portfolio/dragon/proyectos.webp';
 import dragonRoles from '@/assets/portfolio/dragon/roles-y-permisos.webp';
 import dragonTableroChino from '@/assets/portfolio/dragon/tablero-chino.webp';
 import krystalOg from '@/assets/portfolio/krystal/og.png';
-import armetalesTablero from '@/assets/portfolio/armetales/tablero.webp';
-import armetalesCargue from '@/assets/portfolio/armetales/optimizacion-de-cargue.webp';
-import armetalesSeguimiento from '@/assets/portfolio/armetales/seguimiento-de-ruta.webp';
-import armetalesConductores from '@/assets/portfolio/armetales/app-de-conductores.webp';
-import armetalesBodegas from '@/assets/portfolio/armetales/bodegas-wms.webp';
-import armetalesReportes from '@/assets/portfolio/armetales/reportes-e-indicadores.webp';
-import lystraxTorre from '@/assets/portfolio/lystrax/torre-de-control.webp';
-import lystraxAcceso from '@/assets/portfolio/lystrax/acceso-por-perfil.webp';
-import lystraxJornada from '@/assets/portfolio/lystrax/jornada-del-conductor.webp';
-import lystraxTrailers from '@/assets/portfolio/lystrax/coordinacion-de-trailers.webp';
-import lystraxTaller from '@/assets/portfolio/lystrax/taller-y-mantenimiento.webp';
-import lystraxReportes from '@/assets/portfolio/lystrax/reportes.webp';
+import logisticaTablero from '@/assets/portfolio/plataforma-logistica-acero/tablero.webp';
+import logisticaCargue from '@/assets/portfolio/plataforma-logistica-acero/optimizacion-de-cargue.webp';
+import logisticaSeguimiento from '@/assets/portfolio/plataforma-logistica-acero/seguimiento-de-ruta.webp';
+import logisticaConductores from '@/assets/portfolio/plataforma-logistica-acero/app-de-conductores.webp';
+import logisticaBodegas from '@/assets/portfolio/plataforma-logistica-acero/bodegas-wms.webp';
+import logisticaReportes from '@/assets/portfolio/plataforma-logistica-acero/reportes-e-indicadores.webp';
+import transporteTorre from '@/assets/portfolio/plataforma-transporte-audiovisual/torre-de-control.webp';
+import transporteAcceso from '@/assets/portfolio/plataforma-transporte-audiovisual/acceso-por-perfil.webp';
+import transporteJornada from '@/assets/portfolio/plataforma-transporte-audiovisual/jornada-del-conductor.webp';
+import transporteTrailers from '@/assets/portfolio/plataforma-transporte-audiovisual/coordinacion-de-trailers.webp';
+import transporteTaller from '@/assets/portfolio/plataforma-transporte-audiovisual/taller-y-mantenimiento.webp';
+import transporteReportes from '@/assets/portfolio/plataforma-transporte-audiovisual/reportes.webp';
 
 /** 'sin-especificar' cuando el estado real no está confirmado (ver docs/PENDIENTES.md). */
 export type ProjectStatus = 'prototipo' | 'en-desarrollo' | 'en-produccion' | 'sin-especificar';
@@ -56,6 +56,13 @@ export interface Project {
   slug: string;
   path: string;
   name: string;
+  /**
+   * Nombre para usar dentro de una frase ("Qué incluye …", "una solución como …"), con artículo
+   * y en minúscula cuando `name` es descriptivo (casos anonimizados). Vacío = se usa `name`.
+   */
+  nameInSentence?: string;
+  /** Etiqueta corta para menús y pie de página (una línea). Vacío = se usa `name`. */
+  shortName?: string;
   /** Frase corta de posicionamiento. */
   tagline: string;
   /** Categoría legible ("Comercio internacional", "Salud mental"…). Ficha y badge. */
@@ -233,19 +240,21 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'armetales',
-    path: '/portafolio/armetales/',
-    name: 'Armetales',
+    slug: 'plataforma-logistica-acero',
+    path: '/portafolio/plataforma-logistica-acero/',
+    name: 'Plataforma logística para acero',
+    nameInSentence: 'la plataforma logística para acero',
+    shortName: 'Logística para acero',
     tagline: 'Prototipo de una plataforma logística de pedidos, rutas y despachos para el sector del acero.',
     category: 'Logística y distribución',
-    h1Subtitle: 'plataforma logística de pedidos, rutas y despachos',
+    h1Subtitle: 'pedidos, rutas y despachos de punta a punta',
     summary:
-      'Prototipo navegable de una plataforma logística para una empresa de acero: del pedido a la entrega con evidencia, pasando por reservas, planeación, motor de rutas, optimización de cargue, bodegas WMS y seguimiento en mapa.',
-    seoTitle: 'Armetales: software de logística y despachos',
+      'Prototipo navegable de una plataforma logística para una empresa de distribución de acero: del pedido a la entrega con evidencia, pasando por reservas, planeación, motor de rutas, optimización de cargue, bodegas WMS y seguimiento en mapa.',
+    seoTitle: 'Software de logística y despachos para acero',
     seoDescription:
-      'Armetales, plataforma logística diseñada por Nithios: pedidos, reservas, motor de rutas, cargue, bodegas WMS, despachos y entregas con evidencia. Ver prototipo.',
+      'Plataforma logística diseñada por Nithios para distribución de acero: pedidos, reservas, motor de rutas, cargue, bodegas WMS y entregas con evidencia.',
     description: [
-      'Armetales es el prototipo navegable de una plataforma logística para una empresa de acero. Su propósito cabe en una frase: de la bodega a la obra. Cada pedido recorre el mismo flujo —pedido, reserva, ruta, cargue, despacho y entrega con evidencia— en una sola herramienta.',
+      'Este caso es el prototipo navegable de una plataforma logística para una empresa de distribución de acero. Su propósito cabe en una frase: de la bodega a la obra. Cada pedido recorre el mismo flujo —pedido, reserva, ruta, cargue, despacho y entrega con evidencia— en una sola herramienta.',
       'El prototipo reúne 27 módulos funcionales y 241 historias de usuario: panel de control, pedidos, reservas de inventario, planeación logística, motor de rutas lógicas, parametrización de rutas y vehículos, optimización de cargue, bodegas WMS, inventario y conteos cíclicos, recepción y preparación de pedidos, despachos, seguimiento de ruta, app de conductores, evidencias, novedades y devoluciones, notificaciones, integraciones, reportes e indicadores, auditoría y trazabilidad, usuarios y roles, y maestros de clientes y productos.',
       'La seguridad se ve desde el inicio de sesión: la sesión se cierra por inactividad, el acceso se bloquea tras varios intentos fallidos y las contraseñas siguen una política de complejidad. Dentro, los permisos se definen por rol, módulo y acción.',
     ],
@@ -279,18 +288,18 @@ export const projects: Project[] = [
       'Auditoría y trazabilidad de cambios',
     ],
     serviceSlug: 'desarrollo-de-software-a-medida',
-    monogram: 'A',
+    monogram: 'L',
     featured: true,
     order: 2,
-    whatsappMessage: 'Hola Nithios, vi el caso de Armetales y quiero una plataforma logística a la medida para mi empresa.',
-    cover: armetalesTablero,
+    whatsappMessage: 'Hola Nithios, vi el caso de la plataforma logística para acero y quiero una plataforma logística a la medida para mi empresa.',
+    cover: logisticaTablero,
     coverAlt:
-      'Panel de control de la plataforma logística Armetales en tema oscuro: indicadores de pedidos, carga y vehículos, mapa operativo por ruta y alertas, con datos de demostración.',
+      'Panel de control de la plataforma logística en tema oscuro: indicadores de pedidos, carga y vehículos, mapa operativo por ruta y alertas, con datos de demostración.',
     headline: 'De la bodega a la obra, cada pedido bajo control.',
     challenge:
       'En una empresa que distribuye acero, cada despacho depende de muchas decisiones: si hay inventario para reservar, qué vehículo alcanza para el peso, en qué orden visitar a los clientes, cómo cargar el camión y cómo probar que la entrega se hizo. Cuando esas decisiones viven en hojas de cálculo, llamadas y papeles, se pierden kilómetros, se cargan vehículos de más o de menos y nadie sabe con certeza dónde está cada pedido.',
     solution: [
-      'Armetales está diseñada para seguir cada pedido de punta a punta. El pedido entra, se valida contra el inventario y se reserva; la planeación agrupa la carga del día frente a los vehículos disponibles, y el motor de rutas ordena las paradas para recorrer menos kilómetros respetando ventanas horarias, capacidad y restricciones de circulación.',
+      'La plataforma está diseñada para seguir cada pedido de punta a punta. El pedido entra, se valida contra el inventario y se reserva; la planeación agrupa la carga del día frente a los vehículos disponibles, y el motor de rutas ordena las paradas para recorrer menos kilómetros respetando ventanas horarias, capacidad y restricciones de circulación.',
       'Antes de salir, la optimización de cargue muestra en un plano qué pedido va dónde y en qué orden, y bloquea el cierre si hay incompatibilidades. En la calle, la torre de control sigue cada vehículo en el mapa y el conductor registra su jornada y las evidencias de entrega: foto, firma del receptor y coordenadas.',
       'La bodega tiene su propio frente —ubicaciones, ocupación, preparación de pedidos, inventario y conteos cíclicos—, y todo queda medido en reportes de cumplimiento y en un registro de auditoría. El prototipo simula además las integraciones con los sistemas existentes de la empresa.',
     ],
@@ -301,49 +310,49 @@ export const projects: Project[] = [
       { title: 'Decisiones con datos', text: 'Indicadores de cumplimiento con meta y tendencia, y auditoría de cada cambio.', icon: 'chart' },
     ],
     statusNote:
-      'Armetales es un prototipo navegable de interfaz. Los clientes, pedidos, vehículos, personas y cifras que aparecen en las capturas son datos ficticios de demostración, y las integraciones con otros sistemas están simuladas.',
+      'Es un prototipo navegable de interfaz. El nombre de la empresa para la que se diseñó se reserva por confidencialidad. Los clientes, pedidos, vehículos, personas y cifras que aparecen en las capturas son datos ficticios de demostración, y las integraciones con otros sistemas están simuladas.',
     images: [
       {
-        src: armetalesTablero,
-        alt: 'Panel de control de Armetales: indicadores de pedidos pendientes, carga por despachar, vehículos, utilización y cumplimiento, mapa operativo por ruta y alertas operativas.',
+        src: logisticaTablero,
+        alt: 'Panel de control de la plataforma logística: indicadores de pedidos pendientes, carga por despachar, vehículos, utilización y cumplimiento, mapa operativo por ruta y alertas operativas.',
         caption: 'Panel de control: la operación del día, el mapa por ruta y las alertas que requieren acción.',
       },
       {
-        src: armetalesCargue,
-        alt: 'Pantalla de optimización de cargue de Armetales: plano del vehículo con los pedidos en orden de entrega, utilización de peso y volumen y alerta de cargue bloqueado por incompatibilidad.',
+        src: logisticaCargue,
+        alt: 'Pantalla de optimización de cargue: plano del vehículo con los pedidos en orden de entrega, utilización de peso y volumen y alerta de cargue bloqueado por incompatibilidad.',
         caption: 'Optimización de cargue: qué pedido va dónde, en qué orden, y si cabe sin sobrepasar peso ni volumen.',
       },
       {
-        src: armetalesSeguimiento,
-        alt: 'Seguimiento de ruta de Armetales: alertas activas, despachos en ruta con avance por parada y mapa con la posición de cada vehículo.',
+        src: logisticaSeguimiento,
+        alt: 'Seguimiento de ruta: alertas activas, despachos en ruta con avance por parada y mapa con la posición de cada vehículo.',
         caption: 'Seguimiento de ruta: cada vehículo en el mapa, con su avance por parada y alertas de desvío.',
       },
       {
-        src: armetalesConductores,
-        alt: 'App de conductores de Armetales en vista de teléfono: ruta asignada con paradas, carga y kilómetros, junto al recorrido de la jornada en siete pasos.',
+        src: logisticaConductores,
+        alt: 'App de conductores en vista de teléfono: ruta asignada con paradas, carga y kilómetros, junto al recorrido de la jornada en siete pasos.',
         caption: 'App de conductores: la jornada paso a paso, de la ruta asignada a las evidencias de entrega.',
       },
       {
-        src: armetalesBodegas,
-        alt: 'Gestión de bodegas de Armetales: indicadores de posiciones y ocupación y plano de la bodega por zonas, pasillos y racks.',
+        src: logisticaBodegas,
+        alt: 'Gestión de bodegas: indicadores de posiciones y ocupación y plano de la bodega por zonas, pasillos y racks.',
         caption: 'Bodegas WMS: plano por niveles, ubicaciones y ocupación de cada posición.',
       },
       {
-        src: armetalesReportes,
-        alt: 'Reportes e indicadores de Armetales: indicador de entregas completas y a tiempo con meta, gráfico de tendencia de 30 días e indicadores operativos.',
+        src: logisticaReportes,
+        alt: 'Reportes e indicadores: indicador de entregas completas y a tiempo con meta, gráfico de tendencia de 30 días e indicadores operativos.',
         caption: 'Reportes e indicadores: cumplimiento de entregas con meta y tendencia.',
       },
     ],
     faqs: [
       {
         category: 'desarrollo',
-        question: '¿Qué es Armetales?',
+        question: '¿Qué es la plataforma logística para acero?',
         answer:
-          'Armetales es una plataforma logística de pedidos, rutas y despachos diseñada por Nithios para una empresa del sector del acero. Cubre el flujo completo —pedido, reserva, ruta, cargue, despacho y entrega con evidencia— con módulos de planeación, motor de rutas, optimización de cargue, bodegas WMS, inventario, app de conductores, reportes y auditoría.',
+          'Es una plataforma logística de pedidos, rutas y despachos diseñada por Nithios para una empresa de distribución de acero, cuyo nombre se reserva por confidencialidad. Cubre el flujo completo —pedido, reserva, ruta, cargue, despacho y entrega con evidencia— con módulos de planeación, motor de rutas, optimización de cargue, bodegas WMS, inventario, app de conductores, reportes y auditoría.',
       },
       {
         category: 'desarrollo',
-        question: '¿Armetales ya está en producción?',
+        question: '¿La plataforma logística para acero ya está en producción?',
         answer:
           'No. Hoy es un prototipo navegable de interfaz con datos de ejemplo: permite recorrer las pantallas y validar el alcance —27 módulos y 241 historias de usuario— antes de construir el sistema definitivo.',
       },
@@ -356,19 +365,21 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'lystrax',
-    path: '/portafolio/lystrax/',
-    name: 'Lystrax',
+    slug: 'plataforma-transporte-audiovisual',
+    path: '/portafolio/plataforma-transporte-audiovisual/',
+    name: 'Plataforma de transporte audiovisual',
+    nameInSentence: 'la plataforma de transporte audiovisual',
+    shortName: 'Transporte audiovisual',
     tagline: 'Prototipo de una plataforma de transporte especial para producciones audiovisuales.',
     category: 'Transporte especial y producción audiovisual',
-    h1Subtitle: 'plataforma de transporte para producciones audiovisuales',
+    h1Subtitle: 'operación de transporte para rodajes y producciones',
     summary:
-      'Prototipo navegable de LYSTRAX CONNECT, plataforma de operación de transporte especial para producciones audiovisuales: trece superficies y doce perfiles de acceso, de la torre de control a la tesorería, en tema claro y oscuro, escritorio y móvil.',
-    seoTitle: 'Lystrax: software de transporte para producciones',
+      'Prototipo navegable de una plataforma de operación de transporte especial para producciones audiovisuales: trece superficies y doce perfiles de acceso, de la torre de control a la tesorería, en tema claro y oscuro, escritorio y móvil.',
+    seoTitle: 'Software de transporte para producción audiovisual',
     seoDescription:
-      'Lystrax, plataforma de Nithios para transporte especial en producciones audiovisuales: torre de control, jornadas con firma en set, trailers, taller y pagos.',
+      'Plataforma de Nithios para transporte especial en producciones audiovisuales: torre de control, jornadas con firma en set, trailers, taller y pagos.',
     description: [
-      'Lystrax (LYSTRAX CONNECT) es el prototipo navegable de una plataforma de operación de transporte especial para producciones audiovisuales: vehículos, conductores, trailers, camerinos y equipos que una empresa de transporte pone al servicio de rodajes y producciones.',
+      'Este caso es el prototipo navegable de una plataforma de operación de transporte especial para producciones audiovisuales: vehículos, conductores, trailers, camerinos y equipos que una empresa de transporte pone al servicio de rodajes y producciones.',
       'Reúne trece superficies y doce perfiles de acceso —coordinador operativo, conductor, coordinador de trailers y equipos, coordinador de mantenimientos, personal sin vehículo, cliente o productora, analistas de documentación, liquidación y contabilidad, tesorería, gerencia y administrador—, y cada perfil ve solo lo que le corresponde.',
       'Cubre la asignación de servicios desde una torre de control, la jornada en campo con firma del responsable en set, la coordinación de trailers, el taller, la habilitación documental de aliados, la liquidación, el frente administrativo y financiero, la tesorería con dispersión de pagos, los reportes y los parámetros de la plataforma. Funciona en tema claro y oscuro, en escritorio y en móvil.',
     ],
@@ -400,18 +411,18 @@ export const projects: Project[] = [
       'Log de auditoría',
     ],
     serviceSlug: 'desarrollo-de-software-a-medida',
-    monogram: 'L',
+    monogram: 'T',
     featured: true,
     order: 3,
-    whatsappMessage: 'Hola Nithios, vi el caso de Lystrax y quiero una plataforma de operación a la medida para mi empresa.',
-    cover: lystraxTorre,
+    whatsappMessage: 'Hola Nithios, vi el caso de la plataforma de transporte audiovisual y quiero una plataforma de operación a la medida para mi empresa.',
+    cover: transporteTorre,
     coverAlt:
-      'Torre de Control y despacho de Lystrax en tema oscuro: indicadores de servicios, liquidaciones retenidas y alarmas, y lista de candidatos propuestos para un servicio, con datos de demostración.',
+      'Torre de Control y despacho de la plataforma de transporte en tema oscuro: indicadores de servicios, liquidaciones retenidas y alarmas, y lista de candidatos propuestos para un servicio, con datos de demostración.',
     headline: 'Cada servicio de rodaje, del pedido al pago.',
     challenge:
       'Una empresa de transporte especial para producciones audiovisuales coordina a diario vehículos, conductores, trailers y personal en locaciones distintas, con jornadas largas que cambian sobre la marcha. Si la asignación se hace por chat, la firma del servicio queda en papel y la liquidación se arma a mano, aparecen recursos duplicados, servicios sin soporte, pagos retenidos y poca visibilidad para la productora.',
     solution: [
-      'Lystrax está diseñada para que quien pide el servicio y quien lo presta se encuentren en una sola plataforma. La torre de control propone qué recursos pueden atender cada servicio y explica por qué descarta a los demás; los aliados declaran hasta cuándo están disponibles, y la productora sabe al pedir si el recurso alcanza y recibe alternativas.',
+      'La plataforma está diseñada para que quien pide el servicio y quien lo presta se encuentren en un solo lugar. La torre de control propone qué recursos pueden atender cada servicio y explica por qué descarta a los demás; los aliados declaran hasta cuándo están disponibles, y la productora sabe al pedir si el recurso alcanza y recibe alternativas.',
       'En campo, el conductor y el personal sin vehículo registran su jornada paso a paso —checklist, llegada a locación, novedades con fotografía y cierre— y el responsable en set firma el servicio en el teléfono. Trailers, taller y habilitación documental tienen su propio frente, con el estado de cada activo.',
       'Esa operación firmada alimenta la liquidación, la conciliación con clientes y proveedores, el frente financiero y la tesorería, que programa los pagos y genera el archivo de dispersión. Doce perfiles de acceso separan qué ve y qué decide cada área.',
     ],
@@ -422,49 +433,49 @@ export const projects: Project[] = [
       { title: 'Cada área en lo suyo', text: 'Doce perfiles de acceso con segregación de funciones y auditoría.', icon: 'shield' },
     ],
     statusNote:
-      'Lystrax es un prototipo navegable de interfaz. Las empresas, producciones, personas, placas y cifras que aparecen en las capturas son datos ficticios de demostración.',
+      'Es un prototipo navegable de interfaz. El nombre de la empresa para la que se diseñó se reserva por confidencialidad. Las empresas, producciones, personas, placas y cifras que aparecen en las capturas son datos ficticios de demostración.',
     images: [
       {
-        src: lystraxTorre,
-        alt: 'Torre de Control y despacho de Lystrax: indicadores de servicios de hoy, liquidaciones retenidas, servicios por verificar y alarmas, y tabla de candidatos para un servicio con continuidad, cumplimiento y costo previsto.',
+        src: transporteTorre,
+        alt: 'Torre de Control y despacho: indicadores de servicios de hoy, liquidaciones retenidas, servicios por verificar y alarmas, y tabla de candidatos para un servicio con continuidad, cumplimiento y costo previsto.',
         caption: 'Torre de control: los candidatos propuestos para cada servicio, con continuidad, cumplimiento y costo.',
       },
       {
-        src: lystraxAcceso,
-        alt: 'Pantalla de acceso por perfil de Lystrax: perfiles agrupados en operación, cliente, control y finanzas, dirección y administración.',
+        src: transporteAcceso,
+        alt: 'Pantalla de acceso por perfil: perfiles agrupados en operación, cliente, control y finanzas, dirección y administración.',
         caption: 'Acceso por perfil: doce perfiles, cada uno con sus propias superficies.',
       },
       {
-        src: lystraxJornada,
-        alt: 'Jornada del conductor en Lystrax: horas de disponibilidad, hora extra, novedades, estado de la firma en set y línea de tiempo de la jornada.',
+        src: transporteJornada,
+        alt: 'Jornada del conductor: horas de disponibilidad, hora extra, novedades, estado de la firma en set y línea de tiempo de la jornada.',
         caption: 'Jornada del conductor: línea de tiempo del servicio, novedades con evidencia y firma del responsable en set.',
       },
       {
-        src: lystraxTrailers,
-        alt: 'Coordinación de trailers de Lystrax: trailers listos, enganches confirmados, personal en jornada, conflictos y orden del día con sus movimientos.',
+        src: transporteTrailers,
+        alt: 'Coordinación de trailers: trailers listos, enganches confirmados, personal en jornada, conflictos y orden del día con sus movimientos.',
         caption: 'Trailers y equipos: la orden del día con enganches, entregas y conflictos de programación.',
       },
       {
-        src: lystraxTaller,
-        alt: 'Taller y mantenimiento de Lystrax: solicitudes sin orden de trabajo, órdenes abiertas, repuestos en el mínimo y compras por autorizar.',
+        src: transporteTaller,
+        alt: 'Taller y mantenimiento: solicitudes sin orden de trabajo, órdenes abiertas, repuestos en el mínimo y compras por autorizar.',
         caption: 'Taller: solicitudes, órdenes de trabajo, repuestos y compras en un mismo tablero.',
       },
       {
-        src: lystraxReportes,
-        alt: 'Reportes de Lystrax: demanda atendida, líneas sin cubrir, tiempo hasta asignar el recurso y continuidad lograda, con el detalle de solicitudes.',
+        src: transporteReportes,
+        alt: 'Reportes de la operación: demanda atendida, líneas sin cubrir, tiempo hasta asignar el recurso y continuidad lograda, con el detalle de solicitudes.',
         caption: 'Reportes: indicadores para saber si la operación cumple lo que se pidió.',
       },
     ],
     faqs: [
       {
         category: 'desarrollo',
-        question: '¿Qué es Lystrax?',
+        question: '¿Qué es la plataforma de transporte audiovisual?',
         answer:
-          'Lystrax (LYSTRAX CONNECT) es una plataforma de operación de transporte especial para producciones audiovisuales, diseñada por Nithios. Cubre la torre de control y el despacho, la jornada del conductor con firma en set, trailers, taller, documentación de aliados, liquidación, finanzas, tesorería, reportes y parámetros, con doce perfiles de acceso.',
+          'Es una plataforma de operación de transporte especial para producciones audiovisuales, diseñada por Nithios para una empresa del sector cuyo nombre se reserva por confidencialidad. Cubre la torre de control y el despacho, la jornada del conductor con firma en set, trailers, taller, documentación de aliados, liquidación, finanzas, tesorería, reportes y parámetros, con doce perfiles de acceso.',
       },
       {
         category: 'desarrollo',
-        question: '¿Lystrax ya está en producción?',
+        question: '¿La plataforma de transporte audiovisual ya está en producción?',
         answer:
           'No. Hoy es un prototipo navegable de interfaz con datos de demostración, en tema claro y oscuro y en vista de escritorio y móvil, pensado para validar la experiencia de cada perfil antes de construir el sistema.',
       },
@@ -572,13 +583,13 @@ export const portfolioFaqs: Faq[] = [
     category: 'desarrollo',
     question: '¿Qué tipo de software desarrolla Nithios?',
     answer:
-      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás cuatro ejemplos: Dragon Global Trade, para comercio internacional; Armetales, para la logística de pedidos, rutas y despachos; Lystrax, para el transporte especial de producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
+      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás cuatro ejemplos: Dragon Global Trade, para comercio internacional; una plataforma logística de pedidos, rutas y despachos para la distribución de acero; una plataforma de operación de transporte especial para producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
   },
   {
     category: 'desarrollo',
     question: '¿Nithios trabaja con empresas fuera de Medellín?',
     answer:
-      'Sí. Nithios nace en Medellín y trabaja de forma remota con empresas de toda Colombia, incluidas Bogotá, Cali, Barranquilla, Bucaramanga, Cartagena y Pereira. Todo el proceso, desde el diagnóstico hasta la entrega, se coordina en línea.',
+      'Sí. Nithios se dirige desde Medellín y trabaja de forma remota con empresas de toda Colombia, incluidas Bogotá, Cali, Barranquilla, Bucaramanga, Cartagena y Pereira. Todo el proceso, desde el diagnóstico hasta la entrega, se coordina en línea.',
   },
   {
     category: 'proceso',

@@ -15,8 +15,9 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 
 ## Mapa de archivos
 - `src/data/` — FUENTE ÚNICA de contenido: `site.ts` (site, waLink(), absoluteUrl(), nav, cities, coverage), `services.ts` + `service-details.ts`, `projects.ts` (+ portfolioFaqs), `ceo.ts` (+ ceoPage), `faqs.ts`, `contact.ts`, `privacy.ts`.
-- Páginas: todas las rutas del mapa están hechas (ver docs/ARQUITECTURA.md). Portafolio: Dragon Global Trade, Armetales, Lystrax (capturas reales
-  2880×1800 WebP en `src/assets/portfolio/<slug>/`) y Krystal (ilustración conceptual).
+- Páginas: todas las rutas del mapa están hechas (ver docs/ARQUITECTURA.md). Portafolio: Dragon Global Trade, «Plataforma logística para acero»,
+  «Plataforma de transporte audiovisual» (capturas reales 2880×1800 WebP en `src/assets/portfolio/<slug>/`) y Krystal (ilustración conceptual).
+  Los dos casos del medio están ANONIMIZADOS: nunca escribir en `src/` ni `public/` el nombre del cliente ni de su producto (correspondencia interna en docs/PENDIENTES.md).
 - `src/lib/schema.ts` — builders JSON-LD · `src/lib/icons.ts` — set de íconos (`IconName`).
 - `src/layouts/BaseLayout.astro` — head SEO, header, footer, FAB, reveal. Todas las páginas lo usan.
 - `src/components/` — ver docs/DISENO.md (props + ejemplos de cada uno).
@@ -32,9 +33,10 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 - Clases de layout (`hidden`, `sm:block`) en un wrapper, no en `class` de Button (conflicto con `inline-flex`).
 - JS: solo `<script>` procesados por Astro (se emiten como módulos externos; `assetsInlineLimit: 0`), inicializados en `astro:page-load` y con AbortController si añaden listeners globales.
 - Hero (sobre el pliegue): `.hero-in`, nunca `data-reveal`. Animaciones decorativas finitas.
-- Copy: nunca presentar Dragon, Armetales ni Lystrax como productos terminados (son prototipos navegables con datos ficticios); nada de "clientes",
+- Copy: nunca presentar Dragon ni los casos de logística y transporte como productos terminados (son prototipos navegables con datos ficticios); nada de "clientes",
   "procesos reales" ni dominios no confirmados. No usar logos de terceros (en las capturas se oculta el logo del cliente).
-- Medellín: origen de Nithios y residencia de Jonathan (solo `homeLocation` de la Person). La empresa NO publica dirección; cobertura nacional remota.
+- CEO: hoja de vida SIN fechas y con empleadores ANONIMIZADOS (descriptores en `ceo.ts`); nunca nombrar empleadores ni sus marcas, ni correo/teléfono personal.
+- Medellín: Jonathan está radicado allí y Nithios se dirige desde Medellín (NO afirmar que la empresa 'nació' o fue 'fundada' en Medellín: no está confirmado). La empresa NO publica dirección; cobertura nacional remota.
 - Accesibilidad: foco visible (en enlaces-tarjeta: `focus-visible:after:*`, en ese orden), targets ≥44px (`min-h-11`), `aria-current`, textos alternativos, respeta `prefers-reduced-motion`.
 
 ## REGLAS ANTI-ALUCINACIÓN (críticas)

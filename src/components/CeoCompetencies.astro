@@ -1,0 +1,83 @@
+---
+/**
+ * Competencias del CEO en bento: grupos de etiquetas (marcos, dominios, habilidades directivas, sectores) + idiomas.
+ * <CeoCompetencies groups={ceo.competencies} languages={ceo.languages} />
+ * En ≥lg: los dos primeros grupos ocupan media fila; el resto, un tercio (idiomas incluidos).
+ */
+import Icon from './Icon.astro';
+import type { CompetencyGroup, CeoLanguage } from '@/data/ceo';
+
+interface Props {
+  groups: CompetencyGroup[];
+  languages?: CeoLanguage[];
+  class?: string;
+}
+
+const { groups, languages = [], class: className } = Astro.props;
+const span = (i: number) => (i < 2 ? 'lg:col-span-3' : 'lg:col-span-2');
+---
+
+<div class:list={['grid gap-5 md:grid-cols-2 lg:grid-cols-6', className]}>
+  {
+    groups.map((g, i) => (
+      <section
+        class:list={[
+          'flex flex-col rounded-(--radius-card) p-7 md:p-8',
+          i === 0 ? 'gold-ring bg-ink-800/70' : 'glass',
+          span(i),
+        ]}
+        aria-labelledby={`competencias-${i}`}
+        data-reveal
+        style={`--reveal-delay:${(i % 3) * 80}ms`}
+      >
+        <div class="flex items-center gap-3">
+          <span class="grid size-10 place-items-center rounded-xl border border-line-gold bg-gold-500/10 text-gold-300" aria-hidden="true">
+            <Icon name={g.icon} size={20} />
+          </span>
+          <h3 id={`competencias-${i}`} class="text-lg font-semibold tracking-[-0.01em] text-pearl">
+            {g.title}
+          </h3>
+        </div>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {g.items.map((it) => (
+            <li
+              class:list={[
+                'rounded-full border px-3.5 py-1.5 text-sm',
+                i === 0 ? 'border-line-gold font-medium text-gold-200' : 'border-line text-mist',
+              ]}
+            >
+              {it}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+  {
+    languages.length > 0 && (
+      <section
+        class="glass flex flex-col rounded-(--radius-card) p-7 md:col-span-2 md:p-8 lg:col-span-2"
+        aria-labelledby="competencias-idiomas"
+        data-reveal
+        style={`--reveal-delay:${(groups.length % 3) * 80}ms`}
+      >
+        <div class="flex items-center gap-3">
+          <span class="grid size-10 place-items-center rounded-xl border border-line-gold bg-gold-500/10 text-gold-300" aria-hidden="true">
+            <Icon name="translate" size={20} />
+          </span>
+          <h3 id="competencias-idiomas" class="text-lg font-semibold tracking-[-0.01em] text-pearl">
+            Idiomas
+          </h3>
+        </div>
+        <dl class="mt-6 divide-y divide-line">
+          {languages.map((l) => (
+            <div class="flex items-baseline justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <dt class="text-pearl">{l.name}</dt>
+              <dd class="text-sm font-medium text-gold-300">{l.level}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+    )
+  }
+</div>

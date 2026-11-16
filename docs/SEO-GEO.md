@@ -46,8 +46,8 @@ Las `keywords` de cada servicio en `services.ts` guían el copy (no se imprimen 
 ## Redacción GEO (motores de IA)
 - Primera frase de cada bloque = respuesta directa y autocontenida.
 - Preguntas como subtítulos (h2/h3) con respuesta inmediata en 40–60 palabras (FAQ, bloque "¿Cómo contacto a Nithios?").
-- Entidades explícitas: Nithios (nacida en Medellín, cobertura nacional remota), Jonathan Osorio Correa (CEO y Fundador; sameAs LinkedIn), Colombia + ciudades,
-  Dragon Global Trade, Armetales, Lystrax, Krystal, tecnologías.
+- Entidades explícitas: Nithios (dirigida desde Medellín, cobertura nacional remota), Jonathan Osorio Correa (CEO y Fundador; sameAs LinkedIn), Colombia + ciudades,
+  Dragon Global Trade, plataforma logística para acero y plataforma de transporte audiovisual (anonimizadas), Krystal, tecnologías.
 - Intenciones objetivo: "consultoría tecnológica en Colombia", "desarrollo de software a medida en Colombia",
   "empresa de desarrollo de software Bogotá/Medellín", "transformación digital para empresas", "inteligencia artificial para empresas".
 - Ciudades: mención natural ("atendemos de forma remota empresas en Bogotá, Medellín…"); nunca dirección ni "oficina en".

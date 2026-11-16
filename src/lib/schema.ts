@@ -7,7 +7,7 @@
 import { site, absoluteUrl, waLink, cities } from '@/data/site';
 import { services, type Service } from '@/data/services';
 import type { Project } from '@/data/projects';
-import { ceo } from '@/data/ceo';
+import { ceo, ceoPage, ceoCurrentRole } from '@/data/ceo';
 import type { Faq } from '@/data/faqs';
 
 export type JsonLd = Record<string, unknown>;
@@ -126,11 +126,16 @@ export function webPage(input: WebPageInput): JsonLd {
   });
 }
 
-/** Person: Jonathan Osorio. Solo incluye arrays si tienen datos reales. `image`: URL optimizada (src/lib/images.ts). */
-/** Códigos BCP 47 de los idiomas que se publican en `ceo.languages`. */
-const languageCodes: Record<string, string> = { Español: 'es', Inglés: 'en' };
-
+/**
+ * Person: Jonathan Osorio. Solo incluye arrays si tienen datos reales. `image`: URL optimizada (src/lib/images.ts).
+ * Reglas del usuario: SIN fechas y SIN nombres de empleadores (no hay worksFor de terceros; el cargo vigente
+ * fuera de Nithios se publica solo como Occupation). alumniOf = instituciones de formación (sí se nombran).
+ */
 export function person(image?: string): JsonLd {
+  const occupations = [
+    { name: `${ceo.jobTitle} de ${ceo.company}`, description: ceoPage.trajectory.nithios.text },
+    ...(ceoCurrentRole ? [{ name: ceoCurrentRole.role, description: ceoCurrentRole.achievements[0] }] : []),
+  ];
   return stripUndefined({
     '@type': 'Person',
     '@id': ids.person,
@@ -138,8 +143,14 @@ export function person(image?: string): JsonLd {
     alternateName: ceo.name !== ceo.fullName ? ceo.name : undefined,
     givenName: ceo.givenName,
     familyName: ceo.familyNames,
-    jobTitle: ceo.jobTitle,
-    disambiguatingDescription: ceo.professionalHeadline || undefined,
+    jobTitle: occupations.map((o) => o.name),
+    hasOccupation: occupations.map((o) => ({
+      '@type': 'Occupation',
+      name: o.name,
+      description: o.description,
+      occupationLocation: { '@type': 'Country', name: ceo.location.country },
+    })),
+    disambiguatingDescription: `${ceo.professionalHeadline}. ${ceo.credentialsSummary}.`,
     // Solo la ciudad de residencia de la persona; la empresa no publica dirección.
     homeLocation: {
       '@type': 'Place',
@@ -152,25 +163,39 @@ export function person(image?: string): JsonLd {
       },
     },
     knowsLanguage: ceo.languages.length
-      ? ceo.languages.map((name) => ({ '@type': 'Language', name, alternateName: languageCodes[name] }))
+      ? ceo.languages.map((l) => ({ '@type': 'Language', name: l.name, alternateName: l.code }))
       : undefined,
     description: ceo.summary,
     url: absoluteUrl(ceo.path),
     image: image ? absoluteUrl(image) : undefined,
     worksFor: { '@id': ids.organization },
-    knowsAbout: ceo.focusAreas,
+    knowsAbout: [...new Set([...ceo.focusAreas, ...ceo.knowsAbout])],
     alumniOf: ceo.education.length
-      ? ceo.education.map((e) => ({ '@type': 'EducationalOrganization', name: e.institution }))
+      ? [...new Set(ceo.education.map((e) => e.institution))].map((name) => {
+          const e = ceo.education.find((x) => x.institution === name);
+          return stripUndefined({
+            '@type': 'EducationalOrganization',
+            name,
+            address: e?.locality
+              ? { '@type': 'PostalAddress', addressLocality: e.locality, addressCountry: ceo.location.countryCode }
+              : undefined,
+          });
+        })
       : undefined,
-    hasCredential: ceo.certifications.length
-      ? ceo.certifications.map((c) => ({
-          '@type': 'EducationalOccupationalCredential',
-          name: c.name,
-          credentialCategory: 'certificate',
-          recognizedBy: { '@type': 'Organization', name: c.issuer },
-          dateCreated: c.isoDate,
-        }))
-      : undefined,
+    hasCredential: [
+      ...ceo.education.map((e) => ({
+        '@type': 'EducationalOccupationalCredential',
+        name: e.degree,
+        credentialCategory: 'degree',
+        recognizedBy: { '@type': 'EducationalOrganization', name: e.institution },
+      })),
+      ...ceo.certifications.map((c) => ({
+        '@type': 'EducationalOccupationalCredential',
+        name: c.name,
+        credentialCategory: 'certificate',
+        recognizedBy: { '@type': 'Organization', name: c.issuer },
+      })),
+    ],
     sameAs: ceo.sameAs.length ? ceo.sameAs : undefined,
   });
 }

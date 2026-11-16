@@ -1,6 +1,8 @@
 # Pendientes (datos reales que faltan — NO inventar)
 
 ## Jonathan Osorio (`src/data/ceo.ts`)
+**Estado (nov 2026):** hoja de vida integrada desde el PDF del usuario, SIN fechas y con EMPLEADORES ANONIMIZADOS (regla del usuario: nunca nombrar empleadores ni sus marcas en `src/` ni `public/`; sí se nombran instituciones de formación y certificadoras). No publicar correo ni teléfono personal. Si en el futuro se autorizan fechas: añadirlas a `ExperienceItem` y `hasCredential`. Los ítems de abajo sobre aportar el LinkedIn/cargos quedan resueltos; siguen pendientes foto (`ceo.photo`) y cita aprobada (`ceo.quote`).
+
 Ya publicado (fuente: vista pública de https://www.linkedin.com/in/jonathan-osorio-correa): nombre completo Jonathan Osorio Correa,
 ubicación Medellín (Antioquia), titular «CTO/CIO y consultor en Estrategia TI», idiomas español e inglés (sin nivel), Universidad Pontificia
 Bolivariana 2022 – actualidad (sin programa) y 6 certificaciones (SMAC, SPOAC, SFC, NoSQL, ChatGPT Empresarial, Data Cabling System). Experiencia: «casi 20 años» (indicación del usuario).
@@ -25,16 +27,26 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 - [ ] **Cargos de liderazgo previos**: el copy dice solo «casi 20 años de experiencia en diferentes sectores» (sin «liderando iniciativas»). Si se confirma, ampliar en `ceo.ts`.
 - [x] **Perfiles públicos** (`sameAs`): LinkedIn publicado (JSON-LD + enlace visible en la ficha ejecutiva).
 - [ ] Nivel de inglés (si se quiere publicar).
-- [ ] Confirmar que Nithios «nace en Medellín» se puede publicar así (hoy: `coverage.long`, FAQ del portafolio, bio y llms.txt; indicación del usuario). Sin dirección física.
+- [ ] ¿Dónde se fundó Nithios? NO confirmado: el sitio solo dice que Jonathan está radicado en Medellín y que Nithios se dirige desde allí
+  (se retiraron «nace en Medellín» del FAQ del portafolio y «Desde Medellín fundó Nithios» de la ficha del CEO). Sin dirección física.
 
 ## Portafolio (`src/data/projects.ts`)
 - [ ] Más proyectos (el usuario los enviará). Cada uno = un objeto en `projects` con todos los campos del tipo `Project`
   (`headline`, `challenge`, `solution[]`, `value[]`, `statusNote`, `images[]`, `faqs[]`); la página `/portafolio/<slug>/` se genera sola.
-- [x] Armetales y Lystrax: 6 capturas reales cada uno (tema oscuro, 2880×1800 WebP) en `src/assets/portfolio/armetales|lystrax/`, tomadas de los
-  prototipos estáticos (`nithioso/armetales`, `nithioso/lsto-propuestas-diseno/lystrax-propuesta-unificada.html`) con Playwright. Se ocultó el logo del
-  cliente en las capturas y, en el panel de Armetales, la alerta que nombraba un sistema de terceros. Datos ficticios (lo aclara `statusNote`).
-- [ ] Armetales / Lystrax: confirmar si se puede nombrar públicamente a los clientes (Armetales, L&STO) y si hay autorización para publicar el caso;
-  stack definitivo (hoy vacío) y estado real más allá del prototipo.
+- [x] **Casos anonimizados (decisión del usuario).** NOTA INTERNA — no copiar estos nombres a `src/` ni `public/`:
+  | Caso público (slug) | Repo / prototipo de origen | Cliente real |
+  |---|---|---|
+  | `plataforma-logistica-acero` («Plataforma logística para acero») | `nithioso/armetales` | Armetales |
+  | `plataforma-transporte-audiovisual` («Plataforma de transporte audiovisual») | `nithioso/lsto-propuestas-diseno/lystrax-propuesta-unificada.html` | L&STO GROUP S.A.S. (producto «LYSTRAX CONNECT») |
+  En el sitio no aparecen esos nombres (ni en textos, alt, JSON-LD, WhatsApp, llms.txt, rutas ni nombres de archivo); `statusNote` y las FAQ dicen
+  que el nombre se reserva por confidencialidad. Las 12 capturas (tema oscuro, 1440×900 @2x → 2880×1800 WebP q80) están en
+  `src/assets/portfolio/plataforma-logistica-acero/` y `.../plataforma-transporte-audiovisual/`. Al capturarlas con Playwright se ocultaron los logos
+  y se reemplazaron en el DOM (TreeWalker) las marcas por «Plataforma logística» / «Plataforma de operación» / «Empresa operadora», la sede
+  propia por «CEDI Principal», el ERP de terceros por «ERP», y toda razón social ficticia de terceros (constructoras, ferreterías, depósitos,
+  productoras, aliados) por genéricos («Constructora A», «Productora A», «Aliado B»…). Si se recapturan, repetir ese tratamiento y revisar cada imagen.
+  Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
+- [ ] Casos anonimizados: stack definitivo (hoy vacío), estado real más allá del prototipo y, si algún día se autoriza, publicar el nombre.
+  Las URL antiguas (`/portafolio/<nombre-del-cliente>/`) no tienen redirección a propósito (evita exponer el nombre en `.htaccess`).
 - [x] Capturas de Dragon Global Trade: 6 capturas reales del prototipo (tema oscuro, 2880×1800 WebP) en `src/assets/portfolio/dragon/`,
   tomadas del prototipo estático con datos ficticios de demostración (la página lo aclara en `statusNote`). Regenerar si cambia el prototipo.
 - [ ] Capturas reales de Krystal: hoy se muestra una ilustración conceptual en CSS (`illustration: 'krystal'`, `KrystalMockup.astro`).

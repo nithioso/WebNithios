@@ -3,6 +3,8 @@
 name: Vista previa (GitHub Pages)
 
 on:
+  push:
+    branches: ['joc/cool-hypatia-6dn972', 'main']
   workflow_dispatch:
 
 permissions:

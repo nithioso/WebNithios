@@ -1,0 +1,81 @@
+---
+/**
+ * Formación académica (escalera de títulos, del más alto al de base) + certificaciones, SIN fechas.
+ * <CeoEducation education={ceo.education} certifications={ceo.certifications} />
+ * Las instituciones de formación y las entidades certificadoras sí se nombran.
+ */
+import Icon from './Icon.astro';
+import type { EducationItem, CertificationItem } from '@/data/ceo';
+
+interface Props {
+  education: EducationItem[];
+  certifications: CertificationItem[];
+  class?: string;
+}
+
+const { education, certifications, class: className } = Astro.props;
+const both = education.length > 0 && certifications.length > 0;
+---
+
+<div class:list={['grid gap-14', both && 'lg:grid-cols-[1fr_1.1fr] lg:gap-16', className]}>
+  {
+    education.length > 0 && (
+      <div>
+        <h3 class="flex items-center gap-3 text-xl font-semibold text-pearl">
+          <Icon name="graduation" class="text-gold-400" /> Títulos
+        </h3>
+        <ol class="mt-7 space-y-3">
+          {education.map((ed, i) => (
+            <li
+              class:list={[
+                'relative flex items-start gap-5 rounded-2xl p-5 md:p-6',
+                i === 0 ? 'gold-ring bg-ink-800/70' : 'hairline bg-ink-850',
+              ]}
+              data-reveal
+              style={`--reveal-delay:${i * 70}ms`}
+            >
+              <span
+                class:list={[
+                  'grid size-11 shrink-0 place-items-center rounded-xl border',
+                  i === 0 ? 'border-line-gold bg-gold-500/12 text-gold-300' : 'border-line text-gold-400',
+                ]}
+                aria-hidden="true"
+              >
+                <Icon name="graduation" size={20} />
+              </span>
+              <div class="min-w-0">
+                <p class="text-lg font-semibold tracking-[-0.01em] text-pearl">{ed.degree}</p>
+                <p class="mt-1 text-mist">
+                  {ed.institution}
+                  {ed.locality && <span class="text-smoke"> · {ed.locality}</span>}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    )
+  }
+  {
+    certifications.length > 0 && (
+      <div>
+        <h3 class="flex items-center gap-3 text-xl font-semibold text-pearl">
+          <Icon name="award" class="text-gold-400" /> Certificaciones y cursos
+        </h3>
+        <ul class="mt-7 grid gap-3 sm:grid-cols-2">
+          {certifications.map((c, i) => (
+            <li
+              class="glass flex flex-col rounded-2xl p-5 md:p-6"
+              data-reveal
+              style={`--reveal-delay:${(i % 2) * 70 + Math.floor(i / 2) * 50}ms`}
+            >
+              <Icon name="award" size={20} class="text-gold-400" />
+              <p class="mt-4 font-semibold leading-snug tracking-[-0.01em] text-pearl">{c.name}</p>
+              <p class="mt-auto pt-2 text-sm text-gold-300">{c.issuer}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+</div>

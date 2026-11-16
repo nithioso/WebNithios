@@ -23,13 +23,13 @@ src/
 | `/servicios/` | `pages/servicios/index.astro` (contenido en `servicesHub`) | hecha |
 | `/servicios/consultoria-tecnologica/` · `/servicios/desarrollo-de-software-a-medida/` | archivos sueltos en `pages/servicios/` → `components/ServiceDetailContent.astro` + `data/service-details.ts` | hechas |
 | `/portafolio/` | `pages/portafolio/index.astro` | hecha |
-| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (dragon-global-trade, armetales, lystrax, krystal) |
+| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (dragon-global-trade, plataforma-logistica-acero, plataforma-transporte-audiovisual, krystal; los dos del medio están anonimizados, ver docs/PENDIENTES.md) |
 | `/jonathan-osorio/` | `pages/jonathan-osorio.astro` + `components/CeoPortrait.astro` | hecha |
 | `/contacto/` · `/preguntas-frecuentes/` · `/politica-de-privacidad/` | `pages/*.astro` (+ `components/ContactForm.astro`) | hechas |
 | 404 | `pages/404.astro` | hecha |
 
 ## Datos (`src/data`)
-- **site.ts** (`coverage.long` menciona el origen en Medellín): `site` (name, url, lang `es-CO`, locale, tagline, description, defaultOgImage, whatsapp{number,e164,display,defaultMessage}),
+- **site.ts** (`coverage.long`: «Trabajamos desde Medellín…»; no afirmar que Nithios nació o se fundó allí): `site` (name, url, lang `es-CO`, locale, tagline, description, defaultOgImage, whatsapp{number,e164,display,defaultMessage}),
   `waLink(msg?)`, `absoluteUrl(path)`, `nav: NavItem[]`, `legalNav`, `cities` (7), `coverage{short,long}`.
 - **services.ts**: `Service` {slug, path, name, shortName, icon, headline, summary, seoTitle, seoDescription, intro[], idealFor[],
   capabilities[{title,text,icon}], benefits[{title,text,icon}], process[{title,text}], deliverables[], technologies?, keywords[], whatsappMessage}.

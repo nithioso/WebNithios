@@ -1,0 +1,41 @@
+---
+/**
+ * Franja de resultados destacados del CEO (cifras reales de la hoja de vida, contexto anonimizado).
+ * <CeoHighlights items={ceo.highlights} />
+ * Rejilla con hairlines (gap-px sobre fondo `line-strong`); el reveal va en el contenido, no en la celda
+ * (una celda transformada tapa la hairline al componerse). La cifra en dorado degradado.
+ */
+import type { CeoHighlight } from '@/data/ceo';
+
+interface Props {
+  items: CeoHighlight[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<ul
+  class:list={[
+    'grid overflow-hidden rounded-(--radius-card) border border-line bg-line-strong gap-px sm:grid-cols-2 lg:grid-cols-3',
+    className,
+  ]}
+>
+  {
+    items.map((h, i) => (
+      <li class="group relative bg-ink-900 p-7 md:p-9">
+        <span
+          class="pointer-events-none absolute inset-x-7 top-0 h-px bg-gold opacity-0 transition-opacity duration-500 group-hover:opacity-60 md:inset-x-9"
+          aria-hidden="true"
+        />
+        <div data-reveal style={`--reveal-delay:${(i % 3) * 80}ms`}>
+        <p>
+          <span class="block font-display text-display-lg font-semibold whitespace-nowrap text-gold">{h.value}</span>
+          <span class="mt-2 block text-lg font-medium tracking-[-0.01em] text-pearl">{h.label}</span>
+        </p>
+        <p class="mt-4 leading-relaxed text-mist">{h.context}</p>
+        </div>
+      </li>
+    ))
+  }
+</ul>

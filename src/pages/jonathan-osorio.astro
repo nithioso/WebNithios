@@ -2,8 +2,8 @@
 /**
  * /jonathan-osorio/ — Hoja de vida del CEO y Fundador.
  * Todo el contenido sale de src/data/ceo.ts (`ceo` + `ceoPage`).
- * Trayectoria, formación, certificaciones, logros, sectores y cita se renderizan
- * SOLO si tienen datos reales (hoy: formación —solo institución y periodo— y certificaciones; ver docs/PENDIENTES.md).
+ * Hoja de vida real (resultados, trayectoria, formación, competencias) SIN fechas y con empleadores anonimizados
+ * (reglas en la cabecera de ceo.ts). Cada sección se renderiza solo si tiene datos; la cita y la foto siguen pendientes.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
@@ -16,6 +16,10 @@ import FaqList from '@/components/FaqList.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import CtaBand from '@/components/CtaBand.astro';
 import CeoPortrait from '@/components/CeoPortrait.astro';
+import CeoHighlights from '@/components/CeoHighlights.astro';
+import CeoTimeline from '@/components/CeoTimeline.astro';
+import CeoEducation from '@/components/CeoEducation.astro';
+import CeoCompetencies from '@/components/CeoCompetencies.astro';
 import { ceo, ceoPage } from '@/data/ceo';
 import { services } from '@/data/services';
 import { sortedProjects } from '@/data/projects';
@@ -31,24 +35,27 @@ const qaItems: Faq[] = ceoPage.qa.map((q) => ({ ...q, category: 'general' as con
 const featuredProjects = sortedProjects.slice(0, 2);
 const domainSpans = ['md:col-span-4', 'md:col-span-2', 'md:col-span-2', 'md:col-span-4', 'md:col-span-3', 'md:col-span-3'];
 
+const hasHighlights = ceo.highlights.length > 0;
 const hasExperience = ceo.experience.length > 0;
-const hasEducation = ceo.education.length > 0;
-const hasCertifications = ceo.certifications.length > 0;
-const hasAchievements = ceo.achievements.length > 0;
-const hasSectors = ceo.sectors.length > 0;
+const hasEducation = ceo.education.length > 0 || ceo.certifications.length > 0;
+const hasCompetencies = ceo.competencies.length > 0 || ceo.languages.length > 0;
 
-/* Alterna fondos (raised/default) entre las secciones condicionales que siguen a #metodo (default). */
-const conditional = {
+/* Alterna fondos (default/raised) en las secciones que siguen a #perfil (raised), según cuáles se muestran. */
+const sections = {
+  resultados: hasHighlights,
   trayectoria: hasExperience,
-  formacion: hasEducation || hasCertifications,
-  logros: hasAchievements,
+  formacion: hasEducation,
+  competencias: hasCompetencies,
+  vision: true,
+  dominio: true,
+  metodo: true,
   portafolio: featuredProjects.length > 0,
   preguntas: true,
 };
 const tones: Record<string, 'raised' | 'default'> = {};
 let n = 0;
-for (const [key, visible] of Object.entries(conditional)) {
-  if (visible) tones[key] = n++ % 2 === 0 ? 'raised' : 'default';
+for (const [key, visible] of Object.entries(sections)) {
+  if (visible) tones[key] = n++ % 2 === 0 ? 'default' : 'raised';
 }
 ---
 
@@ -83,7 +90,7 @@ for (const [key, visible] of Object.entries(conditional)) {
           </p>
           <div class="hero-in hero-in-3 mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <WhatsAppButton message={ceo.whatsappMessage} label={ctaLabel} size="lg" />
-            <Button href="#perfil" variant="glass" size="lg" iconRight="chevron-down">Ver perfil ejecutivo</Button>
+            <Button href="#trayectoria" variant="glass" size="lg" iconRight="chevron-down">Ver trayectoria</Button>
           </div>
         </div>
         <div class="hero-in hero-in-2">
@@ -102,7 +109,7 @@ for (const [key, visible] of Object.entries(conditional)) {
           Conoce en detalle las dos líneas que lidera:{' '}<a href="/servicios/consultoria-tecnologica/">consultoría tecnológica para empresas</a>{' '}y{' '}<a href="/servicios/desarrollo-de-software-a-medida/">desarrollo de software a medida en Colombia</a>.
         </p>
       </div>
-      <aside class="glass rounded-(--radius-card) p-7 md:p-8" aria-labelledby="ficha-titulo" data-reveal style="--reveal-delay:120ms">
+      <aside class="glass self-start rounded-(--radius-card) p-7 md:p-8 lg:sticky lg:top-[calc(var(--header-h)+2rem)]" aria-labelledby="ficha-titulo" data-reveal style="--reveal-delay:120ms">
         <h3 id="ficha-titulo" class="eyebrow text-[0.75rem]">Ficha ejecutiva</h3>
         <dl class="mt-6 divide-y divide-line">
           {
@@ -130,22 +137,49 @@ for (const [key, visible] of Object.entries(conditional)) {
         }
       </aside>
     </div>
-    {
-      hasSectors && (
-        <div class="mt-14" data-reveal>
-          <h3 class="text-lg font-semibold text-pearl">Sectores en los que ha trabajado</h3>
-          <ul class="mt-5 flex flex-wrap gap-2.5">
-            {ceo.sectors.map((s) => (
-              <li class="rounded-full border border-line px-4 py-2 text-sm text-mist">{s}</li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
   </Section>
 
+  <!-- RESULTADOS DESTACADOS (cifras reales de la hoja de vida) -->
+  {
+    hasHighlights && (
+      <Section id="resultados" eyebrow="Resultados destacados" title={ceoPage.highlights.title} intro={ceoPage.highlights.intro} tone={tones.resultados}>
+        <CeoHighlights items={ceo.highlights} />
+      </Section>
+    )
+  }
+
+  <!-- TRAYECTORIA (sin fechas; empleadores anonimizados) -->
+  {
+    hasExperience && (
+      <Section id="trayectoria" eyebrow="Trayectoria" title={ceoPage.trajectory.title} intro={ceoPage.trajectory.intro} tone={tones.trayectoria}>
+        <CeoTimeline
+          items={ceo.experience}
+          lead={{ role: ceoPage.trajectory.nithios.role, organization: ceo.company, text: ceoPage.trajectory.nithios.text }}
+        />
+      </Section>
+    )
+  }
+
+  <!-- FORMACIÓN Y CERTIFICACIONES (sin fechas) -->
+  {
+    hasEducation && (
+      <Section id="formacion" eyebrow="Formación" title={ceoPage.education.title} intro={ceoPage.education.intro} tone={tones.formacion}>
+        <CeoEducation education={ceo.education} certifications={ceo.certifications} />
+      </Section>
+    )
+  }
+
+  <!-- COMPETENCIAS -->
+  {
+    hasCompetencies && (
+      <Section id="competencias" eyebrow="Competencias" title={ceoPage.competencies.title} intro={ceoPage.competencies.intro} tone={tones.competencias}>
+        <CeoCompetencies groups={ceo.competencies} languages={ceo.languages} />
+      </Section>
+    )
+  }
+
   <!-- VISIÓN Y FILOSOFÍA DE LIDERAZGO -->
-  <Section id="vision" eyebrow="Visión y liderazgo" title={ceoPage.vision.title} intro={ceoPage.vision.intro}>
+  <Section id="vision" eyebrow="Visión y liderazgo" title={ceoPage.vision.title} intro={ceoPage.vision.intro} tone={tones.vision}>
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {ceoPage.vision.principles.map((p, i) => <Card icon={p.icon} title={p.title} text={p.text} size="sm" revealDelay={i * 80} />)}
     </div>
@@ -171,7 +205,7 @@ for (const [key, visible] of Object.entries(conditional)) {
   </Section>
 
   <!-- ÁREAS DE DOMINIO -->
-  <Section id="dominio" eyebrow="Áreas que lidera" title={ceoPage.domains.title} intro={ceoPage.domains.intro} tone="raised">
+  <Section id="dominio" eyebrow="Áreas que lidera" title={ceoPage.domains.title} intro={ceoPage.domains.intro} tone={tones.dominio}>
     <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-6">
       {
         ceoPage.domains.items.map((d, i) => (
@@ -199,7 +233,7 @@ for (const [key, visible] of Object.entries(conditional)) {
   </Section>
 
   <!-- CÓMO TRABAJA CON LOS CLIENTES -->
-  <Section id="metodo" eyebrow="Cómo trabaja" title={ceoPage.method.title} intro={ceoPage.method.intro}>
+  <Section id="metodo" eyebrow="Cómo trabaja" title={ceoPage.method.title} intro={ceoPage.method.intro} tone={tones.metodo}>
     <ol class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {
         ceoPage.method.steps.map((s, i) => (
@@ -217,101 +251,6 @@ for (const [key, visible] of Object.entries(conditional)) {
       <WhatsAppButton message={ceo.whatsappMessage} label={ctaLabel} />
     </Fragment>
   </Section>
-
-  <!-- TRAYECTORIA (solo con datos reales) -->
-  {
-    hasExperience && (
-      <Section id="trayectoria" eyebrow="Trayectoria" title="Experiencia profesional" tone={tones.trayectoria}>
-        <ol class="relative ml-2 border-l border-line-gold pl-8 md:ml-4 md:pl-12">
-          {ceo.experience.map((e, i) => (
-            <li class="relative pb-12 last:pb-0" data-reveal style={`--reveal-delay:${Math.min(i, 5) * 60}ms`}>
-              <span class="absolute -left-[2.35rem] top-1.5 size-3 rounded-full bg-gold shadow-gold md:-left-[3.35rem]" aria-hidden="true" />
-              <p class="text-sm font-medium text-gold-300">{e.period}</p>
-              <h3 class="mt-2 text-display-sm font-semibold text-pearl">{e.role}</h3>
-              <p class="mt-1 text-mist">
-                {e.organization}
-                {e.sector && <span class="text-smoke"> · {e.sector}</span>}
-              </p>
-              {e.description && <p class="mt-4 max-w-3xl leading-relaxed text-mist">{e.description}</p>}
-              {e.achievements && e.achievements.length > 0 && (
-                <ul class="mt-4 space-y-2">
-                  {e.achievements.map((a) => (
-                    <li class="flex gap-3 text-mist">
-                      <Icon name="check" size={18} class="mt-1 shrink-0 text-gold-400" />
-                      <span>{a}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ol>
-      </Section>
-    )
-  }
-
-  <!-- FORMACIÓN Y CERTIFICACIONES (solo con datos reales) -->
-  {
-    (hasEducation || hasCertifications) && (
-      <Section id="formacion" eyebrow="Formación" title="Formación académica y certificaciones" tone={tones.formacion}>
-        <div class:list={['grid gap-10', hasEducation && hasCertifications && 'lg:grid-cols-2']}>
-          {hasEducation && (
-            <div>
-              <h3 class="flex items-center gap-3 text-xl font-semibold text-pearl">
-                <Icon name="graduation" class="text-gold-400" /> Estudios
-              </h3>
-              <ul class="mt-6 divide-y divide-line border-y border-line">
-                {ceo.education.map((ed) => (
-                  <li class="py-5" data-reveal>
-                    <p class="text-lg font-medium text-pearl">{ed.degree ?? ed.institution}</p>
-                    <p class="mt-1 text-mist">
-                      {ed.degree && ed.institution}
-                      {ed.period && <span class:list={ed.degree ? 'text-smoke' : 'text-mist'}>{ed.degree && ' · '}{ed.period}</span>}
-                    </p>
-                    {ed.description && <p class="mt-2 text-sm leading-relaxed text-mist">{ed.description}</p>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {hasCertifications && (
-            <div>
-              <h3 class="flex items-center gap-3 text-xl font-semibold text-pearl">
-                <Icon name="award" class="text-gold-400" /> Certificaciones
-              </h3>
-              <ul class="mt-6 divide-y divide-line border-y border-line">
-                {ceo.certifications.map((c) => (
-                  <li class="py-5" data-reveal>
-                    <p class="text-lg font-medium text-pearl">{c.name}</p>
-                    <p class="mt-1 text-mist">
-                      {c.issuer}
-                      {c.date && <span class="text-smoke"> · {c.date}</span>}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </Section>
-    )
-  }
-
-  <!-- LOGROS (solo con datos reales) -->
-  {
-    hasAchievements && (
-      <Section id="logros" eyebrow="Logros" title="Logros destacados" tone={tones.logros}>
-        <ul class="grid gap-4 md:grid-cols-2">
-          {ceo.achievements.map((a, i) => (
-            <li class="glass flex gap-4 rounded-2xl p-6" data-reveal style={`--reveal-delay:${Math.min(i, 5) * 60}ms`}>
-              <Icon name="check-circle" class="mt-0.5 shrink-0 text-gold-400" />
-              <span class="text-mist">{a}</span>
-            </li>
-          ))}
-        </ul>
-      </Section>
-    )
-  }
 
   <!-- PORTAFOLIO: lo que construye el equipo que dirige -->
   {
