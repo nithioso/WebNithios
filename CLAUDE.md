@@ -11,10 +11,11 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 ## Comandos
 - `npm run dev` · `npm run build` (debe pasar sin warnings) · `npm run preview` · `npm run check` (0 errores)
 - `npm run build` ejecuta `postbuild` (`scripts/csp-hashes.mjs`): falla si cambias un `<script is:inline>` y no actualizas su hash en la CSP de `public/.htaccess`.
-- `npm run brand` → regenera favicon, íconos PWA y `public/og-default.png` desde los SVG de `design/logo/final/` (logo oficial G «Ligadura NT»; sharp + Playwright, ambos en devDependencies).
+- `npm run brand` → regenera favicon e íconos PWA desde los SVG de `design/logo/final/` (logo oficial G «Ligadura NT»; sharp + Playwright, ambos en devDependencies) y luego corre `npm run og`.
+- `npm run og` → regenera las OG 1200×630 (`public/og-default.png` + `src/assets/og/*-og.png`) · `npm run verify:images` → auditoría de OG, alt y nombres sobre `dist/`.
 
 ## Mapa de archivos
-- `src/data/` — FUENTE ÚNICA de contenido: `site.ts` (site, waLink(), absoluteUrl(), nav, cities, coverage), `services.ts` + `service-details.ts`, `projects.ts` (+ portfolioFaqs), `ceo.ts` (+ ceoPage), `faqs.ts`, `contact.ts`, `privacy.ts`.
+- `src/data/` — FUENTE ÚNICA de contenido: `site.ts` (site, waLink(), absoluteUrl(), nav, cities, coverage), `services.ts` + `service-details.ts`, `projects.ts` (+ portfolioFaqs), `ceo.ts` (+ ceoPage), `faqs.ts`, `contact.ts`, `privacy.ts`, `og.ts` (OG por página + alt).
 - Páginas: todas las rutas del mapa están hechas (ver docs/ARQUITECTURA.md). Portafolio: Dragon Global Trade, «Plataforma logística para acero»,
   «Plataforma de transporte audiovisual» (capturas reales 2880×1800 WebP en `src/assets/portfolio/<slug>/`) y Krystal (ilustración conceptual).
   Los dos casos del medio están ANONIMIZADOS: nunca escribir en `src/` ni `public/` el nombre del cliente ni de su producto (correspondencia interna en docs/PENDIENTES.md).
@@ -30,6 +31,7 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 - CTA principal: "Hablemos por WhatsApp" con `<WhatsAppButton message="…">` y mensaje contextual por página; pásalo también como `whatsappMessage` a BaseLayout.
 - Contenido nuevo → en `src/data/`, nunca hardcodeado en páginas. Nuevo proyecto = nueva entrada en `projects.ts`.
 - Imágenes con `astro:assets` (`<Image>`), en `src/assets/`. Nada de imágenes remotas.
+- Imágenes SEO: nombre descriptivo en minúsculas sin tildes con guiones (`<proyecto>-<qué-muestra>.webp`, nunca `tablero.webp`), alt descriptivo ≤140 car. en `src/data` (alt="" solo decorativas) y OG propia por página (`src/data/og.ts` + `npm run og`; ver docs/SEO-GEO.md).
 - Clases de layout (`hidden`, `sm:block`) en un wrapper, no en `class` de Button (conflicto con `inline-flex`).
 - JS: solo `<script>` procesados por Astro (se emiten como módulos externos; `assetsInlineLimit: 0`), inicializados en `astro:page-load` y con AbortController si añaden listeners globales.
 - Hero (sobre el pliegue): `.hero-in`, nunca `data-reveal`. Animaciones decorativas finitas.

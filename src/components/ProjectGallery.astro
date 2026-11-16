@@ -3,6 +3,8 @@
  * Galería de capturas reales de un proyecto (figure + figcaption, marco de navegador).
  * La primera captura ocupa todo el ancho; el resto va en dos columnas.
  * Cada captura enlaza al archivo a tamaño completo (en móvil los textos de un dashboard de 1440 px no se leen).
+ * Accesibilidad: el alt descriptivo va en la <img> (nunca vacío: es contenido) y el nombre del enlace se compone
+ * de ese alt + un texto sr-only que avisa de la pestaña nueva.
  * <ProjectGallery images={p.images} label="Dragon Global Trade · prototipo" />
  */
 import { Image } from 'astro:assets';
@@ -30,17 +32,17 @@ const { images, label, class: className } = Astro.props;
               target="_blank"
               rel="noopener"
               class="group/zoom relative block rounded-(--radius-card) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400"
-              aria-label={`Ver captura completa (se abre en una pestaña nueva): ${img.alt}`}
             >
               <BrowserFrame label={label}>
                 <Image
                   src={img.src}
-                  alt=""
+                  alt={img.alt}
                   widths={i === 0 ? [640, 960, 1280, 1920, 2560] : [480, 720, 960, 1280]}
                   sizes={i === 0 ? '(min-width: 1280px) 1240px, 100vw' : '(min-width: 1280px) 610px, (min-width: 768px) 48vw, 100vw'}
                   class="block h-auto w-full"
                 />
               </BrowserFrame>
+              <span class="sr-only">(ver captura completa, se abre en una pestaña nueva)</span>
               <span
                 class="absolute bottom-3 right-3 inline-flex size-11 items-center justify-center rounded-full glass-strong border border-line-gold text-gold-200 transition-transform duration-300 ease-(--ease-apple) group-hover/zoom:scale-110 md:bottom-5 md:right-5"
                 aria-hidden="true"

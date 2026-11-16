@@ -6,6 +6,7 @@
  * (reglas en la cabecera de ceo.ts). Cada sección se renderiza solo si tiene datos; la cita y la foto siguen pendientes.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { pageOgImage } from '@/lib/images';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import WhatsAppButton from '@/components/WhatsAppButton.astro';
 import Button from '@/components/Button.astro';
@@ -57,12 +58,17 @@ let n = 0;
 for (const [key, visible] of Object.entries(sections)) {
   if (visible) tones[key] = n++ % 2 === 0 ? 'default' : 'raised';
 }
+
+// Imagen Open Graph propia (src/data/og.ts · npm run og).
+const og = await pageOgImage('/jonathan-osorio/');
 ---
 
 <BaseLayout
   title={ceo.seoTitle}
   description={ceo.seoDescription}
   path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
   ogType="profile"
   breadcrumbs={crumbs}
   pageType={['ProfilePage', 'AboutPage']}

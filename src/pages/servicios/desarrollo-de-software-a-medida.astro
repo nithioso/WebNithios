@@ -4,6 +4,7 @@
  * Contenido: src/data/services.ts + src/data/service-details.ts · Cuerpo: ServiceDetailContent.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { pageOgImage } from '@/lib/images';
 import ServiceDetailContent from '@/components/ServiceDetailContent.astro';
 import { getService } from '@/data/services';
 import { getServiceDetail } from '@/data/service-details';
@@ -17,12 +18,17 @@ const crumbs: Crumb[] = [
   { name: 'Servicios', path: '/servicios/' },
   { name: s.shortName, path: s.path },
 ];
+
+// Imagen Open Graph propia (src/data/og.ts · npm run og).
+const og = await pageOgImage('/servicios/desarrollo-de-software-a-medida/');
 ---
 
 <BaseLayout
   title={s.seoTitle}
   description={s.seoDescription}
   path={s.path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
   breadcrumbs={crumbs}
   jsonLd={[service(s), faqPage(d.faqs, s.path)]}
   mainEntityId={ids.service(s.path)}

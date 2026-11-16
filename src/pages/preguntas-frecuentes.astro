@@ -4,6 +4,7 @@
  * Copy de la página: src/data/contact.ts (faqPageContent).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { pageOgImage } from '@/lib/images';
 import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import FaqList from '@/components/FaqList.astro';
@@ -35,12 +36,17 @@ const categoryLinks: Record<FaqCategory, { label: string; href: string }> = {
 const groups = (Object.keys(faqCategories) as FaqCategory[])
   .map((key) => ({ key, label: faqCategories[key], items: faqsByCategory(key) }))
   .filter((g) => g.items.length > 0);
+
+// Imagen Open Graph propia (src/data/og.ts · npm run og).
+const og = await pageOgImage('/preguntas-frecuentes/');
 ---
 
 <BaseLayout
   title={p.seoTitle}
   description={p.seoDescription}
   path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
   breadcrumbs={crumbs}
   mainEntityId={ids.faq(path)}
   jsonLd={[faqPage(faqs, path)]}

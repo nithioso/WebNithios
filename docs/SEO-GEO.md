@@ -60,10 +60,32 @@ Las `keywords` de cada servicio en `services.ts` guían el copy (no se imprimen 
 - FAQPage: cada pregunta se marca UNA sola vez en todo el sitio. Las generales (`faqs.ts`) solo en `/preguntas-frecuentes/`;
   la home y `/servicios/` muestran el acordeón sin JSON-LD. Servicios, casos y portafolio marcan solo sus preguntas propias.
 - 404: `noindex`, sin canonical ni nodo WebPage. `/jonathan-osorio/`: `og:type=profile` y ProfilePage con `about` → Person.
-- OG de casos: `projectOgImage(p)` (`src/lib/images.ts`): `ogImage` del proyecto (render 1200×630, p. ej. Krystal) o `getImage()` de la captura `cover`; misma URL optimizada en `image` del JSON-LD (nunca el original). Sin imagen → og-default con alt «<nombre>, caso de portafolio de Nithios: <headline>». Foto del CEO: `ceoPhotoUrl()`.
+- OG de casos: `projectOgImage(p)` (`src/lib/images.ts`): `ogImage` del proyecto (render 1200×630 de `npm run og`) o, si falta, `getImage()` de la captura `cover`; misma URL optimizada en `image` del JSON-LD (nunca el original). Foto del CEO: `ceoPhotoUrl()`.
 - Hechos en JSON-LD: idioma de atención solo español (`knowsLanguage: ['es-CO']`); Person sin nacionalidad; `knowsAbout`
   del CEO = solo áreas derivadas de las líneas de servicio.
 - `public/.well-known/security.txt`: NO se publica hasta tener un correo real de contacto de seguridad.
+
+## Imágenes: Open Graph, nombres y textos alternativos
+- **OG propia por página (1200×630)**: home → `public/og-default.png` (alt `site.defaultOgImageAlt`); servicios, consultoría, desarrollo,
+  portafolio, CEO, contacto y FAQ → `src/data/og.ts` (`pageOgImage(path)`); cada caso → `ogImage`/`ogImageAlt` en `projects.ts`.
+  Privacidad y 404 usan og-default. Astro publica cada PNG como JPEG 1200×630 (q88, < 110 KB) con el nombre base + hash.
+- **Generación reproducible**: `npm run og` (`scripts/generate-og-images.mjs`, Playwright + sharp; también lo corre `npm run brand`).
+  Plantillas HTML con el logo oficial de `design/logo/final/`, Inter Variable del proyecto incrustada, negro/dorado y pie `nithios.com`.
+  La ilustración de Krystal se captura de `dist/` (ejecuta `npm run build` antes si cambió `KrystalMockup`) en `design/og/`.
+- **OG de una página nueva**: 1) añade una entrada a `buildPages()` del script (`out: '<palabras-clave>-og.png'` + plantilla `page()`/`copy()`
+  o `caseTemplate()`, solo con copy de `src/data`); 2) `npm run og` y MIRA el PNG; 3) impórtalo en `src/data/og.ts` con su `alt`
+  (proyecto: `ogImage` + `ogImageAlt` en `projects.ts`); 4) en la página `const og = await pageOgImage('<ruta>')` y
+  `ogImage={og.src} ogImageAlt={og.alt}` en BaseLayout; 5) `npm run build && npm run verify:images`.
+- **Nombres de archivo** (lo que se publica en `/_astro/` es nombre base + hash): minúsculas, sin tildes, con guiones, con la palabra
+  clave y el contexto: `<proyecto|marca>-<qué-muestra>.<ext>` (p. ej. `dragon-global-trade-modulo-comercial-cotizaciones.webp`,
+  `plataforma-logistica-acero-seguimiento-de-ruta.webp`, `jonathan-osorio-ceo-nithios.jpg`, `nithios-consultoria-tecnologica-colombia-og.png`).
+  Nunca genéricos (`og.png`, `tablero.webp`, `foto.jpg`). Casos anonimizados: solo el nombre genérico del caso, jamás el del cliente.
+  Conservan su nombre por convención: `favicon.*`, `apple-touch-icon.png`, `icon-*.png`, `site.webmanifest`, `og-default.png`.
+- **Textos alternativos**: toda imagen de contenido (capturas, retrato, ilustraciones informativas) lleva alt descriptivo, natural y
+  ≤ ~140 caracteres (qué muestra + contexto, sin relleno de keywords), definido en `src/data`. Solo lo decorativo lleva `alt=""`
+  (+ `aria-hidden`). En la galería el alt va en la `<img>` y el enlace añade un texto `sr-only` («se abre en una pestaña nueva»).
+- **Verificación**: `npm run verify:images` (tras el build) comprueba og:image única/existente/1200×630/≤ 200 KB con alt, `<img>` sin
+  alt o de contenido con alt vacío o largo, nombres genéricos y que las URL de imagen del JSON-LD existan en `dist/`.
 
 ## Seguridad y `.htaccess` (Hostinger, Apache/LiteSpeed)
 - Slash final + HTTPS + apex en un solo 301 cuando existe `/ruta/index.html`; `/ruta/index.html` → `/ruta/` (301, con `THE_REQUEST`);
@@ -103,7 +125,7 @@ Las `keywords` de cada servicio en `services.ts` guían el copy (no se imprimen 
    Colombia y ciudades principales, categoría p. ej. "Consultor informático" / "Empresa de software", teléfono WhatsApp y sitio web.
    Solo con datos reales; la verificación la exige Google.
 7. Validar datos estructurados: https://search.google.com/test/rich-results y https://validator.schema.org (sin errores).
-8. Probar previsualizaciones OG (WhatsApp, LinkedIn Post Inspector) y PageSpeed Insights (móvil) con Core Web Vitals en verde.
+8. `npm run verify:images` sin errores. Probar previsualizaciones OG (WhatsApp, LinkedIn Post Inspector) y PageSpeed Insights (móvil) con Core Web Vitals en verde.
 9. LinkedIn de Jonathan ya está en `ceo.sameAs`. Cuando exista el perfil de empresa de Nithios, agregarlo a `sameAs` de `organization()`.
 
 ## Cómo agregar una página
@@ -112,4 +134,5 @@ Las `keywords` de cada servicio en `services.ts` guían el copy (no se imprimen 
    `PageHero` (único h1) y `CtaBand` al cierre.
 3. Enlazarla desde al menos 2 páginas relacionadas y, si es principal, desde `nav`/`legalNav` en `site.ts`.
 4. Añadirla a `public/llms.txt` y a la tabla de keywords de este documento. El sitemap se actualiza solo.
-5. Nuevo proyecto de portafolio: solo una entrada en `projects.ts` (+ línea en `llms.txt`).
+5. Imagen OG propia: ver «Imágenes: Open Graph, nombres y textos alternativos».
+6. Nuevo proyecto de portafolio: una entrada en `projects.ts` con su `ogImage` (`npm run og`) (+ línea en `llms.txt`).

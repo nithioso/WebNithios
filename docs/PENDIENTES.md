@@ -10,8 +10,8 @@ Bolivariana 2022 – actualidad (sin programa) y 6 certificaciones (SMAC, SPOAC,
   `experience`, `sectors`, el `degree` de la UPB y cualquier otro estudio.
 
 La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío. Formato exacto de cada entrada:
-- [x] **Foto profesional** (publicada nov 2026: `src/assets/ceo/jonathan-osorio.jpg`, retrato B/N recortado a 4:5) (vertical 4:5, mín. 1040×1300 px, fondo oscuro ideal). Guardar en `src/assets/ceo/jonathan-osorio.jpg` y en `ceo.ts`:
-  `import photo from '@/assets/ceo/jonathan-osorio.jpg';` → `photo: photo,`. `CeoPortrait.astro` reemplaza solo el monograma «JO» por la foto optimizada y `person(await ceoPhotoUrl())` (BaseLayout) añade al JSON-LD la versión optimizada 1200 px JPEG, nunca el original.
+- [x] **Foto profesional** (publicada nov 2026: `src/assets/ceo/jonathan-osorio-ceo-nithios.jpg`, retrato B/N recortado a 4:5) (vertical 4:5, mín. 1040×1300 px, fondo oscuro ideal). Guardar en `src/assets/ceo/jonathan-osorio-ceo-nithios.jpg` y en `ceo.ts`:
+  `import photo from '@/assets/ceo/jonathan-osorio-ceo-nithios.jpg';` → `photo: photo,`. `CeoPortrait.astro` reemplaza solo el monograma «JO» por la foto optimizada y `person(await ceoPhotoUrl())` (BaseLayout) añade al JSON-LD la versión optimizada 1200 px JPEG, nunca el original.
 - [ ] **Trayectoria** (`experience`, más reciente primero):
   `{ role: 'Cargo', organization: 'Empresa', period: '2018 – 2024', sector: 'Sector (opcional)', description: 'Qué lideró (opcional)', achievements: ['Logro verificable (opcional)'] }`
 - [ ] **Sectores** (`sectors`): `['Banca', 'Retail', …]` — solo sectores reales en los que trabajó.
@@ -47,13 +47,13 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
 - [ ] Casos anonimizados: stack definitivo (hoy vacío), estado real más allá del prototipo y, si algún día se autoriza, publicar el nombre.
   Las URL antiguas (`/portafolio/<nombre-del-cliente>/`) no tienen redirección a propósito (evita exponer el nombre en `.htaccess`).
-- [x] Capturas de Dragon Global Trade: 6 capturas reales del prototipo (tema oscuro, 2880×1800 WebP) en `src/assets/portfolio/dragon/`,
+- [x] Capturas de Dragon Global Trade: 6 capturas reales del prototipo (tema oscuro, 2880×1800 WebP) en `src/assets/portfolio/dragon-global-trade/` (nombres `dragon-global-trade-<pantalla>.webp`),
   tomadas del prototipo estático con datos ficticios de demostración (la página lo aclara en `statusNote`). Regenerar si cambia el prototipo.
 - [ ] Capturas reales de Krystal: hoy se muestra una ilustración conceptual en CSS (`illustration: 'krystal'`, `KrystalMockup.astro`).
   Para publicarlas: guardar 4–6 capturas (1440×900 @2x, tema oscuro si existe; agenda, videollamada, historia clínica, dashboards por rol)
   en `src/assets/portfolio/krystal/`, importarlas en `projects.ts`, llenar `images: [{ src, alt, caption }]` y `cover` (+ `coverAlt`).
-  La primera captura que sea `cover` no se repite en la galería. Al llegar, regenerar `src/assets/portfolio/krystal/og.png` (hoy render de la
-  ilustración conceptual, 1200×630) o quitar `ogImage` para usar la captura `cover`.
+  La primera captura que sea `cover` no se repite en la galería. Nombres `krystal-<pantalla>.webp`. Al llegar, cambiar la
+  plantilla de Krystal en `scripts/generate-og-images.mjs` para usar la captura `cover` y ejecutar `npm run og`.
 - [ ] Estado real de Krystal (hoy `status: 'sin-especificar'`).
 - [ ] Stack tecnológico de Dragon Global Trade (hoy vacío).
 - [ ] Autorización para mencionar clientes/resultados (si aplica).

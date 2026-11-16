@@ -4,7 +4,9 @@
 ```
 astro.config.mjs        site https://nithios.com · trailingSlash 'always' · sitemap (excluye 404) · tailwind vite · assetsInlineLimit 0
 public/                 .htaccess, robots.txt, llms.txt, site.webmanifest, favicon.*, apple-touch-icon.png, icon-192/512.png, icon-maskable-512.png, og-default.png
-scripts/generate-brand-assets.mjs   genera favicon/íconos/OG (sharp + Playwright)
+scripts/generate-brand-assets.mjs   genera favicon/íconos (sharp) y encadena las OG
+scripts/generate-og-images.mjs      npm run og: OG 1200×630 por página (Playwright) → public/og-default.png + src/assets/og/*-og.png
+scripts/verify-images.mjs           npm run verify:images: auditoría de og:image, alt y nombres de imagen sobre dist/
 scripts/csp-hashes.mjs   postbuild: verifica los hashes sha256 de los <script is:inline> contra la CSP de public/.htaccess; falla el build si falta alguno
 design/logo/            exploración y logo oficial «Ligadura NT» (DECISION.md, final/*.svg → npm run brand; v2/ y monograma/ = archivo)
 src/
@@ -49,7 +51,7 @@ src/
 - **privacy.ts**: política Ley 1581 de 2012; razón social, NIT y `lastUpdated` vacíos ⇒ no se muestran (ver PENDIENTES).
 - **ceo.ts** también exporta `ceoPage` (textos de /jonathan-osorio/) y los tipos `CeoBlock`, `CeoQa`.
 - **projects.ts** también: `headline`, `challenge`, `solution[]`, `value[]`, `statusNote`, `images[]` (`ProjectImage`), `illustration?`,
-  `faqs[]` por proyecto y `portfolioFaqs`. Capturas en `src/assets/portfolio/<slug>/`.
+  `faqs[]` por proyecto y `portfolioFaqs`. Capturas en `src/assets/portfolio/<slug>/<slug>-<pantalla>.webp`; OG en `src/assets/og/` (páginas: `src/data/og.ts`).
 - **faqs.ts**: `Faq` {question, answer, category}; `faqs` (16), `faqCategories`, `faqsByCategory(cat)`.
 
 ## JSON-LD (`src/lib/schema.ts`)

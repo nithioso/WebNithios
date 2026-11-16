@@ -11,7 +11,7 @@
  */
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '@/lib/icons';
-import photo from '@/assets/ceo/jonathan-osorio.jpg';
+import photo from '@/assets/ceo/jonathan-osorio-ceo-nithios.jpg';
 
 export interface ExperienceItem {
   role: string;
@@ -356,7 +356,7 @@ export const ceo: Ceo = {
   sameAs: ['https://www.linkedin.com/in/jonathan-osorio-correa'],
   linkedin: 'https://www.linkedin.com/in/jonathan-osorio-correa',
   photo: photo,
-  photoAlt: 'Jonathan Osorio, CEO y Fundador de Nithios',
+  photoAlt: 'Retrato en blanco y negro de Jonathan Osorio, CEO y Fundador de Nithios, sobre fondo oscuro',
   seoTitle: 'Jonathan Osorio: CEO de Nithios y líder en tecnología',
   seoDescription:
     'Jonathan Osorio, CEO de Nithios: Ingeniero de Sistemas y Especialista en Gerencia de TI con casi 20 años liderando tecnología en retail, educación y servicios.',

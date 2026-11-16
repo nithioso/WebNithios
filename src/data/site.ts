@@ -17,6 +17,9 @@ export const site = {
     'Nithios es una empresa de tecnología colombiana: consultoría tecnológica para adoptar tecnología y mejorar procesos, y desarrollo de software a medida con nuevas tecnologías.',
   /** Imagen Open Graph por defecto (1200×630) en /public. */
   defaultOgImage: '/og-default.png',
+  /** Texto alternativo de og-default.png (qué muestra la imagen). */
+  defaultOgImageAlt:
+    'Logo de Nithios y el lema «Consultoría tecnológica y desarrollo de software a medida en Colombia» en dorado sobre negro',
   themeColor: '#000000',
   founder: 'Jonathan Osorio',
   whatsapp: {

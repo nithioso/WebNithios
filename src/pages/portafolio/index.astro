@@ -15,7 +15,7 @@ import { sortedProjects, portfolioFaqs } from '@/data/projects';
 import { getService } from '@/data/services';
 import { coverage, absoluteUrl } from '@/data/site';
 import { itemList, projectWork, faqPage } from '@/lib/schema';
-import { projectOgImage } from '@/lib/images';
+import { projectOgImage, pageOgImage } from '@/lib/images';
 
 const path = '/portafolio/';
 const title = 'Portafolio de software a medida en Colombia';
@@ -57,12 +57,17 @@ const principles = [
     text: 'Diseño sobrio, jerarquía clara y temas claro y oscuro donde aportan. Un software que tu equipo quiere usar.',
   },
 ];
+
+// Imagen Open Graph propia (src/data/og.ts · npm run og).
+const og = await pageOgImage('/portafolio/');
 ---
 
 <BaseLayout
   title={title}
   description={description}
   path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
   breadcrumbs={crumbs}
   pageType="CollectionPage"
   mainEntityId={listId}

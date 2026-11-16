@@ -4,6 +4,7 @@
  * El formulario (ContactForm) no envía datos a ningún servidor: compone el mensaje y abre WhatsApp.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { pageOgImage } from '@/lib/images';
 import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import Card from '@/components/Card.astro';
@@ -20,12 +21,17 @@ import type { IconName } from '@/lib/icons';
 const path = c.path;
 const crumbs: Crumb[] = [{ name: 'Contacto', path }];
 const stepIcons: IconName[] = ['whatsapp', 'message', 'target', 'clipboard'];
+
+// Imagen Open Graph propia (src/data/og.ts · npm run og).
+const og = await pageOgImage('/contacto/');
 ---
 
 <BaseLayout
   title={c.seoTitle}
   description={c.seoDescription}
   path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
   breadcrumbs={crumbs}
   pageType="ContactPage"
   mainEntityId={ids.organization}

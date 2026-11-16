@@ -7,25 +7,29 @@
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '@/lib/icons';
 import type { Faq } from '@/data/faqs';
-import dragonTablero from '@/assets/portfolio/dragon/tablero.webp';
-import dragonCotizaciones from '@/assets/portfolio/dragon/cotizaciones.webp';
-import dragonContenedores from '@/assets/portfolio/dragon/contenedores.webp';
-import dragonProyectos from '@/assets/portfolio/dragon/proyectos.webp';
-import dragonRoles from '@/assets/portfolio/dragon/roles-y-permisos.webp';
-import dragonTableroChino from '@/assets/portfolio/dragon/tablero-chino.webp';
-import krystalOg from '@/assets/portfolio/krystal/og.png';
-import logisticaTablero from '@/assets/portfolio/plataforma-logistica-acero/tablero.webp';
-import logisticaCargue from '@/assets/portfolio/plataforma-logistica-acero/optimizacion-de-cargue.webp';
-import logisticaSeguimiento from '@/assets/portfolio/plataforma-logistica-acero/seguimiento-de-ruta.webp';
-import logisticaConductores from '@/assets/portfolio/plataforma-logistica-acero/app-de-conductores.webp';
-import logisticaBodegas from '@/assets/portfolio/plataforma-logistica-acero/bodegas-wms.webp';
-import logisticaReportes from '@/assets/portfolio/plataforma-logistica-acero/reportes-e-indicadores.webp';
-import transporteTorre from '@/assets/portfolio/plataforma-transporte-audiovisual/torre-de-control.webp';
-import transporteAcceso from '@/assets/portfolio/plataforma-transporte-audiovisual/acceso-por-perfil.webp';
-import transporteJornada from '@/assets/portfolio/plataforma-transporte-audiovisual/jornada-del-conductor.webp';
-import transporteTrailers from '@/assets/portfolio/plataforma-transporte-audiovisual/coordinacion-de-trailers.webp';
-import transporteTaller from '@/assets/portfolio/plataforma-transporte-audiovisual/taller-y-mantenimiento.webp';
-import transporteReportes from '@/assets/portfolio/plataforma-transporte-audiovisual/reportes.webp';
+// OG 1200×630 de cada caso: generadas con `npm run og` (scripts/generate-og-images.mjs).
+import dragonOg from '@/assets/og/dragon-global-trade-plataforma-comercio-internacional-og.png';
+import logisticaOg from '@/assets/og/plataforma-logistica-acero-pedidos-rutas-y-despachos-og.png';
+import transporteOg from '@/assets/og/plataforma-transporte-audiovisual-operacion-de-rodajes-og.png';
+import krystalOg from '@/assets/og/krystal-software-consultorios-psicologicos-og.png';
+import dragonTablero from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-tablero-comercio-internacional.webp';
+import dragonCotizaciones from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-modulo-comercial-cotizaciones.webp';
+import dragonContenedores from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-logistica-de-contenedores.webp';
+import dragonProyectos from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-proyectos-por-etapa.webp';
+import dragonRoles from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-roles-y-permisos.webp';
+import dragonTableroChino from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-interfaz-en-chino.webp';
+import logisticaTablero from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-panel-de-control.webp';
+import logisticaCargue from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-optimizacion-de-cargue.webp';
+import logisticaSeguimiento from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-seguimiento-de-ruta.webp';
+import logisticaConductores from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-app-de-conductores.webp';
+import logisticaBodegas from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-bodegas-wms.webp';
+import logisticaReportes from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-reportes-e-indicadores.webp';
+import transporteTorre from '@/assets/portfolio/plataforma-transporte-audiovisual/plataforma-transporte-audiovisual-torre-de-control.webp';
+import transporteAcceso from '@/assets/portfolio/plataforma-transporte-audiovisual/plataforma-transporte-audiovisual-acceso-por-perfil.webp';
+import transporteJornada from '@/assets/portfolio/plataforma-transporte-audiovisual/plataforma-transporte-audiovisual-jornada-del-conductor.webp';
+import transporteTrailers from '@/assets/portfolio/plataforma-transporte-audiovisual/plataforma-transporte-audiovisual-coordinacion-de-trailers.webp';
+import transporteTaller from '@/assets/portfolio/plataforma-transporte-audiovisual/plataforma-transporte-audiovisual-taller-y-mantenimiento.webp';
+import transporteReportes from '@/assets/portfolio/plataforma-transporte-audiovisual/plataforma-transporte-audiovisual-reportes-de-operacion.webp';
 
 /** 'sin-especificar' cuando el estado real no está confirmado (ver docs/PENDIENTES.md). */
 export type ProjectStatus = 'prototipo' | 'en-desarrollo' | 'en-produccion' | 'sin-especificar';
@@ -96,7 +100,7 @@ export interface Project {
   coverAlt?: string;
   /** Monograma para el arte generativo cuando no hay imagen. */
   monogram: string;
-  /** Imagen OG 1200×630 cuando no hay `cover` (p. ej. render de la ilustración). Alt en `ogImageAlt`. */
+  /** Imagen OG 1200×630 del caso (render de `npm run og`; si falta se recorta `cover`). Alt en `ogImageAlt`. */
   ogImage?: ImageMetadata;
   ogImageAlt?: string;
   featured: boolean;
@@ -169,7 +173,10 @@ export const projects: Project[] = [
     whatsappMessage: 'Hola Nithios, vi Dragon Global Trade y quiero una plataforma similar para mi empresa.',
     cover: dragonTablero,
     coverAlt:
-      'Tablero de Dragon Global Trade en tema oscuro: tareas que requieren atención y gráfico de proyectos activos por fase, con datos de demostración.',
+      'Tablero de Dragon Global Trade en tema oscuro: tareas por atender y gráfico de proyectos activos por fase, con datos de demostración.',
+    ogImage: dragonOg,
+    ogImageAlt:
+      'Dragon Global Trade, caso de portafolio de Nithios: tablero del prototipo de gestión de comercio internacional',
     headline: 'Todo tu comercio internacional, en una sola pantalla.',
     challenge:
       'Una empresa que importa y exporta suele repartir su operación entre hojas de cálculo, correos y chats: la cotización vive en un archivo, la orden al proveedor en otro y el estado del contenedor en la memoria de alguien. El resultado es información duplicada, decisiones lentas y poca visibilidad de lo que pasa entre países.',
@@ -194,12 +201,12 @@ export const projects: Project[] = [
       },
       {
         src: dragonCotizaciones,
-        alt: 'Módulo comercial de Dragon Global Trade: indicadores de cotizaciones por estado y tabla de cotizaciones con cliente, proyecto, estado y total.',
+        alt: 'Módulo comercial de Dragon Global Trade: cotizaciones por estado y tabla con cliente, proyecto, estado y total de cada cotización.',
         caption: 'Comercial: cotizaciones por estado, desde el borrador hasta la aprobación.',
       },
       {
         src: dragonContenedores,
-        alt: 'Módulo de logística de Dragon Global Trade: indicadores de contenedores y tabla con tipo, modalidad, estado, ocupación, ruta y fecha estimada de llegada.',
+        alt: 'Logística en Dragon Global Trade: indicadores de contenedores y tabla con modalidad, estado, ocupación, ruta y fecha estimada de llegada.',
         caption: 'Logística: seguimiento de contenedores, ocupación, ruta y fecha estimada de llegada.',
       },
       {
@@ -294,7 +301,10 @@ export const projects: Project[] = [
     whatsappMessage: 'Hola Nithios, vi el caso de la plataforma logística para acero y quiero una plataforma logística a la medida para mi empresa.',
     cover: logisticaTablero,
     coverAlt:
-      'Panel de control de la plataforma logística en tema oscuro: indicadores de pedidos, carga y vehículos, mapa operativo por ruta y alertas, con datos de demostración.',
+      'Panel de control de la plataforma logística para acero: pedidos, carga y vehículos, mapa por ruta y alertas, con datos ficticios.',
+    ogImage: logisticaOg,
+    ogImageAlt:
+      'Plataforma logística para acero, caso de Nithios: panel de control del prototipo con mapa de rutas y alertas',
     headline: 'De la bodega a la obra, cada pedido bajo control.',
     challenge:
       'En una empresa que distribuye acero, cada despacho depende de muchas decisiones: si hay inventario para reservar, qué vehículo alcanza para el peso, en qué orden visitar a los clientes, cómo cargar el camión y cómo probar que la entrega se hizo. Cuando esas decisiones viven en hojas de cálculo, llamadas y papeles, se pierden kilómetros, se cargan vehículos de más o de menos y nadie sabe con certeza dónde está cada pedido.',
@@ -314,12 +324,12 @@ export const projects: Project[] = [
     images: [
       {
         src: logisticaTablero,
-        alt: 'Panel de control de la plataforma logística: indicadores de pedidos pendientes, carga por despachar, vehículos, utilización y cumplimiento, mapa operativo por ruta y alertas operativas.',
+        alt: 'Panel de control logístico: pedidos pendientes, carga por despachar, vehículos y cumplimiento, con mapa operativo por ruta y alertas.',
         caption: 'Panel de control: la operación del día, el mapa por ruta y las alertas que requieren acción.',
       },
       {
         src: logisticaCargue,
-        alt: 'Pantalla de optimización de cargue: plano del vehículo con los pedidos en orden de entrega, utilización de peso y volumen y alerta de cargue bloqueado por incompatibilidad.',
+        alt: 'Optimización de cargue: plano del vehículo con los pedidos en orden de entrega, uso de peso y volumen y alerta de cargue incompatible.',
         caption: 'Optimización de cargue: qué pedido va dónde, en qué orden, y si cabe sin sobrepasar peso ni volumen.',
       },
       {
@@ -417,7 +427,10 @@ export const projects: Project[] = [
     whatsappMessage: 'Hola Nithios, vi el caso de la plataforma de transporte audiovisual y quiero una plataforma de operación a la medida para mi empresa.',
     cover: transporteTorre,
     coverAlt:
-      'Torre de Control y despacho de la plataforma de transporte en tema oscuro: indicadores de servicios, liquidaciones retenidas y alarmas, y lista de candidatos propuestos para un servicio, con datos de demostración.',
+      'Torre de control de la plataforma de transporte audiovisual: servicios del día, alarmas y candidatos propuestos, con datos ficticios.',
+    ogImage: transporteOg,
+    ogImageAlt:
+      'Plataforma de transporte audiovisual, caso de Nithios: torre de control del prototipo con servicios y candidatos',
     headline: 'Cada servicio de rodaje, del pedido al pago.',
     challenge:
       'Una empresa de transporte especial para producciones audiovisuales coordina a diario vehículos, conductores, trailers y personal en locaciones distintas, con jornadas largas que cambian sobre la marcha. Si la asignación se hace por chat, la firma del servicio queda en papel y la liquidación se arma a mano, aparecen recursos duplicados, servicios sin soporte, pagos retenidos y poca visibilidad para la productora.',
@@ -437,7 +450,7 @@ export const projects: Project[] = [
     images: [
       {
         src: transporteTorre,
-        alt: 'Torre de Control y despacho: indicadores de servicios de hoy, liquidaciones retenidas, servicios por verificar y alarmas, y tabla de candidatos para un servicio con continuidad, cumplimiento y costo previsto.',
+        alt: 'Torre de control y despacho: servicios de hoy, liquidaciones retenidas y alarmas, con candidatos por continuidad, cumplimiento y costo.',
         caption: 'Torre de control: los candidatos propuestos para cada servicio, con continuidad, cumplimiento y costo.',
       },
       {
@@ -462,7 +475,7 @@ export const projects: Project[] = [
       },
       {
         src: transporteReportes,
-        alt: 'Reportes de la operación: demanda atendida, líneas sin cubrir, tiempo hasta asignar el recurso y continuidad lograda, con el detalle de solicitudes.',
+        alt: 'Reportes de la operación de transporte: demanda atendida, líneas sin cubrir, tiempo de asignación y continuidad, con detalle de solicitudes.',
         caption: 'Reportes: indicadores para saber si la operación cumple lo que se pidió.',
       },
     ],
@@ -530,7 +543,7 @@ export const projects: Project[] = [
     serviceSlug: 'desarrollo-de-software-a-medida',
     monogram: 'K',
     ogImage: krystalOg,
-    ogImageAlt: 'Krystal, aplicación de Nithios para consultorios psicológicos: agenda, videollamadas e historia clínica',
+    ogImageAlt: 'Krystal, caso de portafolio de Nithios: ilustración conceptual de agenda semanal y videollamada para consultorios psicológicos',
     featured: true,
     order: 4,
     whatsappMessage: 'Hola Nithios, vi Krystal y quiero una aplicación a la medida para mi consultorio o empresa.',

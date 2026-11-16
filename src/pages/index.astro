@@ -15,7 +15,7 @@ import CtaBand from '@/components/CtaBand.astro';
 import FaqList from '@/components/FaqList.astro';
 import Icon from '@/components/Icon.astro';
 import CeoPortrait from '@/components/CeoPortrait.astro';
-import { cities, coverage } from '@/data/site';
+import { site, cities, coverage } from '@/data/site';
 import { services } from '@/data/services';
 import { sortedProjects } from '@/data/projects';
 import { ceo } from '@/data/ceo';
@@ -120,7 +120,15 @@ const reasons: { icon: IconName; title: string; text: string; span: string; tone
 ];
 ---
 
-<BaseLayout title={title} description={description} path={path} jsonLd={jsonLd} whatsappMessage={whatsappMessage}>
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  ogImage={site.defaultOgImage}
+  ogImageAlt={site.defaultOgImageAlt}
+  jsonLd={jsonLd}
+  whatsappMessage={whatsappMessage}
+>
   <HomeHero whatsappMessage={whatsappMessage} />
 
   <!-- Propuesta de valor -->

@@ -4,6 +4,7 @@
  * Contenido: services.ts (servicios) + service-details.ts (servicesHub) + faqs.ts (selección).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import { pageOgImage } from '@/lib/images';
 import PageHero from '@/components/PageHero.astro';
 import Section from '@/components/Section.astro';
 import Card from '@/components/Card.astro';
@@ -38,12 +39,17 @@ const jsonLd = [
   ),
   // FAQPage solo en /preguntas-frecuentes/ (estas preguntas salen de faqs.ts): aquí el acordeón es solo visible.
 ];
+
+// Imagen Open Graph propia (src/data/og.ts · npm run og).
+const og = await pageOgImage('/servicios/');
 ---
 
 <BaseLayout
   title={hub.seoTitle}
   description={hub.seoDescription}
   path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
   breadcrumbs={crumbs}
   pageType="CollectionPage"
   jsonLd={jsonLd}
