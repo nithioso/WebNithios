@@ -46,7 +46,8 @@ Las `keywords` de cada servicio en `services.ts` guían el copy (no se imprimen 
 ## Redacción GEO (motores de IA)
 - Primera frase de cada bloque = respuesta directa y autocontenida.
 - Preguntas como subtítulos (h2/h3) con respuesta inmediata en 40–60 palabras (FAQ, bloque "¿Cómo contacto a Nithios?").
-- Entidades explícitas: Nithios, Jonathan Osorio (CEO y Fundador), Colombia + ciudades, Dragon Global Trade, Krystal, tecnologías.
+- Entidades explícitas: Nithios (nacida en Medellín, cobertura nacional remota), Jonathan Osorio Correa (CEO y Fundador; sameAs LinkedIn), Colombia + ciudades,
+  Dragon Global Trade, Armetales, Lystrax, Krystal, tecnologías.
 - Intenciones objetivo: "consultoría tecnológica en Colombia", "desarrollo de software a medida en Colombia",
   "empresa de desarrollo de software Bogotá/Medellín", "transformación digital para empresas", "inteligencia artificial para empresas".
 - Ciudades: mención natural ("atendemos de forma remota empresas en Bogotá, Medellín…"); nunca dirección ni "oficina en".
@@ -103,7 +104,7 @@ Las `keywords` de cada servicio en `services.ts` guían el copy (no se imprimen 
    Solo con datos reales; la verificación la exige Google.
 7. Validar datos estructurados: https://search.google.com/test/rich-results y https://validator.schema.org (sin errores).
 8. Probar previsualizaciones OG (WhatsApp, LinkedIn Post Inspector) y PageSpeed Insights (móvil) con Core Web Vitals en verde.
-9. Cuando existan perfiles reales (LinkedIn de Nithios y de Jonathan): agregarlos a `sameAs` (ceo.ts / organization) — refuerza la entidad.
+9. LinkedIn de Jonathan ya está en `ceo.sameAs`. Cuando exista el perfil de empresa de Nithios, agregarlo a `sameAs` de `organization()`.
 
 ## Cómo agregar una página
 1. Contenido en `src/data/` (nuevo archivo o entrada); nunca hardcodeado.

@@ -127,14 +127,33 @@ export function webPage(input: WebPageInput): JsonLd {
 }
 
 /** Person: Jonathan Osorio. Solo incluye arrays si tienen datos reales. `image`: URL optimizada (src/lib/images.ts). */
+/** Códigos BCP 47 de los idiomas que se publican en `ceo.languages`. */
+const languageCodes: Record<string, string> = { Español: 'es', Inglés: 'en' };
+
 export function person(image?: string): JsonLd {
   return stripUndefined({
     '@type': 'Person',
     '@id': ids.person,
-    name: ceo.name,
+    name: ceo.fullName,
+    alternateName: ceo.name !== ceo.fullName ? ceo.name : undefined,
     givenName: ceo.givenName,
-    familyName: ceo.familyName,
+    familyName: ceo.familyNames,
     jobTitle: ceo.jobTitle,
+    disambiguatingDescription: ceo.professionalHeadline || undefined,
+    // Solo la ciudad de residencia de la persona; la empresa no publica dirección.
+    homeLocation: {
+      '@type': 'Place',
+      name: `${ceo.location.locality}, ${ceo.location.region}, ${ceo.location.country}`,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: ceo.location.locality,
+        addressRegion: ceo.location.region,
+        addressCountry: ceo.location.countryCode,
+      },
+    },
+    knowsLanguage: ceo.languages.length
+      ? ceo.languages.map((name) => ({ '@type': 'Language', name, alternateName: languageCodes[name] }))
+      : undefined,
     description: ceo.summary,
     url: absoluteUrl(ceo.path),
     image: image ? absoluteUrl(image) : undefined,
@@ -147,7 +166,9 @@ export function person(image?: string): JsonLd {
       ? ceo.certifications.map((c) => ({
           '@type': 'EducationalOccupationalCredential',
           name: c.name,
+          credentialCategory: 'certificate',
           recognizedBy: { '@type': 'Organization', name: c.issuer },
+          dateCreated: c.isoDate,
         }))
       : undefined,
     sameAs: ceo.sameAs.length ? ceo.sameAs : undefined,

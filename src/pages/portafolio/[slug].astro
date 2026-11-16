@@ -136,7 +136,7 @@ const specs = [
     p.features.length > 0 && (
       <Section
         id="funcionalidades"
-        eyebrow={p.slug === 'dragon-global-trade' ? 'Módulos' : 'Funcionalidades'}
+        eyebrow={p.status === 'prototipo' ? 'Módulos' : 'Funcionalidades'}
         title={`Qué incluye ${p.name}.`}
         intro="Cada pieza responde a una necesidad concreta de la operación."
       >
@@ -252,9 +252,9 @@ const specs = [
   {
     others.length > 0 && (
       <Section id="mas-proyectos" eyebrow="Portafolio" title="Más proyectos." titleSize="md">
-        <div class="grid gap-6 md:grid-cols-2">
-          {others.slice(0, 2).map((o, i) => (
-            <ProjectCard project={o} revealDelay={i * 100} />
+        <div class:list={['grid gap-6 md:grid-cols-2', others.length >= 3 && 'lg:grid-cols-3']}>
+          {others.slice(0, 3).map((o, i) => (
+            <ProjectCard project={o} revealDelay={i * 100} class={others.length >= 3 && i === 2 ? 'md:max-lg:col-span-2' : undefined} />
           ))}
         </div>
         <Fragment slot="actions">

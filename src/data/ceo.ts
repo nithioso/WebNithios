@@ -1,8 +1,8 @@
 /**
  * Perfil del CEO y Fundador.
- * REGLA ANTI-ALUCINACIÓN: experiencia, educación, certificaciones, sectores,
- * logros, foto y perfiles sociales quedan VACÍOS hasta recibir datos reales.
- * La UI debe ocultar cada sección cuyo arreglo esté vacío. Ver docs/PENDIENTES.md.
+ * REGLA ANTI-ALUCINACIÓN: solo datos confirmados. Fuente de ubicación, idiomas, formación (institución y periodo),
+ * certificaciones y sameAs: vista pública de su perfil de LinkedIn. Cargos, empleadores, títulos, sectores,
+ * logros y foto siguen VACÍOS hasta recibir datos reales (la UI oculta cada sección vacía). Ver docs/PENDIENTES.md.
  */
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '@/lib/icons';
@@ -18,7 +18,8 @@ export interface ExperienceItem {
 }
 
 export interface EducationItem {
-  degree: string;
+  /** Título o programa. Opcional: si no está confirmado se muestra solo la institución y el periodo. */
+  degree?: string;
   institution: string;
   period?: string;
   description?: string;
@@ -27,13 +28,35 @@ export interface EducationItem {
 export interface CertificationItem {
   name: string;
   issuer: string;
-  year?: string;
+  /** Fecha visible (texto libre, ej. "Enero de 2018"). */
+  date?: string;
+  /** Fecha ISO (AAAA-MM) para JSON-LD. */
+  isoDate?: string;
+}
+
+export interface CeoLocation {
+  locality: string;
+  region: string;
+  country: string;
+  countryCode: string;
 }
 
 export interface Ceo {
+  /** Nombre corto de uso en el sitio. */
   name: string;
+  /** Nombre completo (JSON-LD, ficha). */
+  fullName: string;
   givenName: string;
+  /** Primer apellido (titular de la página). */
   familyName: string;
+  /** Apellidos completos (JSON-LD). */
+  familyNames: string;
+  /** Cómo se describe profesionalmente (LinkedIn). */
+  professionalHeadline: string;
+  /** Ciudad de residencia (solo para la Person; la empresa no publica dirección). */
+  location: CeoLocation;
+  /** Idiomas (sin nivel, no confirmado). */
+  languages: string[];
   jobTitle: string;
   company: string;
   path: string;
@@ -56,8 +79,10 @@ export interface Ceo {
   certifications: CertificationItem[];
   /** Logros verificables: PENDIENTE. */
   achievements: string[];
-  /** URLs de perfiles públicos (LinkedIn, etc.): PENDIENTE. */
+  /** URLs de perfiles públicos verificados. */
   sameAs: string[];
+  /** Perfil de LinkedIn (enlace visible). */
+  linkedin?: string;
   photo?: ImageMetadata;
   photoAlt?: string;
   seoTitle: string;
@@ -67,23 +92,30 @@ export interface Ceo {
 
 export const ceo: Ceo = {
   name: 'Jonathan Osorio',
+  fullName: 'Jonathan Osorio Correa',
   givenName: 'Jonathan',
   familyName: 'Osorio',
+  familyNames: 'Osorio Correa',
+  professionalHeadline: 'CTO/CIO y consultor en Estrategia TI',
+  location: { locality: 'Medellín', region: 'Antioquia', country: 'Colombia', countryCode: 'CO' },
+  languages: ['Español', 'Inglés'],
   jobTitle: 'CEO y Fundador',
   company: 'Nithios',
   path: '/jonathan-osorio/',
   experienceSummary: 'Casi 20 años de experiencia en diferentes sectores',
   headline: 'Liderazgo tecnológico con visión de negocio.',
   summary:
-    'Jonathan Osorio es el CEO y Fundador de Nithios. Alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores y una amplia formación académica.',
+    'Jonathan Osorio Correa es el CEO y Fundador de Nithios. CTO/CIO y consultor en Estrategia TI radicado en Medellín, con casi 20 años de experiencia en diferentes sectores y una amplia formación académica.',
   bio: [
-    'Jonathan Osorio es el CEO y Fundador de Nithios. Es un alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores y una amplia formación académica que respalda su visión estratégica.',
+    'Jonathan Osorio Correa es el CEO y Fundador de Nithios. Se define como CTO/CIO y consultor en Estrategia TI: un alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores y una amplia formación académica que respalda su visión estratégica.',
     'Esa trayectoria le permite conectar dos mundos que muchas veces no se hablan: la estrategia de negocio y la ejecución técnica. Por eso fundó Nithios, una empresa de tecnología colombiana que acompaña a las organizaciones desde la decisión de qué tecnología adoptar hasta la construcción del software que la hace realidad.',
+    'Vive en Medellín, Antioquia, donde nació Nithios, y desde allí acompaña a empresas de toda Colombia de forma remota. Habla español e inglés, su formación incluye la Universidad Pontificia Bolivariana (2022 – actualidad) y cuenta con certificaciones en Scrum como Scrum Master y Product Owner.',
     'Bajo su liderazgo, Nithios trabaja en dos líneas complementarias: la asesoría y consultoría tecnológica para empresas que quieren mejorar sus procesos, y el desarrollo de aplicativos a la medida con nuevas tecnologías.',
   ],
   quote: '',
-  /** Solo lo derivado de las líneas de servicio. Especialidades personales: PENDIENTE (docs/PENDIENTES.md). */
+  /** Líneas de servicio + «Estrategia de TI» (de su titular público). Otras especialidades: PENDIENTE (docs/PENDIENTES.md). */
   focusAreas: [
+    'Estrategia de TI',
     'Consultoría tecnológica',
     'Transformación digital',
     'Desarrollo de software a la medida',
@@ -91,15 +123,24 @@ export const ceo: Ceo = {
   ],
   sectors: [],
   experience: [],
-  education: [],
-  certifications: [],
+  /** Programa no visible en la fuente: solo institución y periodo (ver docs/PENDIENTES.md). */
+  education: [{ institution: 'Universidad Pontificia Bolivariana', period: '2022 – actualidad' }],
+  certifications: [
+    { name: 'Scrum Master Accredited Certification (SMAC)', issuer: 'International Scrum Institute', date: 'Enero de 2018', isoDate: '2018-01' },
+    { name: 'Scrum Product Owner Accredited Certification (SPOAC)', issuer: 'International Scrum Institute', date: 'Enero de 2018', isoDate: '2018-01' },
+    { name: 'Scrum Fundamentals Certified (SFC)', issuer: 'SCRUMstudy', date: 'Julio de 2017', isoDate: '2017-07' },
+    { name: 'Curso de Base de Datos NoSQL', issuer: 'Platzi', date: 'Noviembre de 2024', isoDate: '2024-11' },
+    { name: 'Curso de ChatGPT Empresarial', issuer: 'Platzi', date: 'Julio de 2024', isoDate: '2024-07' },
+    { name: 'Data Cabling System', issuer: 'Furukawa', date: 'Diciembre de 2014', isoDate: '2014-12' },
+  ],
   achievements: [],
-  sameAs: [],
+  sameAs: ['https://www.linkedin.com/in/jonathan-osorio-correa'],
+  linkedin: 'https://www.linkedin.com/in/jonathan-osorio-correa',
   photo: undefined,
   photoAlt: 'Jonathan Osorio, CEO y Fundador de Nithios',
   seoTitle: 'Jonathan Osorio, CEO y Fundador de Nithios',
   seoDescription:
-    'Conoce a Jonathan Osorio, CEO y Fundador de Nithios: alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores y amplia formación.',
+    'Jonathan Osorio Correa, CEO y Fundador de Nithios: CTO/CIO y consultor en Estrategia TI en Medellín, con casi 20 años de experiencia y certificaciones Scrum.',
   whatsappMessage: 'Hola Jonathan, quiero conversar sobre un proyecto de tecnología para mi empresa.',
 };
 
@@ -121,13 +162,14 @@ export interface CeoQa {
 
 export const ceoPage = {
   heroIntro:
-    'Alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores. Fundó Nithios para que las empresas colombianas tomen mejores decisiones tecnológicas y las conviertan en software que funciona.',
+    'CTO/CIO y consultor en Estrategia TI, con casi 20 años de experiencia en diferentes sectores. Desde Medellín fundó Nithios para que las empresas colombianas tomen mejores decisiones tecnológicas y las conviertan en software que funciona.',
   /** Datos de la ficha ejecutiva (solo hechos confirmados). */
   facts: [
     { label: 'Cargo', value: 'CEO y Fundador de Nithios' },
-    { label: 'Experiencia', value: 'Casi 20 años en tecnología' },
-    { label: 'Trayectoria', value: 'Diferentes sectores de la economía' },
-    { label: 'Formación', value: 'Amplia formación académica' },
+    { label: 'Perfil', value: 'CTO/CIO y consultor en Estrategia TI' },
+    { label: 'Experiencia', value: 'Casi 20 años en diferentes sectores' },
+    { label: 'Ubicación', value: 'Medellín, Antioquia, Colombia' },
+    { label: 'Idiomas', value: 'Español e inglés' },
     { label: 'Cobertura', value: 'Empresas en toda Colombia' },
   ],
   profileTitle: 'Un ejecutivo que habla el idioma del negocio y el de la tecnología.',
@@ -216,7 +258,12 @@ export const ceoPage = {
     {
       question: '¿Quién es Jonathan Osorio?',
       answer:
-        'Jonathan Osorio es el CEO y Fundador de Nithios, empresa de tecnología colombiana. Es un alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores y una amplia formación académica.',
+        'Jonathan Osorio Correa es el CEO y Fundador de Nithios, empresa de tecnología colombiana dirigida desde Medellín. Se define como CTO/CIO y consultor en Estrategia TI, con casi 20 años de experiencia en diferentes sectores y una amplia formación académica.',
+    },
+    {
+      question: '¿Qué certificaciones tiene Jonathan Osorio?',
+      answer:
+        'Tiene las certificaciones Scrum Master Accredited Certification (SMAC) y Scrum Product Owner Accredited Certification (SPOAC) del International Scrum Institute, Scrum Fundamentals Certified (SFC) de SCRUMstudy y Data Cabling System de Furukawa, además de cursos de Base de Datos NoSQL y ChatGPT Empresarial en Platzi.',
     },
     {
       question: '¿Qué hace Jonathan Osorio en Nithios?',
@@ -226,7 +273,7 @@ export const ceoPage = {
     {
       question: '¿Cómo puedo hablar con Jonathan Osorio sobre un proyecto?',
       answer:
-        'Puedes escribir al WhatsApp de Nithios, +57 305 302 7559, contando brevemente qué quieres lograr. La atención es remota para empresas de toda Colombia, desde Bogotá y Medellín hasta Cali, Barranquilla o Bucaramanga.',
+        'Puedes escribir al WhatsApp de Nithios, +57 305 302 7559, contando brevemente qué quieres lograr. Jonathan vive en Medellín y la atención es remota para empresas de toda Colombia, desde Bogotá hasta Cali, Barranquilla o Bucaramanga.',
     },
   ] satisfies CeoQa[],
 };

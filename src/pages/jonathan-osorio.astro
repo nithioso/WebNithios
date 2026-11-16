@@ -3,7 +3,7 @@
  * /jonathan-osorio/ — Hoja de vida del CEO y Fundador.
  * Todo el contenido sale de src/data/ceo.ts (`ceo` + `ceoPage`).
  * Trayectoria, formación, certificaciones, logros, sectores y cita se renderizan
- * SOLO si tienen datos reales (hoy vacíos; ver docs/PENDIENTES.md).
+ * SOLO si tienen datos reales (hoy: formación —solo institución y periodo— y certificaciones; ver docs/PENDIENTES.md).
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
@@ -114,6 +114,20 @@ for (const [key, visible] of Object.entries(conditional)) {
             ))
           }
         </dl>
+        {
+          ceo.linkedin && (
+            <a
+              href={ceo.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-7 inline-flex min-h-11 items-center gap-2 rounded-full border border-line-gold px-4 text-sm font-medium text-gold-200 transition-colors hover:border-gold-400 hover:text-gold-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+            >
+              Perfil de LinkedIn
+              <Icon name="arrow-up-right" size={16} />
+              <span class="sr-only">(se abre en una pestaña nueva)</span>
+            </a>
+          )
+        }
       </aside>
     </div>
     {
@@ -249,10 +263,10 @@ for (const [key, visible] of Object.entries(conditional)) {
               <ul class="mt-6 divide-y divide-line border-y border-line">
                 {ceo.education.map((ed) => (
                   <li class="py-5" data-reveal>
-                    <p class="text-lg font-medium text-pearl">{ed.degree}</p>
+                    <p class="text-lg font-medium text-pearl">{ed.degree ?? ed.institution}</p>
                     <p class="mt-1 text-mist">
-                      {ed.institution}
-                      {ed.period && <span class="text-smoke"> · {ed.period}</span>}
+                      {ed.degree && ed.institution}
+                      {ed.period && <span class:list={ed.degree ? 'text-smoke' : 'text-mist'}>{ed.degree && ' · '}{ed.period}</span>}
                     </p>
                     {ed.description && <p class="mt-2 text-sm leading-relaxed text-mist">{ed.description}</p>}
                   </li>
@@ -271,7 +285,7 @@ for (const [key, visible] of Object.entries(conditional)) {
                     <p class="text-lg font-medium text-pearl">{c.name}</p>
                     <p class="mt-1 text-mist">
                       {c.issuer}
-                      {c.year && <span class="text-smoke"> · {c.year}</span>}
+                      {c.date && <span class="text-smoke"> · {c.date}</span>}
                     </p>
                   </li>
                 ))}

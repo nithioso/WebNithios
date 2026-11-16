@@ -1,14 +1,20 @@
 # Pendientes (datos reales que faltan — NO inventar)
 
 ## Jonathan Osorio (`src/data/ceo.ts`)
+Ya publicado (fuente: vista pública de https://www.linkedin.com/in/jonathan-osorio-correa): nombre completo Jonathan Osorio Correa,
+ubicación Medellín (Antioquia), titular «CTO/CIO y consultor en Estrategia TI», idiomas español e inglés (sin nivel), Universidad Pontificia
+Bolivariana 2022 – actualidad (sin programa) y 6 certificaciones (SMAC, SPOAC, SFC, NoSQL, ChatGPT Empresarial, Data Cabling System). Experiencia: «casi 20 años» (indicación del usuario).
+- [ ] **El usuario debe aportar el PDF o el texto completo de su LinkedIn** (la vista pública no muestra cargos, empresas ni títulos): con eso se llenan
+  `experience`, `sectors`, el `degree` de la UPB y cualquier otro estudio.
+
 La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío. Formato exacto de cada entrada:
 - [ ] **Foto profesional** (vertical 4:5, mín. 1040×1300 px, fondo oscuro ideal). Guardar en `src/assets/ceo/jonathan-osorio.jpg` y en `ceo.ts`:
   `import photo from '@/assets/ceo/jonathan-osorio.jpg';` → `photo: photo,`. `CeoPortrait.astro` reemplaza solo el monograma «JO» por la foto optimizada y `person(await ceoPhotoUrl())` (BaseLayout) añade al JSON-LD la versión optimizada 1200 px JPEG, nunca el original.
 - [ ] **Trayectoria** (`experience`, más reciente primero):
   `{ role: 'Cargo', organization: 'Empresa', period: '2018 – 2024', sector: 'Sector (opcional)', description: 'Qué lideró (opcional)', achievements: ['Logro verificable (opcional)'] }`
 - [ ] **Sectores** (`sectors`): `['Banca', 'Retail', …]` — solo sectores reales en los que trabajó.
-- [ ] **Estudios** (`education`): `{ degree: 'Título', institution: 'Universidad', period: '2005 – 2010 (opcional)', description: 'opcional' }` → alimenta `alumniOf` en JSON-LD.
-- [ ] **Certificaciones** (`certifications`): `{ name: 'Nombre', issuer: 'Entidad emisora', year: '2023 (opcional)' }` → `hasCredential` en JSON-LD.
+- [ ] **Título/programa en la UPB** y otros estudios (`education`): `{ degree: 'Título', institution: 'Universidad', period: '2005 – 2010 (opcional)', description: 'opcional' }` → `alumniOf` en JSON-LD. Hoy la UPB va sin `degree`.
+- [x] **Certificaciones** (`certifications`): `{ name, issuer, date: 'Enero de 2018', isoDate: '2018-01' }` → `hasCredential` en JSON-LD. Agregar las que falten con el PDF.
 - [ ] **Logros verificables** (`achievements`): `['Frase corta y comprobable']`.
 - [ ] **Cita aprobada por él** (`quote`): texto literal; se muestra atribuida a Jonathan. Hoy solo hay una frase de postura atribuida a Nithios (`ceoPage.vision.statement`).
 - [ ] **Validar áreas de especialidad de Jonathan** (hoy `focusAreas` solo lista lo derivado de las líneas de servicio; antes figuraban
@@ -17,11 +23,18 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 - [ ] **Rol de Jonathan en cada proyecto** (¿participa desde la primera conversación? ¿lideró Dragon/Krystal?). Hasta confirmarlo, el copy
   NO le atribuye participación personal ni habla de «su equipo» o «su sello» (ronda 2: se retiraron esas frases de `/jonathan-osorio/` y `/servicios/`).
 - [ ] **Cargos de liderazgo previos**: el copy dice solo «casi 20 años de experiencia en diferentes sectores» (sin «liderando iniciativas»). Si se confirma, ampliar en `ceo.ts`.
-- [ ] **Perfiles públicos** (`sameAs`): `['https://www.linkedin.com/in/…']` → refuerza la entidad Person en buscadores/IA.
+- [x] **Perfiles públicos** (`sameAs`): LinkedIn publicado (JSON-LD + enlace visible en la ficha ejecutiva).
+- [ ] Nivel de inglés (si se quiere publicar).
+- [ ] Confirmar que Nithios «nace en Medellín» se puede publicar así (hoy: `coverage.long`, FAQ del portafolio, bio y llms.txt; indicación del usuario). Sin dirección física.
 
 ## Portafolio (`src/data/projects.ts`)
 - [ ] Más proyectos (el usuario los enviará). Cada uno = un objeto en `projects` con todos los campos del tipo `Project`
   (`headline`, `challenge`, `solution[]`, `value[]`, `statusNote`, `images[]`, `faqs[]`); la página `/portafolio/<slug>/` se genera sola.
+- [x] Armetales y Lystrax: 6 capturas reales cada uno (tema oscuro, 2880×1800 WebP) en `src/assets/portfolio/armetales|lystrax/`, tomadas de los
+  prototipos estáticos (`nithioso/armetales`, `nithioso/lsto-propuestas-diseno/lystrax-propuesta-unificada.html`) con Playwright. Se ocultó el logo del
+  cliente en las capturas y, en el panel de Armetales, la alerta que nombraba un sistema de terceros. Datos ficticios (lo aclara `statusNote`).
+- [ ] Armetales / Lystrax: confirmar si se puede nombrar públicamente a los clientes (Armetales, L&STO) y si hay autorización para publicar el caso;
+  stack definitivo (hoy vacío) y estado real más allá del prototipo.
 - [x] Capturas de Dragon Global Trade: 6 capturas reales del prototipo (tema oscuro, 2880×1800 WebP) en `src/assets/portfolio/dragon/`,
   tomadas del prototipo estático con datos ficticios de demostración (la página lo aclara en `statusNote`). Regenerar si cambia el prototipo.
 - [ ] Capturas reales de Krystal: hoy se muestra una ilustración conceptual en CSS (`illustration: 'krystal'`, `KrystalMockup.astro`).

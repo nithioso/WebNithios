@@ -75,8 +75,8 @@ export const cities = [
 
 export type City = (typeof cities)[number];
 
-/** Texto estándar de cobertura. */
+/** Texto estándar de cobertura (dirección desde Medellín, cobertura nacional remota). */
 export const coverage = {
   short: 'Atención remota en toda Colombia',
-  long: `Atendemos de forma remota a empresas de toda Colombia: ${cities.join(', ')} y cualquier otra ciudad.`,
+  long: `Trabajamos desde Medellín y atendemos de forma remota a empresas de toda Colombia: ${cities.join(', ')} y cualquier otra ciudad.`,
 } as const;

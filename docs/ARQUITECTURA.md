@@ -23,13 +23,13 @@ src/
 | `/servicios/` | `pages/servicios/index.astro` (contenido en `servicesHub`) | hecha |
 | `/servicios/consultoria-tecnologica/` · `/servicios/desarrollo-de-software-a-medida/` | archivos sueltos en `pages/servicios/` → `components/ServiceDetailContent.astro` + `data/service-details.ts` | hechas |
 | `/portafolio/` | `pages/portafolio/index.astro` | hecha |
-| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (dragon-global-trade, krystal) |
+| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (dragon-global-trade, armetales, lystrax, krystal) |
 | `/jonathan-osorio/` | `pages/jonathan-osorio.astro` + `components/CeoPortrait.astro` | hecha |
 | `/contacto/` · `/preguntas-frecuentes/` · `/politica-de-privacidad/` | `pages/*.astro` (+ `components/ContactForm.astro`) | hechas |
 | 404 | `pages/404.astro` | hecha |
 
 ## Datos (`src/data`)
-- **site.ts**: `site` (name, url, lang `es-CO`, locale, tagline, description, defaultOgImage, whatsapp{number,e164,display,defaultMessage}),
+- **site.ts** (`coverage.long` menciona el origen en Medellín): `site` (name, url, lang `es-CO`, locale, tagline, description, defaultOgImage, whatsapp{number,e164,display,defaultMessage}),
   `waLink(msg?)`, `absoluteUrl(path)`, `nav: NavItem[]`, `legalNav`, `cities` (7), `coverage{short,long}`.
 - **services.ts**: `Service` {slug, path, name, shortName, icon, headline, summary, seoTitle, seoDescription, intro[], idealFor[],
   capabilities[{title,text,icon}], benefits[{title,text,icon}], process[{title,text}], deliverables[], technologies?, keywords[], whatsappMessage}.
@@ -38,9 +38,11 @@ src/
   features[{title,text,icon}], highlights[], platforms[], languages[], stack[], security[], serviceSlug, cover?, coverAlt?, monogram,
   h1Subtitle (2.ª línea del h1, alineada con seoTitle), ogImage?/ogImageAlt? (OG 1200×630 sin cover), featured, order, whatsappMessage}. `projects`, `sortedProjects`, `getProject(slug)`.
   Status `'sin-especificar'` = no confirmado (no mostrar badge de estado como hecho).
-- **ceo.ts**: `ceo` {name, givenName, familyName, jobTitle 'CEO y Fundador', company, path, experienceSummary, headline, summary, bio[],
-  quote (''), focusAreas[], sectors[], experience[], education[], certifications[], achievements[], sameAs[], photo?, photoAlt, seoTitle,
-  seoDescription, whatsappMessage}. Arrays vacíos/strings vacíos ⇒ la página OCULTA la sección.
+- **ceo.ts**: `ceo` {name, fullName 'Jonathan Osorio Correa', givenName, familyName, familyNames, professionalHeadline, location{locality,region,country,countryCode},
+  languages[], jobTitle 'CEO y Fundador', company, path, experienceSummary, headline, summary, bio[], quote (''), focusAreas[], sectors[], experience[],
+  education[{degree?, institution, period?}], certifications[{name, issuer, date?, isoDate?}], achievements[], sameAs[], linkedin?, photo?, photoAlt, seoTitle,
+  seoDescription, whatsappMessage}. Arrays vacíos/strings vacíos ⇒ la página OCULTA la sección. Sin `degree` se muestra solo institución y periodo.
+  Fuente de ubicación, idiomas, formación, certificaciones y LinkedIn: vista pública de su LinkedIn.
 - **service-details.ts**: `serviceDetails`, `getServiceDetail(slug)` (contenido largo de cada servicio: qué es, problemas, incluye,
   bloque destacado, proceso 6 pasos, entregables, sectores, FAQ propias, CTA) y `servicesHub` (página `/servicios/`).
 - **contact.ts**: `contactPage`, `faqPageContent` (textos de /contacto/ y /preguntas-frecuentes/).
@@ -52,7 +54,7 @@ src/
 
 ## JSON-LD (`src/lib/schema.ts`)
 BaseLayout siempre emite un `@graph` con `organization()` (Organization+ProfessionalService, areaServed Colombia + ciudades,
-contactPoint WhatsApp, sin address), `website()`, `person()` y `webPage({...})`; más `breadcrumbList()` si recibe `breadcrumbs`,
+contactPoint WhatsApp, sin address), `website()`, `person()` (Person con fullName, homeLocation Medellín, knowsLanguage, alumniOf, hasCredential, sameAs LinkedIn) y `webPage({...})`; más `breadcrumbList()` si recibe `breadcrumbs`,
 más los nodos de la prop `jsonLd`.
 Builders: `service(s)`, `allServices()`, `projectWork(p, image?)` (CreativeWork), `person(image?)`, `itemList(items, name?)`, `faqPage(faqs, path?)`,
 `breadcrumbList(crumbs, path)` ("Inicio" se antepone), `webPage(input)`, `graph(nodes)`, `ids` (`ids.service(path)`, `ids.project(path)`, `ids.person`…).

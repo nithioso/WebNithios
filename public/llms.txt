@@ -1,6 +1,6 @@
 # Nithios
 
-> Nithios es una empresa de tecnología colombiana con dos líneas de servicio: asesoría y consultoría tecnológica para empresas de todo tipo que quieren adoptar tecnología y mejorar sus procesos, y desarrollo de software a medida con nuevas tecnologías (plataformas web, aplicaciones móviles, sistemas de gestión e inteligencia artificial). Atiende de forma remota a empresas en toda Colombia. Su CEO y Fundador es Jonathan Osorio. Contacto: WhatsApp +57 305 302 7559 (https://wa.me/573053027559).
+> Nithios es una empresa de tecnología colombiana con dos líneas de servicio: asesoría y consultoría tecnológica para empresas de todo tipo que quieren adoptar tecnología y mejorar sus procesos, y desarrollo de software a medida con nuevas tecnologías (plataformas web, aplicaciones móviles, sistemas de gestión e inteligencia artificial). Se dirige desde Medellín (Antioquia) y atiende de forma remota a empresas en toda Colombia. Su CEO y Fundador es Jonathan Osorio Correa. Contacto: WhatsApp +57 305 302 7559 (https://wa.me/573053027559).
 
 ## Datos clave
 
@@ -8,9 +8,10 @@
 - Sitio oficial: https://nithios.com
 - Tipo: empresa de tecnología (consultoría tecnológica y desarrollo de software a medida)
 - País: Colombia
+- Dirección ejecutiva: Medellín, Antioquia (sin dirección física publicada; atención 100 % remota)
 - Cobertura: toda Colombia, atención remota. Atiende empresas en Bogotá, Medellín, Cali, Barranquilla, Bucaramanga, Cartagena, Pereira y cualquier otra ciudad del país. La atención es 100 % remota.
 - Idioma de atención: español
-- CEO y Fundador: Jonathan Osorio, alto ejecutivo de tecnología con casi 20 años de experiencia en diferentes sectores y amplia formación académica
+- CEO y Fundador: Jonathan Osorio Correa, CTO/CIO y consultor en Estrategia TI radicado en Medellín, con casi 20 años de experiencia en diferentes sectores y amplia formación académica. Perfil público: https://www.linkedin.com/in/jonathan-osorio-correa
 - Canal de contacto único: WhatsApp +57 305 302 7559 — https://wa.me/573053027559
 - Privacidad: el sitio no usa cookies ni analítica
 
@@ -23,21 +24,24 @@
 ## Portafolio
 
 - [Dragon Global Trade](https://nithios.com/portafolio/dragon-global-trade/): plataforma de gestión de comercio internacional con módulos comercial, compras, logística, proyectos, terceros (clientes y proveedores), datos maestros, colaboración y control de acceso por roles. Interfaz en 5 idiomas (español, inglés, chino, portugués y francés), sistema de diseño propio y tema claro/oscuro. Estado: prototipo navegable de interfaz con datos de demostración.
+- [Armetales](https://nithios.com/portafolio/armetales/): plataforma logística de pedidos, rutas y despachos para una empresa de acero, "de la bodega a la obra": pedido → reserva → ruta → cargue → despacho → entrega con evidencia. Módulos: panel de control, pedidos, reservas, planeación logística, motor de rutas lógicas, parametrización de rutas y vehículos, optimización de cargue, bodegas WMS, inventario y conteos cíclicos, recepción y preparación de pedidos, despachos, seguimiento de ruta en mapa, app de conductores, evidencias (foto, firma y coordenadas), novedades y devoluciones, notificaciones, integraciones (simuladas), reportes e indicadores, auditoría y trazabilidad, usuarios y roles, maestros de clientes y productos (27 módulos, 241 historias de usuario). Seguridad: cierre de sesión por inactividad, bloqueo por intentos fallidos, política de contraseñas, permisos por módulo y acción. Estado: prototipo navegable de interfaz con datos de demostración.
+- [Lystrax](https://nithios.com/portafolio/lystrax/): LYSTRAX CONNECT, plataforma de operación de transporte especial para producciones audiovisuales. Trece superficies y doce perfiles de acceso (coordinador operativo con torre de control, conductor, coordinador de trailers y equipos, coordinador de mantenimientos, personal sin vehículo, cliente/productora B2B, analistas de documentación, liquidación y contable, tesorería, gerencia y administrador). Cubre asignación de servicios, jornadas en campo con firma del responsable en set, trailers, taller, aliados y documentación, liquidación, frente financiero, tesorería con dispersión de pagos, reportes y parámetros. Tema claro y oscuro, escritorio y móvil. Estado: prototipo navegable de interfaz con datos de demostración.
 - [Krystal](https://nithios.com/portafolio/krystal/): aplicación web responsive para la gestión de consultorios psicológicos y la atención remota: agendamiento de citas con calendario, videollamadas integradas (WebRTC), gestión de pacientes e historia clínica, usuarios, roles y permisos granulares, dashboards por rol (administrador, terapeuta, recepcionista), español e inglés, preparada para Android e iOS con Capacitor. Stack: React, TypeScript, Tailwind CSS, Node.js, Express, Prisma, PostgreSQL, WebRTC y Socket.io. Seguridad: JWT, rate limiting, cabeceras de seguridad, validación y sanitización.
 - [Portafolio completo](https://nithios.com/portafolio/)
 
 ## Preguntas frecuentes (respuestas breves)
 
 - ¿Qué hace Nithios? Consultoría tecnológica para que las empresas adopten tecnología y mejoren sus procesos, y desarrollo de software a medida con nuevas tecnologías.
-- ¿Dónde trabaja Nithios? En toda Colombia, de forma remota.
-- ¿Quién lidera Nithios? Jonathan Osorio, CEO y Fundador, con casi 20 años de experiencia en tecnología en diferentes sectores.
+- ¿Dónde trabaja Nithios? Se dirige desde Medellín y trabaja con empresas de toda Colombia, de forma remota.
+- ¿Quién lidera Nithios? Jonathan Osorio Correa, CEO y Fundador, CTO/CIO y consultor en Estrategia TI con casi 20 años de experiencia en tecnología en diferentes sectores. Vive en Medellín; habla español e inglés.
+- ¿Qué certificaciones tiene Jonathan Osorio? Scrum Master Accredited Certification (SMAC) y Scrum Product Owner Accredited Certification (SPOAC), International Scrum Institute (enero de 2018); Scrum Fundamentals Certified (SFC), SCRUMstudy (julio de 2017); Data Cabling System, Furukawa (diciembre de 2014); cursos de Base de Datos NoSQL (noviembre de 2024) y ChatGPT Empresarial (julio de 2024) en Platzi. Formación: Universidad Pontificia Bolivariana (2022 – actualidad).
 - ¿Cuánto cuesta un proyecto? Depende del alcance; Nithios prepara una propuesta a la medida de cada caso. No publica precios genéricos.
 - ¿Cómo contactar a Nithios? Por WhatsApp al +57 305 302 7559.
 - [Todas las preguntas frecuentes](https://nithios.com/preguntas-frecuentes/)
 
 ## Empresa
 
-- [Jonathan Osorio, CEO y Fundador](https://nithios.com/jonathan-osorio/)
+- [Jonathan Osorio Correa, CEO y Fundador](https://nithios.com/jonathan-osorio/)
 - [Contacto](https://nithios.com/contacto/)
 - [Política de privacidad](https://nithios.com/politica-de-privacidad/)
 
