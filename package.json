@@ -10,7 +10,7 @@
     "postbuild": "node scripts/csp-hashes.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "brand": "node design/logo/final/build-logo.mjs && node scripts/generate-brand-assets.mjs",
+    "brand": "node scripts/generate-brand-assets.mjs",
     "astro": "astro"
   },
   "dependencies": {

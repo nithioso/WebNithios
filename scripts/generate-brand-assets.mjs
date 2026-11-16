@@ -1,8 +1,13 @@
 /**
- * Genera los recursos de marca estáticos en /public a partir de design/logo/final/*.svg:
+ * Genera los recursos de marca estáticos en /public a partir de design/logo/final/*.svg
+ * (logo oficial G · «Ligadura NT»; los SVG de final/ son la fuente de verdad, copiados de design/logo/v2/nt-ligadura/):
  *   favicon.svg, favicon.ico (16/32/48), apple-touch-icon.png (180), icon-192.png, icon-512.png,
  *   icon-maskable-512.png y og-default.png (1200×630, renderizado con Playwright + Inter Display).
- * Uso: node design/logo/final/build-logo.mjs && node scripts/generate-brand-assets.mjs
+ *   - app-icon.svg          → contenedor redondeado, canal óptico 2,8u (favicon, ícono "any")
+ *   - app-icon-square.svg   → a sangre, mismo arte (apple-touch: iOS redondea las esquinas)
+ *   - app-icon-maskable.svg → a sangre, símbolo al 66 % dentro del círculo seguro del 80 % (maskable)
+ *   - logo-horizontal.svg   → OG
+ * Uso: npm run brand   (= node scripts/generate-brand-assets.mjs)
  * Playwright: usa el paquete `playwright` si está instalado o la ruta en PLAYWRIGHT_MODULE.
  * Si no hay Playwright, genera los íconos y omite el OG (con aviso).
  */
@@ -16,7 +21,8 @@ const pub = (...p) => path.join(root, 'public', ...p);
 const fin = (f) => readFile(path.join(root, 'design', 'logo', 'final', f), 'utf8');
 
 const appIcon = await fin('app-icon.svg'); // contenedor redondeado (favicon, íconos "any")
-const square = await fin('app-icon-square.svg'); // a sangre (apple-touch, maskable)
+const square = await fin('app-icon-square.svg'); // a sangre (apple-touch)
+const maskable = await fin('app-icon-maskable.svg'); // a sangre con zona segura (maskable)
 const horizontal = await fin('logo-horizontal.svg');
 
 const png = (svg, size) =>
@@ -50,7 +56,7 @@ await writeFile(pub('favicon.svg'), appIcon.replace(/<title>.*?<\/title>/, ''));
 await writeFile(pub('apple-touch-icon.png'), await png(square, 180));
 await writeFile(pub('icon-192.png'), await png(appIcon, 192));
 await writeFile(pub('icon-512.png'), await png(appIcon, 512));
-await writeFile(pub('icon-maskable-512.png'), await png(square, 512));
+await writeFile(pub('icon-maskable-512.png'), await png(maskable, 512));
 await writeFile(
   pub('favicon.ico'),
   pngsToIco(await Promise.all([16, 32, 48].map(async (size) => ({ size, buf: await png(appIcon, size) })))),

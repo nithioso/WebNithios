@@ -63,14 +63,14 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   consultoría y "Protección de la información" como criterio transversal, sin sección ni FAQ propias.
 - [ ] ¿Atención en inglés? Hoy JSON-LD y llms.txt dicen solo español; si se confirma, actualizar `schema.ts` y `public/llms.txt` a la vez.
 - [ ] ¿Dominio público de Dragon / Krystal? Si existe, añadir campo opcional `url` en `projects.ts` (el marco de navegador hoy muestra solo el nombre).
-- [x] Logo definitivo: monograma «N partida» v2 (design/logo/DECISION.md). Pendiente solo la búsqueda de marca (abajo).
+- [x] Logo definitivo: G · «Ligadura NT» (elegido por el usuario; reemplaza al monograma «N partida»; design/logo/DECISION.md). Pendiente solo la búsqueda de marca (abajo).
 - [ ] Razón social / NIT, correo, redes sociales (no publicar hasta confirmar).
 - [ ] Política de propiedad intelectual y entrega de código fuente (para FAQ).
 - [ ] Responsable y datos de contacto para la política de privacidad (Ley 1581 de 2012).
 - [ ] Horario de atención por WhatsApp.
 - [ ] Alta en Google Business Profile / Search Console / Bing Webmaster tras publicar.
 
-- Logo: verificar disponibilidad del monograma «N partida» en SIC Colombia / WIPO antes de registrar la marca (design/logo/DECISION.md).
+- [ ] **Logo: búsqueda de antecedentes marcarios** del monograma «NT» (Ligadura NT) en SIC Colombia y WIPO (Global Brand Database, clases 9, 35 y 42) antes de registrar la marca; los monogramas «NT» en bloque son frecuentes (design/logo/DECISION.md).
 
 ## Contacto, privacidad y técnico (`src/data/privacy.ts`, `public/.htaccess`)
 - [ ] **Revisión legal** de `/politica-de-privacidad/` (Ley 1581 de 2012 y Decreto 1074 de 2015) por un abogado.

@@ -11,7 +11,7 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 ## Comandos
 - `npm run dev` · `npm run build` (debe pasar sin warnings) · `npm run preview` · `npm run check` (0 errores)
 - `npm run build` ejecuta `postbuild` (`scripts/csp-hashes.mjs`): falla si cambias un `<script is:inline>` y no actualizas su hash en la CSP de `public/.htaccess`.
-- `npm run brand` → regenera SVG del logo, favicon, íconos PWA y `public/og-default.png` (sharp + Playwright, ambos en devDependencies).
+- `npm run brand` → regenera favicon, íconos PWA y `public/og-default.png` desde los SVG de `design/logo/final/` (logo oficial G «Ligadura NT»; sharp + Playwright, ambos en devDependencies).
 
 ## Mapa de archivos
 - `src/data/` — FUENTE ÚNICA de contenido: `site.ts` (site, waLink(), absoluteUrl(), nav, cities, coverage), `services.ts` + `service-details.ts`, `projects.ts` (+ portfolioFaqs), `ceo.ts` (+ ceoPage), `faqs.ts`, `contact.ts`, `privacy.ts`.

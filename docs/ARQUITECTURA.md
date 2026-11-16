@@ -6,7 +6,7 @@ astro.config.mjs        site https://nithios.com · trailingSlash 'always' · si
 public/                 .htaccess, robots.txt, llms.txt, site.webmanifest, favicon.*, apple-touch-icon.png, icon-192/512.png, icon-maskable-512.png, og-default.png
 scripts/generate-brand-assets.mjs   genera favicon/íconos/OG (sharp + Playwright)
 scripts/csp-hashes.mjs   postbuild: verifica los hashes sha256 de los <script is:inline> contra la CSP de public/.htaccess; falla el build si falta alguno
-design/logo/            exploración y logo final (DECISION.md, final/build-logo.mjs)
+design/logo/            exploración y logo oficial «Ligadura NT» (DECISION.md, final/*.svg → npm run brand; v2/ y monograma/ = archivo)
 src/
   data/                 contenido tipado (fuente única)
   lib/schema.ts         JSON-LD builders · lib/images.ts imágenes OG/JSON-LD optimizadas · lib/icons.ts íconos
