@@ -53,7 +53,7 @@ export const faqs: Faq[] = [
     category: 'consultoria',
     question: '¿Cómo empiezo la transformación digital de mi empresa?',
     answer:
-      'La transformación digital empieza por un diagnóstico de procesos, no por comprar software. Primero se identifica dónde se pierde tiempo, dinero o información; luego se define una hoja de ruta por etapas con objetivos medibles; y finalmente se implementan las soluciones, empezando por las de mayor impacto.',
+      'La transformación digital empieza por un diagnóstico de procesos, no por comprar software. Primero se identifica dónde se pierde tiempo, dinero o información; luego se define una hoja de ruta por etapas con objetivos medibles; y finalmente se implementan las soluciones, empezando por las de mayor impacto. Te lo explicamos en la guía [transformación digital para pymes: por dónde empezar](/guias/transformacion-digital-para-pymes-por-donde-empezar/).',
   },
   {
     category: 'consultoria',
@@ -65,7 +65,7 @@ export const faqs: Faq[] = [
     category: 'consultoria',
     question: '¿Me conviene un software comercial o un desarrollo a medida?',
     answer:
-      'Depende de qué tan particulares sean tus procesos. Si una solución comercial cubre bien tu operación, suele ser la opción más rápida; si te obliga a cambiar tu forma de trabajar o a usar varias herramientas desconectadas, un desarrollo a medida puede ser la mejor inversión. En la consultoría evaluamos ambas alternativas contigo.',
+      'Depende de qué tan particulares sean tus procesos. Si una solución comercial cubre bien tu operación, suele ser la opción más rápida; si te obliga a cambiar tu forma de trabajar o a usar varias herramientas desconectadas, un desarrollo a medida puede ser la mejor inversión. En la consultoría evaluamos ambas alternativas contigo. Te lo explicamos en la guía [software a medida vs. software empaquetado](/guias/software-a-medida-vs-software-empaquetado/).',
   },
   {
     category: 'desarrollo',
@@ -95,7 +95,7 @@ export const faqs: Faq[] = [
     category: 'proceso',
     question: '¿Cuánto cuesta un proyecto con Nithios?',
     answer:
-      'El costo depende del alcance, la complejidad y los tiempos de cada proyecto, por eso no manejamos precios genéricos. Escríbenos por WhatsApp, cuéntanos qué necesitas y te preparamos una propuesta con alcance, etapas y valor ajustados a tu caso.',
+      'El costo depende del alcance, la complejidad y los tiempos de cada proyecto, por eso no manejamos precios genéricos. Escríbenos por WhatsApp, cuéntanos qué necesitas y te preparamos una propuesta con alcance, etapas y valor ajustados a tu caso. Qué factores mueven el costo te lo explicamos en la guía [cuánto cuesta desarrollar software a medida en Colombia](/guias/cuanto-cuesta-desarrollar-software-a-medida-en-colombia/).',
   },
   {
     category: 'proceso',

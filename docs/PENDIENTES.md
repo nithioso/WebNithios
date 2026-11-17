@@ -73,6 +73,15 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 
 - [ ] **Logo: búsqueda de antecedentes marcarios** del sello K «NTOS en sello» (moneda con NT calada y corte en S) en SIC Colombia y WIPO (Global Brand Database, clases 9, 35 y 42; incluir búsqueda figurativa/Viena de monedas y sellos circulares) antes de registrar la marca; los monogramas «NT» son frecuentes y la «C» de luz puede confundirse con © (design/logo/DECISION.md).
 
+## Guías y servicios específicos (SEO/GEO)
+- [ ] **Revisión del CEO antes de producción** de las 6 guías (`src/content/guias/`) y de los 6 servicios específicos (`src/data/servicios/`):
+  exactitud, tono y que no prometan nada que Nithios no ofrezca. Decidir si las guías se firman con su nombre (hoy autor = Organization
+  Nithios; si las firma, cambiar `author` en `article()` de `src/lib/schema.ts` a `{ '@id': ids.person }` y mostrar la firma en la plantilla).
+- [ ] **Perfiles de empresa para `sameAs`**: página de empresa en LinkedIn y Perfil de Negocio de Google (sin dirección). Cuando existan,
+  añadirlos a `organization().sameAs` y a `public/llms.txt`. No inventar URL.
+- [ ] Confirmar como servicios propios los 5 nuevos (IA, automatización, apps móviles, plataformas web, modernización): la UI ya los publica.
+- [ ] IndexNow: crear la clave y el envío tras cada despliegue (docs/SEO-GEO.md › Checklist).
+
 ## Contacto, privacidad y técnico (`src/data/privacy.ts`, `public/.htaccess`)
 - [ ] **Revisión legal** de `/politica-de-privacidad/` (Ley 1581 de 2012 y Decreto 1074 de 2015) por un abogado.
 - [ ] Razón social y NIT del responsable → `privacyPolicy.controller.legalName` / `nit` (vacíos ⇒ no se muestran).

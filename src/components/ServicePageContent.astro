@@ -1,0 +1,319 @@
+---
+/**
+ * Cuerpo completo de una página de SERVICIO ESPECÍFICO (/servicios/<slug>/), 100 % data-driven
+ * desde src/data/servicios/<slug>.ts (tipo ServicePage). La página aporta BaseLayout (SEO/JSON-LD).
+ * <ServicePageContent page={p} breadcrumbs={crumbs} />
+ * Orden: hero → qué es → para quién → problemas → qué incluye → señales → proceso → entregables (+ tecnologías)
+ *        → cuándo NO conviene → casos → guías → FAQ → servicios relacionados → CTA.
+ */
+import PageHero from './PageHero.astro';
+import ServiceHeroArt from './ServiceHeroArt.astro';
+import Section from './Section.astro';
+import Card from './Card.astro';
+import ProjectCard from './ProjectCard.astro';
+import GuideCard from './GuideCard.astro';
+import FaqList from './FaqList.astro';
+import CtaBand from './CtaBand.astro';
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import Reveal from './Reveal.astro';
+import ScrollerSync from './ScrollerSync.astro';
+import { coverage } from '@/data/site';
+import { lineSlugByParent, lineLabels } from '@/data/mapa-contenido';
+import type { ServicePage } from '@/data/servicios';
+import { serviceLinks, guideLinks, projectLinks } from '@/lib/enlaces';
+import { highlightHtml, linkifyHtml } from '@/lib/text';
+import { gridFor, gridFor2 } from '@/lib/grid';
+import type { Crumb } from '@/lib/schema';
+
+interface Props {
+  page: ServicePage;
+  breadcrumbs: Crumb[];
+}
+
+const { page: p, breadcrumbs } = Astro.props;
+const s = p.sections;
+
+const parentLines = p.parent === 'ambas' ? Object.values(lineSlugByParent) : [lineSlugByParent[p.parent]];
+const lines = serviceLinks(parentLines);
+const relatedServices = serviceLinks((p.related.services ?? []).filter((x) => x !== p.slug && !parentLines.includes(x as never)));
+const guides = await guideLinks(p.related.guides);
+const projects = projectLinks(p.related.projects);
+const firstGuide = guides[0];
+
+/* Bento de 6 columnas sin huecos según la cantidad de ítems (la primera tarjeta, dorada, es la más ancha). */
+const bento: Record<number, string[]> = {
+  3: ['md:col-span-6', 'md:col-span-3', 'md:col-span-3'],
+  4: ['md:col-span-4', 'md:col-span-2', 'md:col-span-3', 'md:col-span-3'],
+  5: ['md:col-span-4', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2'],
+  6: ['md:col-span-4', 'md:col-span-2', 'md:col-span-3', 'md:col-span-3', 'md:col-span-3', 'md:col-span-3'],
+  7: ['md:col-span-4', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-3', 'md:col-span-3'],
+};
+const spanFor = (i: number, n: number) => bento[n]?.[i] ?? 'md:col-span-2';
+
+const relatedCards = [...lines, ...relatedServices];
+---
+
+<PageHero
+  eyebrow={p.eyebrow}
+  title={p.h1}
+  titleHtml={highlightHtml(p.h1, p.h1Highlight)}
+  intro={p.intro}
+  breadcrumbs={breadcrumbs}
+  whatsappMessage={p.whatsappMessage}
+  secondary={firstGuide ? { label: 'Leer la guía', href: firstGuide.path } : { label: 'Ver servicios', href: '/servicios/' }}
+  size="md"
+>
+  <ul class="mt-12 flex flex-wrap gap-2.5" aria-label="Datos del servicio" data-reveal="fade" style="--reveal-delay:320ms">
+    <li class="inline-flex items-center gap-2 rounded-full border border-line bg-ink-900/60 px-4 py-2 text-sm text-mist">
+      <Icon name="layers" size={16} class="text-gold-400" />
+      {lineLabels[p.parent]}
+    </li>
+    <li class="inline-flex items-center gap-2 rounded-full border border-line bg-ink-900/60 px-4 py-2 text-sm text-mist">
+      <Icon name="map-pin" size={16} class="text-gold-400" />
+      {coverage.short}
+    </li>
+    <li class="inline-flex items-center gap-2 rounded-full border border-line bg-ink-900/60 px-4 py-2 text-sm text-mist">
+      <Icon name="target" size={16} class="text-gold-400" />
+      Propuesta ajustada a tu caso
+    </li>
+  </ul>
+  <ServiceHeroArt slot="aside" items={[{ icon: p.icon, title: p.name, points: s.deliverables.items.map((x) => x.title) }]} />
+</PageHero>
+
+<!-- Qué es — respuesta directa citable -->
+<Section id="que-es" eyebrow="En pocas palabras" title={s.whatIs.title} spacing="md">
+  <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+    <Reveal class="lg:col-span-5">
+      <p class="border-l-2 border-gold-500/70 pl-6 text-xl leading-snug font-medium tracking-[-0.015em] text-pearl md:text-2xl">
+        {s.whatIs.answer}
+      </p>
+    </Reveal>
+    <Reveal class="prose-nithios lg:col-span-7" delay={120}>
+      {s.whatIs.paragraphs.map((para) => <p set:html={linkifyHtml(para)} />)}
+    </Reveal>
+  </div>
+</Section>
+
+<!-- Para quién -->
+<Section id="para-quien" eyebrow="Para quién" title={s.audience.title} intro={s.audience.intro} tone="raised">
+  <ul class:list={['grid gap-5', gridFor2(s.audience.items.length)]}>
+    {
+      s.audience.items.map((item, i) => (
+        <Reveal as="li" delay={(i % 2) * 80} class="flex items-start gap-4 rounded-(--radius-card) hairline bg-ink-900 p-6 md:p-7">
+          <span class="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line-gold text-gold-300">
+            <Icon name="check" size={18} />
+          </span>
+          <span class="text-lg leading-relaxed text-pearl">{item}</span>
+        </Reveal>
+      ))
+    }
+  </ul>
+</Section>
+
+<!-- Problemas que resuelve -->
+<Section id="problemas" eyebrow="Problemas que resolvemos" title={s.problems.title} intro={s.problems.intro}>
+  <div
+    class:list={[
+      'grid gap-5 max-sm:-mx-5 max-sm:flex max-sm:snap-x max-sm:snap-mandatory max-sm:overflow-x-auto max-sm:px-5 max-sm:scroll-px-5 max-sm:pb-3 max-sm:[scrollbar-width:thin] max-sm:*:w-[85%] max-sm:*:shrink-0 max-sm:*:snap-start',
+      gridFor(s.problems.items.length, 'sm'),
+    ]}
+    data-scroller="Problemas que resolvemos (desliza para ver más)"
+  >
+    {s.problems.items.map((it, i) => <Card tone="solid" icon={it.icon} title={it.title} text={it.text} revealDelay={(i % 3) * 90} />)}
+  </div>
+</Section>
+
+<!-- Qué incluye (bento) -->
+<Section id="que-incluye" eyebrow="Qué incluye" title={s.includes.title} intro={s.includes.intro} tone="raised">
+  <div class="grid gap-5 md:grid-cols-6">
+    {
+      s.includes.items.map((inc, i) => (
+        <Card
+          class={spanFor(i, s.includes.items.length)}
+          tone={i === 0 ? 'gold' : 'glass'}
+          size={i === 0 ? 'lg' : 'md'}
+          icon={inc.icon}
+          title={inc.title}
+          text={inc.text}
+          revealDelay={(i % 3) * 90}
+        >
+          {inc.points && inc.points.length > 0 && (
+            <ul class="mt-6 space-y-2.5">
+              {inc.points.map((pt) => (
+                <li class="flex items-start gap-2.5 text-sm text-mist">
+                  <Icon name="check" size={16} class="mt-0.5 shrink-0 text-gold-400" />
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      ))
+    }
+  </div>
+</Section>
+
+<!-- Señales de que lo necesitas -->
+<Section id="senales" eyebrow="¿Te suena?" title={s.signals.title} intro={s.signals.intro} tone="glow">
+  <ul class:list={['grid gap-5', gridFor(s.signals.items.length)]}>
+    {
+      s.signals.items.map((sig, i) => (
+        <Reveal as="li" delay={(i % 3) * 80} class="glass flex flex-col gap-4 rounded-(--radius-card) p-7">
+          <Icon name="check-circle" size={22} class="text-gold-400" />
+          <p class="text-lg leading-snug font-medium tracking-[-0.01em] text-pearl">{sig}</p>
+        </Reveal>
+      ))
+    }
+  </ul>
+</Section>
+
+<!-- Proceso -->
+<Section id="proceso" eyebrow="Método" title={s.process.title} intro={s.process.intro} tone="raised">
+  <ol class:list={['grid gap-5', s.process.items.length === 4 ? 'md:grid-cols-2 lg:grid-cols-4' : gridFor(s.process.items.length)]}>
+    {
+      s.process.items.map((step, i) => (
+        <Reveal as="li" delay={(i % 3) * 90} class="relative rounded-(--radius-card) hairline bg-ink-900 p-7 md:p-8">
+          <span class="font-display text-display-sm font-semibold text-gold" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3 class="mt-4 text-xl font-semibold tracking-[-0.02em] text-pearl">
+            <span class="sr-only">Paso {i + 1}: </span>
+            {step.title}
+          </h3>
+          <p class="mt-3 leading-relaxed text-mist">{step.text}</p>
+        </Reveal>
+      ))
+    }
+  </ol>
+</Section>
+
+<!-- Entregables (+ tecnologías) -->
+<Section id="entregables" eyebrow="Entregables" title={s.deliverables.title} intro={s.deliverables.intro}>
+  <ul class="divide-y divide-line border-y border-line">
+    {
+      s.deliverables.items.map((del, i) => (
+        <Reveal as="li" delay={i * 60} class="grid gap-2 py-6 md:grid-cols-12 md:gap-8 md:py-7">
+          <h3 class="flex items-start gap-3 text-lg font-semibold tracking-[-0.015em] text-pearl md:col-span-5 md:text-xl">
+            <Icon name="check-circle" size={22} class="mt-0.5 shrink-0 text-gold-400" />
+            {del.title}
+          </h3>
+          <p class="pl-[34px] leading-relaxed text-mist md:col-span-7 md:pl-0">{del.text}</p>
+        </Reveal>
+      ))
+    }
+  </ul>
+  {
+    s.technologies && s.technologies.items.length > 0 && (
+      <Reveal class="mt-16">
+        <h3 class="text-xl font-semibold tracking-[-0.02em] text-pearl">{s.technologies.title}</h3>
+        {s.technologies.intro && <p class="mt-3 max-w-2xl leading-relaxed text-mist">{s.technologies.intro}</p>}
+        <ul class="mt-6 flex flex-wrap gap-2.5" aria-label={s.technologies.title}>
+          {s.technologies.items.map((t) => (
+            <li class="rounded-full border border-line bg-ink-900 px-4 py-2 text-sm text-pearl">{t}</li>
+          ))}
+        </ul>
+        {s.technologies.note && <p class="mt-5 max-w-2xl text-sm leading-relaxed text-smoke">{s.technologies.note}</p>}
+      </Reveal>
+    )
+  }
+</Section>
+
+<!-- Cuándo NO conviene (honestidad) -->
+<Section id="cuando-no-conviene" eyebrow="Con honestidad" title={s.notAFit.title} intro={s.notAFit.intro} tone="raised">
+  <ul class="grid gap-5 md:grid-cols-2">
+    {
+      s.notAFit.items.map((it, i) => (
+        <Reveal as="li" delay={(i % 2) * 80} class="flex items-start gap-4 rounded-(--radius-card) border border-dashed border-line-strong p-6 md:p-7">
+          <span class="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-line text-smoke">
+            <Icon name="close" size={16} />
+          </span>
+          <div>
+            <h3 class="text-lg font-semibold tracking-[-0.015em] text-pearl">{it.title}</h3>
+            <p class="mt-2 leading-relaxed text-mist">{it.text}</p>
+          </div>
+        </Reveal>
+      ))
+    }
+  </ul>
+</Section>
+
+<!-- Casos del portafolio -->
+{
+  projects.length > 0 && (
+    <Section id="casos" eyebrow="Portafolio" title="Casos relacionados" intro="Casos del portafolio de Nithios. Algunos son prototipos navegables de interfaz con datos de demostración, y así lo indicamos en cada uno.">
+      <div class:list={['grid gap-6', projects.length === 1 ? 'max-w-3xl' : 'md:grid-cols-2']}>
+        {projects.map((pr, i) => (
+          <ProjectCard project={pr} revealDelay={i * 100} />
+        ))}
+      </div>
+      <Fragment slot="actions">
+        <Button href="/portafolio/" variant="glass" iconRight="arrow-right">
+          Ver todo el portafolio
+        </Button>
+      </Fragment>
+    </Section>
+  )
+}
+
+<!-- Guías relacionadas -->
+{
+  guides.length > 0 && (
+    <Section id="guias" eyebrow="Guías" title="Para profundizar" intro="Guías de Nithios con criterios y preguntas para decidir mejor.">
+      <div class:list={['grid gap-6', gridFor(guides.length)]}>
+        {guides.map((g, i) => (
+          <GuideCard guide={g} revealDelay={i * 90} />
+        ))}
+      </div>
+      <Fragment slot="actions">
+        <Button href="/guias/" variant="link" iconRight="arrow-right">
+          Ver todas las guías
+        </Button>
+      </Fragment>
+    </Section>
+  )
+}
+
+<!-- FAQ propia -->
+<Section id="preguntas" eyebrow="Preguntas frecuentes" title={`Preguntas frecuentes: ${p.name}`} tone="raised" width="narrow">
+  <FaqList items={p.faqs} openFirst />
+  <Fragment slot="actions">
+    <Button href="/preguntas-frecuentes/" variant="link" iconRight="arrow-right">Ver todas las preguntas</Button>
+  </Fragment>
+</Section>
+
+<!-- Línea madre + servicios relacionados -->
+<Section id="relacionados" eyebrow="Servicios relacionados" title="Sigue explorando" spacing="md">
+  <div class:list={['grid gap-5', gridFor(relatedCards.length)]}>
+    {
+      relatedCards.map((l, i) => (
+        <Card
+          tone={i === 0 ? 'gold' : 'outline'}
+          icon={l.icon}
+          eyebrow={l.isLine ? 'Línea de servicio' : 'Servicio'}
+          title={l.name}
+          text={l.summary}
+          href={l.path}
+          revealDelay={(i % 3) * 80}
+        >
+          <Fragment slot="footer">
+            <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300" aria-hidden="true">
+              Conocer el servicio
+              <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+            </span>
+          </Fragment>
+        </Card>
+      ))
+    }
+  </div>
+</Section>
+
+<CtaBand
+  title={p.cta?.title ?? '¿Hablamos de tu caso?'}
+  text={p.cta?.text ??
+    'Cuéntanos tu situación por WhatsApp. Te respondemos con preguntas concretas y, si tiene sentido, con una propuesta ajustada a tu caso. Atendemos de forma remota a empresas de toda Colombia.'}
+  message={p.whatsappMessage}
+  secondary={{ label: 'Ver todos los servicios', href: '/servicios/' }}
+/>
+
+<ScrollerSync />

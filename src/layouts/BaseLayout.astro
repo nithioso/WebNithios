@@ -11,7 +11,7 @@
  *   jsonLd={[service(s)]}                                 // nodos extra (sin @context)
  *   whatsappMessage="Hola Nithios, …"                     // mensaje del FAB/Header/Footer
  * >
- * Siempre incluye en el @graph: Organization/ProfessionalService, WebSite, Person y WebPage.
+ * Siempre incluye en el @graph: Organization/ProfessionalService, WebSite, Person (completo solo en /jonathan-osorio/) y WebPage.
  */
 import '@/styles/global.css';
 import interLatin from '@fontsource-variable/inter/files/inter-latin-opsz-normal.woff2?url';
@@ -23,7 +23,8 @@ import WhatsAppFab from '@/components/WhatsAppFab.astro';
 import IconSprite from '@/components/IconSprite.astro';
 import { site } from '@/data/site';
 import { ceoPhotoUrl } from '@/lib/images';
-import { graph, organization, website, person, webPage, breadcrumbList, type Crumb, type JsonLd } from '@/lib/schema';
+import { ceo } from '@/data/ceo';
+import { graph, organization, website, person, personRef, webPage, breadcrumbList, type Crumb, type JsonLd } from '@/lib/schema';
 
 interface Props {
   title: string;
@@ -65,7 +66,8 @@ const hasBreadcrumb = Boolean(breadcrumbs && breadcrumbs.length);
 const nodes: JsonLd[] = [
   organization(),
   website(),
-  person(await ceoPhotoUrl()),
+  // Person completo solo en la página del CEO; en el resto, nodo compacto con el mismo @id.
+  path === ceo.path ? person(await ceoPhotoUrl()) : personRef(await ceoPhotoUrl()),
   // Páginas noindex (404) no publican nodo WebPage: su URL no existe como recurso canónico.
   ...(noindex ? [] : [webPage({ path, title, description, type: pageType, image: ogImage, hasBreadcrumb, mainEntityId })]),
   ...(hasBreadcrumb ? [breadcrumbList(breadcrumbs!, path)] : []),

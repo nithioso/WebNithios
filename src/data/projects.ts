@@ -7,6 +7,7 @@
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '@/lib/icons';
 import type { Faq } from '@/data/faqs';
+import type { ServicePageSlug } from '@/data/mapa-contenido';
 // OG 1200×630 de cada caso: generadas con `npm run og` (scripts/generate-og-images.mjs).
 import dragonOg from '@/assets/og/dragon-global-trade-plataforma-comercio-internacional-og.png';
 import logisticaOg from '@/assets/og/plataforma-logistica-acero-pedidos-rutas-y-despachos-og.png';
@@ -95,6 +96,8 @@ export interface Project {
   security: string[];
   /** Línea de servicio relacionada (slug de services.ts). */
   serviceSlug: string;
+  /** Servicios específicos que ilustra el caso (src/data/servicios/): bloque «Servicios relacionados» de la página del caso. */
+  relatedServicePages?: ServicePageSlug[];
   /** Imagen de portada optimizable con astro:assets (pendiente: ver docs/PENDIENTES.md). */
   cover?: ImageMetadata;
   coverAlt?: string;
@@ -167,6 +170,7 @@ export const projects: Project[] = [
     stack: [],
     security: ['Control de acceso por roles'],
     serviceSlug: 'desarrollo-de-software-a-medida',
+    relatedServicePages: ['desarrollo-de-plataformas-web'],
     monogram: 'D',
     featured: true,
     order: 1,
@@ -295,6 +299,7 @@ export const projects: Project[] = [
       'Auditoría y trazabilidad de cambios',
     ],
     serviceSlug: 'desarrollo-de-software-a-medida',
+    relatedServicePages: ['desarrollo-de-plataformas-web', 'automatizacion-de-procesos', 'desarrollo-de-aplicaciones-moviles'],
     monogram: 'L',
     featured: true,
     order: 2,
@@ -421,6 +426,7 @@ export const projects: Project[] = [
       'Log de auditoría',
     ],
     serviceSlug: 'desarrollo-de-software-a-medida',
+    relatedServicePages: ['desarrollo-de-plataformas-web', 'automatizacion-de-procesos', 'desarrollo-de-aplicaciones-moviles'],
     monogram: 'T',
     featured: true,
     order: 3,
@@ -541,6 +547,7 @@ export const projects: Project[] = [
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express', 'Prisma', 'PostgreSQL', 'WebRTC', 'Socket.io', 'Capacitor'],
     security: ['Autenticación con JWT', 'Límite de peticiones (rate limiting)', 'Cabeceras de seguridad', 'Validación y sanitización de datos', 'Roles y permisos granulares'],
     serviceSlug: 'desarrollo-de-software-a-medida',
+    relatedServicePages: ['desarrollo-de-aplicaciones-moviles', 'desarrollo-de-plataformas-web'],
     monogram: 'K',
     ogImage: krystalOg,
     ogImageAlt: 'Krystal, caso de portafolio de Nithios: ilustración conceptual de agenda semanal y videollamada para consultorios psicológicos',

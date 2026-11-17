@@ -9,6 +9,9 @@ import { services, type Service } from '@/data/services';
 import type { Project } from '@/data/projects';
 import { ceo, ceoPage, ceoCurrentRole } from '@/data/ceo';
 import type { Faq } from '@/data/faqs';
+import { servicePages, servicePagePath, type ServicePage } from '@/data/servicios';
+import { lineSlugByParent } from '@/data/mapa-contenido';
+import { stripLinks } from '@/lib/text';
 
 export type JsonLd = Record<string, unknown>;
 
@@ -23,6 +26,7 @@ export const ids = {
   service: (path: string) => `${absoluteUrl(path)}#service`,
   project: (path: string) => `${absoluteUrl(path)}#software`,
   faq: (path: string) => `${absoluteUrl(path)}#faq`,
+  article: (path: string) => `${absoluteUrl(path)}#article`,
 };
 
 const areaServed = [
@@ -74,9 +78,9 @@ export function organization(): JsonLd {
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Servicios de Nithios',
-      itemListElement: services.map((s) => ({
+      itemListElement: [...services.map((s) => s.path), ...servicePages.map((p) => servicePagePath(p.slug))].map((path) => ({
         '@type': 'Offer',
-        itemOffered: { '@id': ids.service(s.path) },
+        itemOffered: { '@id': ids.service(path) },
       })),
     },
   };
@@ -131,6 +135,23 @@ export function webPage(input: WebPageInput): JsonLd {
  * Reglas del usuario: SIN fechas y SIN nombres de empleadores (no hay worksFor de terceros; el cargo vigente
  * fuera de Nithios se publica solo como Occupation). alumniOf = instituciones de formación (sí se nombran).
  */
+/**
+ * Person compacto (resto de páginas): mismo @id que el completo, que solo se publica en /jonathan-osorio/.
+ * Los buscadores unen ambos nodos por @id; así no se repiten ~5 KB de JSON-LD en cada página.
+ */
+export function personRef(image?: string): JsonLd {
+  return stripUndefined({
+    '@type': 'Person',
+    '@id': ids.person,
+    name: ceo.fullName,
+    jobTitle: `${ceo.jobTitle} de ${ceo.company}`,
+    url: absoluteUrl(ceo.path),
+    image: image ? absoluteUrl(image) : undefined,
+    worksFor: { '@id': ids.organization },
+  });
+}
+
+/** Person completo (solo en la página del CEO; en las demás va personRef). */
 export function person(image?: string): JsonLd {
   const occupations = [
     { name: `${ceo.jobTitle} de ${ceo.company}`, description: ceoPage.trajectory.nithios.text },
@@ -228,6 +249,85 @@ export function service(s: Service): JsonLd {
   };
 }
 
+/**
+ * Service de un servicio específico (/servicios/<slug>/). `isRelatedTo` enlaza la(s) línea(s) madre.
+ * Sin offers con precio (no hay precios publicados).
+ */
+export function servicePageNode(p: ServicePage): JsonLd {
+  const path = servicePagePath(p.slug);
+  const lines =
+    p.parent === 'ambas' ? Object.values(lineSlugByParent) : [lineSlugByParent[p.parent]];
+  return {
+    '@type': 'Service',
+    '@id': ids.service(path),
+    name: p.name,
+    alternateName: p.h1,
+    serviceType: p.name,
+    description: p.summary,
+    url: absoluteUrl(path),
+    provider: { '@id': ids.organization },
+    areaServed,
+    audience: { '@type': 'BusinessAudience', audienceType: 'Empresas en Colombia' },
+    isRelatedTo: lines.map((slug) => ({ '@id': ids.service(`/servicios/${slug}/`) })),
+    availableChannel: {
+      '@type': 'ServiceChannel',
+      serviceUrl: waLink(p.whatsappMessage),
+      servicePhone: { '@type': 'ContactPoint', telephone: site.whatsapp.e164, contactType: 'sales' },
+      availableLanguage: 'Spanish',
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: `Servicios incluidos: ${p.name}`,
+      itemListElement: p.sections.includes.items.map((c) => ({
+        '@type': 'Offer',
+        offeredBy: { '@id': ids.organization },
+        itemOffered: { '@type': 'Service', name: c.title, description: c.text },
+      })),
+    },
+  };
+}
+
+export interface ArticleInput {
+  path: string;
+  headline: string;
+  description: string;
+  abstract: string;
+  datePublished: string;
+  dateModified?: string;
+  image?: string;
+  keywords: string[];
+  wordCount: number;
+  minutes: number;
+  /** Rutas de los servicios relacionados (→ about). */
+  aboutPaths: string[];
+}
+
+/** Artículo de la sección Guías. Autor y editor = la organización Nithios (no una persona). */
+export function article(a: ArticleInput): JsonLd {
+  return stripUndefined({
+    '@type': 'Article',
+    '@id': ids.article(a.path),
+    headline: a.headline,
+    description: a.description,
+    abstract: a.abstract,
+    url: absoluteUrl(a.path),
+    inLanguage: site.lang,
+    datePublished: a.datePublished,
+    dateModified: a.dateModified ?? a.datePublished,
+    author: { '@id': ids.organization },
+    publisher: { '@id': ids.organization },
+    mainEntityOfPage: { '@id': ids.webpage(a.path) },
+    isPartOf: { '@id': ids.website },
+    image: a.image ? absoluteUrl(a.image) : undefined,
+    keywords: a.keywords.join(', '),
+    articleSection: 'Guías',
+    wordCount: a.wordCount,
+    timeRequired: `PT${a.minutes}M`,
+    about: a.aboutPaths.length ? a.aboutPaths.map((p) => ({ '@id': ids.service(p) })) : undefined,
+    spatialCoverage: { '@type': 'Country', name: 'Colombia' },
+  });
+}
+
 export function allServices(): JsonLd[] {
   return services.map(service);
 }
@@ -270,7 +370,7 @@ export function itemList(items: { name: string; path: string }[], name?: string)
 }
 
 /** FAQPage. Pasa `path` para fijar el @id. */
-export function faqPage(items: Faq[], path = '/preguntas-frecuentes/'): JsonLd {
+export function faqPage(items: Pick<Faq, 'question' | 'answer'>[], path = '/preguntas-frecuentes/'): JsonLd {
   return {
     '@type': 'FAQPage',
     '@id': ids.faq(path),
@@ -278,7 +378,7 @@ export function faqPage(items: Faq[], path = '/preguntas-frecuentes/'): JsonLd {
     mainEntity: items.map((f) => ({
       '@type': 'Question',
       name: f.question,
-      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+      acceptedAnswer: { '@type': 'Answer', text: stripLinks(f.answer) },
     })),
   };
 }

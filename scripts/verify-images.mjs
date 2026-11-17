@@ -18,7 +18,7 @@ import path from 'node:path';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dist = path.join(root, 'dist');
 const SITE = 'https://nithios.com';
-const DEFAULT_OG_OK = new Set(['/', '/politica-de-privacidad/', '/404/']);
+const DEFAULT_OG_OK = new Set(['/', '/404/']);
 const CONVENTION = /^(favicon|apple-touch-icon|icon-\d+|icon-maskable-\d+|og-default)$/;
 const GENERIC = /^(og|tablero|image|imagen|img|foto|photo|picture|captura|screenshot|cover|portada|banner|hero|logo|reportes?|dashboard|thumb|\d+)$/;
 const IMG_EXT = /\.(png|jpe?g|webp|avif|gif|svg)$/i;
@@ -74,7 +74,10 @@ for (const file of pages) {
       report.push(`${route.padEnd(48)} ${path.basename(f).padEnd(78)} ${String(kb).padStart(3)} KB`);
     }
     if (!alt || alt.trim().length < 20) fail(`${route}: og:image:alt vacío o pobre`);
-    if (meta(html, 'twitter:image') !== og) fail(`${route}: twitter:image distinto de og:image`);
+    // X/Twitter usa og:* como respaldo: twitter:image es opcional, pero si existe debe coincidir.
+    const tw = meta(html, 'twitter:image');
+    if (tw && tw !== og) fail(`${route}: twitter:image distinto de og:image`);
+    if (meta(html, 'twitter:card') !== 'summary_large_image') fail(`${route}: falta twitter:card summary_large_image`);
     const key = new URL(og).pathname;
     ogUse.set(key, [...(ogUse.get(key) ?? []), route]);
   }
@@ -109,6 +112,29 @@ for (const [img, routes] of ogUse) {
   if (routes.length < 2) continue;
   const extra = routes.filter((r) => !(img === '/og-default.png' && DEFAULT_OG_OK.has(r)));
   if (extra.length) fail(`og:image compartida ${img}: ${routes.join(', ')}`);
+}
+
+// (e) sitemap de imágenes: cada <image:loc> existe en dist/ y cada página con imágenes de contenido (alt no vacío,
+// dentro de <main>) las declara en su <url>.
+{
+  const smFiles = files.filter((f) => /sitemap-\d+\.xml$/.test(f));
+  if (!smFiles.length) fail('sin sitemap-N.xml en dist/');
+  let declared = 0;
+  for (const f of smFiles) {
+    const xml = await readFile(f, 'utf8');
+    for (const u of xml.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+      const loc = u[1].match(/<loc>([^<]+)<\/loc>/)?.[1] ?? '';
+      const imgs = [...u[1].matchAll(/<image:loc>([^<]+)<\/image:loc>/g)].map((x) => x[1]);
+      declared += imgs.length;
+      for (const i of imgs) if (!existsSync(toDist(i))) fail(`sitemap: ${loc} declara una imagen inexistente (${i})`);
+      const page = toDist(loc.endsWith('/') ? loc + 'index.html' : loc);
+      if (!existsSync(page)) continue;
+      const main = (await readFile(page, 'utf8')).match(/<main[\s\S]*?<\/main>/)?.[0] ?? '';
+      const content = (main.match(/<img\b[^>]*>/gi) ?? []).filter((t) => (attr(t, 'alt') ?? '').trim() && CONTENT_IMG.test(attr(t, 'src') ?? ''));
+      if (content.length && !imgs.length) fail(`sitemap: ${loc} tiene imágenes de contenido y no las declara (image:image)`);
+    }
+  }
+  console.log(`Sitemap de imágenes: ${declared} <image:loc> verificados.`);
 }
 
 // (c) nombres de archivo

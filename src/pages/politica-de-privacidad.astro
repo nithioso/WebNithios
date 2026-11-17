@@ -10,10 +10,13 @@ import Icon from '@/components/Icon.astro';
 import Reveal from '@/components/Reveal.astro';
 import { privacyPolicy as pp } from '@/data/privacy';
 import type { Crumb } from '@/lib/schema';
+import { pageOgImage } from '@/lib/images';
 
 const path = pp.path;
 const crumbs: Crumb[] = [{ name: 'Política de privacidad', path }];
 const ctrl = pp.controller;
+// Imagen Open Graph propia (src/data/og.ts · npm run og).
+const og = await pageOgImage('/politica-de-privacidad/');
 ---
 
 <BaseLayout
@@ -22,6 +25,8 @@ const ctrl = pp.controller;
   path={path}
   breadcrumbs={crumbs}
   whatsappMessage={pp.whatsappMessage}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
 >
   <PageHero
     eyebrow={pp.heroEyebrow}

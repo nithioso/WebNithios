@@ -1,0 +1,53 @@
+---
+/**
+ * Tarjeta de guía (listados de /guias/, guías relacionadas en servicios y en otras guías).
+ * Toda la tarjeta es clicable con un solo enlace (título + overlay). Datos de src/lib/enlaces.ts (GuideLink).
+ * <GuideCard guide={g} />
+ * <GuideCard guide={g} size="lg" headingLevel="h2" />
+ */
+import Icon from './Icon.astro';
+import type { GuideLink } from '@/lib/enlaces';
+
+interface Props {
+  guide: GuideLink;
+  size?: 'md' | 'lg';
+  headingLevel?: 'h2' | 'h3';
+  /** @deprecated Sin efecto: todas las tarjetas muestran la «respuesta corta» (summary), recortada a 3–4 líneas. */
+  showSummary?: boolean;
+  revealDelay?: number;
+  class?: string;
+}
+
+const { guide: g, size = 'md', headingLevel: H = 'h3', revealDelay = 0, class: className } = Astro.props;
+---
+
+<article
+  class:list={[
+    'group relative flex flex-col overflow-hidden rounded-(--radius-card) hairline bg-ink-900 transition-[transform,border-color] duration-500 ease-(--ease-apple) hover:-translate-y-1 hover:border-line-strong',
+    size === 'lg' ? 'p-8 md:p-10' : 'p-7 md:p-8',
+    className,
+  ]}
+  data-reveal
+  style={revealDelay ? `--reveal-delay:${revealDelay}ms` : undefined}
+>
+  <p class="flex items-center gap-2 text-[0.8125rem] font-medium text-smoke">
+    <span class="eyebrow text-[0.75rem]">Guía</span>
+    <span aria-hidden="true">·</span>
+    <span class="inline-flex items-center gap-1.5"><Icon name="clock" size={14} class="text-gold-400" />{g.minutes} min de lectura</span>
+  </p>
+  <H class:list={['mt-4 font-semibold tracking-[-0.02em] text-balance text-pearl', size === 'lg' ? 'text-display-sm' : 'text-xl md:text-[1.375rem]']}>
+    <a
+      href={g.path}
+      class="after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-solid focus-visible:after:-outline-offset-2 focus-visible:after:outline-gold-400"
+    >
+      {g.title}
+    </a>
+  </H>
+  <p class:list={['mt-3 leading-relaxed text-mist', size === 'lg' ? 'line-clamp-4' : 'line-clamp-3']}>{g.summary}</p>
+  <div class="mt-auto pt-6">
+    <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300" aria-hidden="true">
+      Leer la guía
+      <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+    </span>
+  </div>
+</article>

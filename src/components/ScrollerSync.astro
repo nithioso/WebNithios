@@ -1,0 +1,38 @@
+---
+/**
+ * Accesibilidad de los carruseles móviles marcados con [data-scroller="Etiqueta (desliza para ver más)"]:
+ * solo cuando de verdad desplazan se vuelven región enfocable con su instrucción. Sin marcado propio.
+ * Úsalo una vez en el componente que tenga carruseles: <ScrollerSync />
+ */
+---
+
+<script>
+  /**
+   * Carruseles móviles ([data-scroller]): solo cuando de verdad desplazan (scrollWidth > clientWidth)
+   * se vuelven región enfocable con su instrucción; en grilla (≥640 px) no añaden paradas de tabulación.
+   */
+  let ctrl: AbortController | undefined;
+
+  function syncScrollers() {
+    document.querySelectorAll<HTMLElement>('[data-scroller]').forEach((el) => {
+      const scrolls = el.scrollWidth > el.clientWidth + 1;
+      if (scrolls) {
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', el.dataset.scroller ?? '');
+      } else {
+        el.removeAttribute('tabindex');
+        el.removeAttribute('role');
+        el.removeAttribute('aria-label');
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    ctrl?.abort();
+    if (!document.querySelector('[data-scroller]')) return;
+    ctrl = new AbortController();
+    syncScrollers();
+    window.addEventListener('resize', syncScrollers, { signal: ctrl.signal, passive: true });
+  });
+</script>

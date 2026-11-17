@@ -291,9 +291,9 @@ export const serviceDetails: ServiceDetail[] = [
       },
       {
         category: 'consultoria',
-        question: '¿Cómo puede una empresa en Colombia empezar a usar inteligencia artificial?',
+        question: '¿La consultoría tecnológica incluye inteligencia artificial?',
         answer:
-          'Empezando por un caso de uso concreto y acotado: una tarea repetitiva, un volumen de documentos o una decisión que depende de mucha información. Se evalúa si hay datos suficientes, se prueba a pequeña escala y, si genera valor, se integra a los procesos. En la consultoría te ayudamos a escoger ese primer caso y a planear los siguientes.',
+          'Sí, como parte del diagnóstico y de la hoja de ruta: identificamos en qué procesos la IA puede aportar y con qué datos y riesgos. La implementación la detallamos en [inteligencia artificial para empresas](/servicios/inteligencia-artificial-para-empresas/) y la guía [cómo empezar con IA en tu empresa](/guias/como-empezar-con-inteligencia-artificial-en-tu-empresa/).',
       },
       {
         category: 'consultoria',
@@ -526,7 +526,7 @@ export const serviceDetails: ServiceDetail[] = [
         category: 'desarrollo',
         question: '¿Pueden modernizar un sistema que ya tenemos?',
         answer:
-          'Sí. Analizamos tu sistema actual, definimos qué conservar y qué reconstruir, y lo llevamos a tecnologías modernas por etapas, con mejor experiencia de usuario, seguridad y mantenibilidad, cuidando la continuidad de tu operación durante la transición.',
+          'Sí. Definimos qué conservar y qué reconstruir, y lo renovamos por etapas sin frenar tu operación. Lo explicamos en detalle en [modernización de sistemas legacy](/servicios/modernizacion-de-sistemas/).',
       },
       {
         category: 'desarrollo',
@@ -538,7 +538,7 @@ export const serviceDetails: ServiceDetail[] = [
         category: 'desarrollo',
         question: '¿Desarrollan aplicaciones nativas o híbridas?',
         answer:
-          'Elegimos según el proyecto. Una opción eficiente es construir una aplicación web responsive y prepararla para Android e iOS compartiendo gran parte del código, como hicimos en Krystal con Capacitor; cuando el caso lo exige, evaluamos otras alternativas.',
+          'Elegimos según lo que la app necesite del teléfono: nativa, multiplataforma o una aplicación web preparada para Android e iOS, como Krystal con Capacitor. Ver [desarrollo de aplicaciones móviles](/servicios/desarrollo-de-aplicaciones-moviles/).',
       },
       {
         category: 'desarrollo',

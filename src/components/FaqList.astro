@@ -7,12 +7,15 @@
  * En móvil, <summary> reserva 56 px a la derecha para que el «+» no quede bajo el FAB de WhatsApp.
  * <FaqList items={faqs} />
  * <FaqList items={faqsByCategory('desarrollo')} openFirst />
+ * Las respuestas admiten enlaces internos en Markdown (`[texto](/ruta/)`): se pintan como .link-inline y el JSON-LD
+ * (faqPage) los reduce a texto plano.
  */
 import Icon from './Icon.astro';
+import { linkifyHtml } from '@/lib/text';
 import type { Faq } from '@/data/faqs';
 
 interface Props {
-  items: Faq[];
+  items: Pick<Faq, 'question' | 'answer'>[];
   /** @deprecated Sin efecto: la pregunta ya no es un encabezado (ver nota arriba). */
   headingLevel?: 'h2' | 'h3' | 'h4';
   openFirst?: boolean;
@@ -35,7 +38,7 @@ const { items, openFirst = false, class: className } = Astro.props;
           </span>
         </summary>
         <div class="pb-7 pr-2 md:pr-16">
-          <p class="text-mist leading-relaxed">{f.answer}</p>
+          <p class="text-mist leading-relaxed" set:html={linkifyHtml(f.answer)} />
         </div>
       </details>
     ))

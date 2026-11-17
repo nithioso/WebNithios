@@ -15,8 +15,10 @@ import CtaBand from '@/components/CtaBand.astro';
 import FaqList from '@/components/FaqList.astro';
 import Icon from '@/components/Icon.astro';
 import CeoPortrait from '@/components/CeoPortrait.astro';
+import GuidesBlock from '@/components/GuidesBlock.astro';
 import { site, cities, coverage } from '@/data/site';
 import { services } from '@/data/services';
+import { servicePages, servicePagePath } from '@/data/servicios';
 import { sortedProjects } from '@/data/projects';
 import { ceo } from '@/data/ceo';
 import { faqs } from '@/data/faqs';
@@ -198,6 +200,27 @@ const reasons: { icon: IconName; title: string; text: string; span: string; tone
         ))
       }
     </div>
+    {
+      servicePages.length > 0 && (
+        <div class="mt-12" data-reveal>
+          <h3 class="text-lg font-semibold tracking-[-0.015em]">Servicios específicos</h3>
+          <ul class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {servicePages.map((sp) => (
+              <li>
+                <a
+                  href={servicePagePath(sp.slug)}
+                  class="group flex min-h-11 items-center gap-3 rounded-2xl border border-line bg-ink-900/60 px-4 py-3 text-sm font-medium text-pearl transition-colors duration-300 hover:border-line-gold hover:text-gold-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-400"
+                >
+                  <Icon name={sp.icon} size={18} class="shrink-0 text-gold-400" />
+                  <span class="flex-1">{sp.name}</span>
+                  <Icon name="arrow-right" size={16} class="shrink-0 text-smoke transition-transform duration-300 group-hover:translate-x-1" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
     <Fragment slot="actions">
       <Button href="/servicios/" variant="glass" iconRight="arrow-right">Ver todos los servicios</Button>
     </Fragment>
@@ -364,11 +387,15 @@ const reasons: { icon: IconName; title: string; text: string; span: string; tone
     </div>
   </Section>
 
+  <!-- Guías destacadas (src/data/guias.ts › featuredGuides.home) -->
+  <GuidesBlock set="home" />
+
   <!-- FAQ breve -->
   {
     homeFaqs.length > 0 && (
       <Section
         id="preguntas"
+        tone="raised"
         eyebrow="Preguntas frecuentes"
         title="Respuestas claras antes de empezar."
         intro="Lo que más nos preguntan las empresas que quieren adoptar tecnología o desarrollar software a la medida."

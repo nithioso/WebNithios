@@ -13,6 +13,12 @@
  *
  * Página nueva: añade una entrada a `pages` (out + plantilla), ejecuta `npm run og`, importa el PNG en src/data/og.ts
  * con su alt y pasa `ogImage`/`ogImageAlt` a BaseLayout (docs/SEO-GEO.md › Imágenes Open Graph).
+ *
+ * AUTOMÁTICAS (sin trabajo manual): una OG por cada servicio específico (src/data/servicios/*.ts, cargados con Vite SSR para
+ * respetar import.meta.glob y el alias @/) → nithios-<slug>-colombia-og.png, y una por cada guía (frontmatter + «## » de
+ * src/content/guias/*.md) → <slug>-guia-nithios-og.png. src/data/og.ts las recoge solas (misma convención de nombres).
+ * Filtro: `npm run og -- --only=guia,cto` genera solo las salidas cuyo nombre contenga alguno de esos textos
+ * (útil para redactores: `npm run og -- --only=auto` = solo servicios específicos y guías).
  * REGLAS: nada de nombres de cliente en los casos anonimizados, nada de logos de terceros, solo copy confirmado en src/data.
  */
 import sharp from 'sharp';
@@ -21,6 +27,8 @@ import { existsSync } from 'node:fs';
 import { readFile, writeFile, mkdir, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { readdir } from 'node:fs/promises';
+import { parse as parseYaml } from 'yaml';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const r = (...p) => path.join(root, ...p);
@@ -44,6 +52,13 @@ async function img(file, w = 1600) {
   const buf = await sharp(file).resize({ width: w, withoutEnlargement: true }).webp({ quality: 90 }).toBuffer();
   return `data:${mime['.webp']};base64,${buf.toString('base64')}`;
 }
+const esc = (t = '') => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+/** Título escapado con un fragmento literal en dorado (<em>). */
+const hl = (text, part) => {
+  if (!part || !text.includes(part)) return esc(text);
+  const i = text.indexOf(part);
+  return esc(text.slice(0, i)) + '<em>' + esc(part) + '</em>' + esc(text.slice(i + part.length));
+};
 const shot = (slug, name) => r('src', 'assets', 'portfolio', slug, `${slug}-${name}.webp`);
 
 // ---------- captura de la ilustración de Krystal desde dist/ ----------
@@ -133,6 +148,89 @@ const S = {
   log: (n) => shot('plataforma-logistica-acero', n),
   tra: (n) => shot('plataforma-transporte-audiovisual', n),
 };
+
+// ---------- datos de páginas automáticas ----------
+const lineLabels = { consultoria: 'Consultoría tecnológica', desarrollo: 'Desarrollo a medida', ambas: 'Consultoría + desarrollo' };
+
+/** Servicios específicos validados por src/data/servicios/index.ts (Vite SSR: import.meta.glob + alias @/). */
+async function loadServicePages() {
+  const { createServer } = await import('vite');
+  const server = await createServer({
+    root,
+    configFile: false,
+    logLevel: 'error',
+    appType: 'custom',
+    server: { middlewareMode: true, hmr: false, watch: null },
+    resolve: { alias: { '@': r('src') } },
+    optimizeDeps: { noDiscovery: true, include: [] },
+  });
+  try {
+    return (await server.ssrLoadModule('/src/data/servicios/index.ts')).servicePages;
+  } finally {
+    await server.close();
+  }
+}
+
+/** Guías: frontmatter (YAML) + h2 del cuerpo + minutos de lectura (misma regla que src/lib/guias.ts). */
+async function loadGuides() {
+  const dir = r('src', 'content', 'guias');
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const f of (await readdir(dir)).filter((x) => x.endsWith('.md') && !x.startsWith('_')).sort()) {
+    const raw = await readFile(path.join(dir, f), 'utf8');
+    const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+    if (!m) throw new Error(`Guía sin frontmatter: ${f}`);
+    const data = parseYaml(m[1]);
+    const body = m[2];
+    const words = body.replace(/```[\s\S]*?```/g, ' ').replace(/[#>*_`|~\-[\]()!]/g, ' ').split(/\s+/).filter(Boolean).length;
+    const h2 = [...body.matchAll(/^##\s+(.+?)\s*$/gm)].map((x) => x[1].replace(/[*_`]/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1'));
+    out.push({ slug: f.replace(/\.md$/, ''), ...data, h2, minutes: data.readingMinutes ?? Math.max(1, Math.ceil(words / 200)) });
+  }
+  return out;
+}
+
+const fitH1 = (t, sizes = [[90, 44], [72, 48], [58, 52], [0, 58]]) => `${sizes.find(([n]) => t.length > n)[1]}px`;
+const autoCss = `.panel{position:absolute;left:668px;top:104px;width:460px;padding:30px 32px 26px}
+  .panel small{display:block;font-size:15px;font-weight:600;letter-spacing:.14em;color:#d9b64a}
+  .panel ul{list-style:none;margin-top:14px;display:flex;flex-direction:column}
+  .panel li{display:flex;align-items:center;gap:16px;padding:14px 0;font-size:21px;font-weight:550;line-height:1.25;letter-spacing:-.015em;border-top:1px solid rgba(255,255,255,.08)}
+  .panel li:first-child{border-top:0}
+  .panel li span{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:650;color:#e0c05a;border:1px solid rgba(212,175,55,.5)}
+  .panel li:first-child span{color:#0a0a0a;border:0;background:linear-gradient(135deg,#f3e2a6,#c9a24b)}
+  .panel li b{font-weight:550;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .copy .eyebrow{line-height:1.3}`;
+const check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg>';
+
+function servicePageTemplate(p) {
+  const items = p.sections.includes.items.slice(0, 5).map((x) => `<li><span>${check}</span><b>${esc(x.title)}</b></li>`).join('');
+  return page({
+    vars: `--copy-w:540px;--h1:${fitH1(p.h1)}`,
+    extra: autoCss,
+    body:
+      copy({ eyebrow: `Servicio · ${esc(lineLabels[p.parent])}`, title: hl(p.h1, p.h1Highlight), sub: '' }) +
+      `<div class="panel glass"><small>QUÉ INCLUYE</small><ul>${items}</ul></div>`,
+  });
+}
+
+function guideTemplate(g) {
+  const items = g.h2.slice(0, 5).map((t, i) => `<li><span>${String(i + 1).padStart(2, '0')}</span><b>${esc(t)}</b></li>`).join('');
+  return page({
+    vars: `--copy-w:540px;--h1:${fitH1(g.title)}`,
+    extra: autoCss,
+    body:
+      copy({ eyebrow: `Guía · ${g.minutes} min de lectura`, title: esc(g.title), sub: '' }) +
+      `<div class="panel glass"><small>EN ESTA GUÍA</small><ul>${items}</ul></div>`,
+  });
+}
+
+async function buildAutoPages() {
+  const services = await loadServicePages();
+  const guides = await loadGuides();
+  return [
+    ...services.map((p) => ({ out: `nithios-${p.slug}-colombia-og.png`, html: servicePageTemplate(p), auto: true })),
+    ...guides.map((g) => ({ out: `${g.slug}-guia-nithios-og.png`, html: guideTemplate(g), auto: true })),
+  ];
+}
 
 async function buildPages() {
   const dragonTablero = await img(S.dragon('tablero-comercio-internacional'));
@@ -240,6 +338,41 @@ async function buildPages() {
       }),
     },
     {
+      out: 'nithios-guias-de-tecnologia-para-empresas-og.png',
+      html: page({
+        vars: '--copy-w:540px;--h1:60px',
+        extra: autoCss,
+        body:
+          copy({ eyebrow: 'Guías', title: 'Guías para <em>decidir mejor</em> sobre tecnología', sub: 'Criterios, preguntas y factores, sin tecnicismos.' }) +
+          `<div class="panel glass"><small>TEMAS</small><ul>${[
+            'Software a medida',
+            'CTO externo',
+            'Inteligencia artificial',
+            'Transformación digital',
+            'Elegir un proveedor',
+          ]
+            .map((t, i) => `<li><span>${String(i + 1).padStart(2, '0')}</span><b>${t}</b></li>`)
+            .join('')}</ul></div>`,
+      }),
+    },
+    {
+      out: 'nithios-politica-de-privacidad-datos-personales-og.png',
+      html: page({
+        vars: '--copy-w:540px;--h1:60px',
+        extra: autoCss,
+        body:
+          copy({ eyebrow: 'Legal · Ley 1581 de 2012', title: 'Política de <em>privacidad</em>', sub: 'Qué datos tratamos, para qué y cómo ejercer tus derechos.' }) +
+          `<div class="panel glass"><small>EN POCAS PALABRAS</small><ul>${[
+            'Sin cookies ni analítica',
+            'El formulario no envía datos a servidores',
+            'Datos solo para responderte',
+            'Nunca vendemos tus datos',
+          ]
+            .map((t) => `<li><span>${check}</span><b>${t}</b></li>`)
+            .join('')}</ul></div>`,
+      }),
+    },
+    {
       out: 'nithios-preguntas-frecuentes-og.png',
       html: page({
         vars: '--copy-w:500px;--h1:58px',
@@ -306,12 +439,20 @@ async function buildPages() {
 }
 
 // ---------- render ----------
+const onlyArg = process.argv.find((a) => a.startsWith('--only='));
+const only = onlyArg ? onlyArg.slice(7).split(',').filter(Boolean) : null;
+const wanted = (job) => !only || only.some((o) => (o === 'auto' ? job.auto : job.out.includes(o)));
+
 const browser = await chromium.launch();
 try {
-  await captureKrystal(browser);
+  // La captura de Krystal solo hace falta para las OG manuales (portafolio y Krystal).
+  if (!only || only.some((o) => /krystal|portafolio/.test(o))) await captureKrystal(browser);
   await mkdir(OUT_DIR, { recursive: true });
   const tab = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
-  for (const { out, html } of await buildPages()) {
+  const manual = only && only.every((o) => o === 'auto') ? [] : await buildPages();
+  const jobs = [...manual, ...(await buildAutoPages())].filter(wanted);
+  if (!jobs.length) console.warn('Ninguna OG coincide con', only);
+  for (const { out, html } of jobs) {
     await tab.setContent(html, { waitUntil: 'load' });
     await tab.evaluate(() => document.fonts.ready);
     const png = await sharp(await tab.screenshot({ type: 'png' })).png({ compressionLevel: 9 }).toBuffer();

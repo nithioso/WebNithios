@@ -5,6 +5,7 @@
  * La página aporta BaseLayout (SEO/JSON-LD); este componente aporta hero (h1), secciones y CTA.
  * <ServiceDetailContent service={s} detail={d} breadcrumbs={crumbs} />
  */
+import ScrollerSync from './ScrollerSync.astro';
 import PageHero from './PageHero.astro';
 import ServiceHeroArt from './ServiceHeroArt.astro';
 import Section from './Section.astro';
@@ -16,11 +17,14 @@ import Button from './Button.astro';
 import WhatsAppButton from './WhatsAppButton.astro';
 import Icon from './Icon.astro';
 import Reveal from './Reveal.astro';
+import GuidesBlock from './GuidesBlock.astro';
 import { cities, coverage } from '@/data/site';
 import { getService, type Service } from '@/data/services';
 import { sortedProjects, getProject } from '@/data/projects';
 import type { ServiceDetail } from '@/data/service-details';
 import type { Crumb } from '@/lib/schema';
+import { servicePagesForLine, servicePagePath } from '@/data/servicios';
+import type { LineSlug } from '@/data/mapa-contenido';
 
 interface Props {
   service: Service;
@@ -39,6 +43,9 @@ const relatedProjects = d.projectSlugs.length
     : sortedProjects.filter((p) => p.featured);
 
 const other = getService(d.crossSell.slug);
+
+/* Servicios específicos de esta línea (src/data/servicios/*.ts con parent = esta línea o 'ambas'). */
+const specific = servicePagesForLine(s.slug as LineSlug);
 
 /* Bento 6 columnas: 4+2 / 2+2+2 / 3+3 (7 elementos); el resto ocupa 2. */
 const spans = ['md:col-span-4', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-2', 'md:col-span-3', 'md:col-span-3'];
@@ -157,6 +164,31 @@ const heroChips = [
     }
   </div>
 </Section>
+
+<!-- Servicios específicos de la línea -->
+{
+  specific.length > 0 && (
+    <Section
+      id="servicios-especificos"
+      eyebrow="Servicios específicos"
+      title={`Servicios de ${s.shortName.toLowerCase()}`}
+      intro="Si ya sabes qué necesitas, entra directo al servicio."
+    >
+      <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {specific.map((p, i) => (
+          <Card tone="outline" icon={p.icon} title={p.name} text={p.summary} href={servicePagePath(p.slug)} revealDelay={(i % 3) * 80}>
+            <Fragment slot="footer">
+              <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300" aria-hidden="true">
+                Conocer el servicio
+                <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+            </Fragment>
+          </Card>
+        ))}
+      </div>
+    </Section>
+  )
+}
 
 <!-- Bloque destacado (IA para empresas / MVP) -->
 <Section id="destacado" tone="glow" eyebrow={d.spotlight.eyebrow} title={d.spotlight.title} titleSize="lg">
@@ -336,6 +368,9 @@ const heroChips = [
   </Fragment>
 </Section>
 
+<!-- Guías de la línea (src/data/guias.ts › featuredGuides) -->
+<GuidesBlock set={s.slug as LineSlug} />
+
 <!-- Servicio complementario -->
 {
   other && (
@@ -368,33 +403,4 @@ const heroChips = [
   secondary={{ label: 'Ver portafolio', href: '/portafolio/' }}
 />
 
-<script>
-  /**
-   * Carruseles móviles ([data-scroller]): solo cuando de verdad desplazan (scrollWidth > clientWidth)
-   * se vuelven región enfocable con su instrucción; en grilla (≥640 px) no añaden paradas de tabulación.
-   */
-  let ctrl: AbortController | undefined;
-
-  function syncScrollers() {
-    document.querySelectorAll<HTMLElement>('[data-scroller]').forEach((el) => {
-      const scrolls = el.scrollWidth > el.clientWidth + 1;
-      if (scrolls) {
-        el.setAttribute('tabindex', '0');
-        el.setAttribute('role', 'region');
-        el.setAttribute('aria-label', el.dataset.scroller ?? '');
-      } else {
-        el.removeAttribute('tabindex');
-        el.removeAttribute('role');
-        el.removeAttribute('aria-label');
-      }
-    });
-  }
-
-  document.addEventListener('astro:page-load', () => {
-    ctrl?.abort();
-    if (!document.querySelector('[data-scroller]')) return;
-    ctrl = new AbortController();
-    syncScrollers();
-    window.addEventListener('resize', syncScrollers, { signal: ctrl.signal, passive: true });
-  });
-</script>
+<ScrollerSync />

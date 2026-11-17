@@ -9,7 +9,7 @@
 - Tipo: empresa de tecnología (consultoría tecnológica y desarrollo de software a medida)
 - País: Colombia
 - Dirección ejecutiva: Medellín, Antioquia (sin dirección física publicada; atención 100 % remota)
-- Cobertura: toda Colombia, atención remota. Atiende empresas en Bogotá, Medellín, Cali, Barranquilla, Bucaramanga, Cartagena, Pereira y cualquier otra ciudad del país. La atención es 100 % remota.
+- Cobertura: toda Colombia, atención remota. Atiende empresas en Bogotá, Medellín, Cali, Barranquilla, Bucaramanga, Cartagena, Pereira y cualquier otra ciudad del país.
 - Idioma de atención: español
 - CEO y Fundador: Jonathan Osorio Correa, Ingeniero de Sistemas (Universidad Salazar y Herrera) y Especialista en Gerencia de TI (Universidad Pontificia Bolivariana), CTO y líder de innovación radicado en Medellín, con casi 20 años de experiencia en retail, educación y servicios. Resultados de su trayectoria: más de 45 % de mejora en eficiencia con la migración de un ERP, reducción del 36 % mensual en costos de nube Kubernetes, más de 40 % de incremento en ventas con una app B2B y 35 % más de ROI en canales digitales de telecomunicaciones. Marcos: ITIL, COBIT, TOGAF, Scrum, DevOps. Español nativo, inglés B2. Perfil: https://nithios.com/jonathan-osorio/
 - Canal de contacto único: WhatsApp +57 305 302 7559 — https://wa.me/573053027559
@@ -20,6 +20,27 @@
 - [Consultoría tecnológica para empresas](https://nithios.com/servicios/consultoria-tecnologica/): acompañamiento experto para decidir qué tecnología adoptar, en qué orden y cómo implementarla. Incluye diagnóstico de procesos, hoja de ruta de transformación digital, inteligencia artificial aplicada, selección y arquitectura de tecnología, automatización e integración y acompañamiento en la adopción.
 - [Desarrollo de software a medida](https://nithios.com/servicios/desarrollo-de-software-a-medida/): aplicativos a la medida de todo tipo con nuevas tecnologías: plataformas y aplicaciones web, aplicaciones móviles Android e iOS, sistemas de gestión, portales, integraciones y APIs, comunicación en tiempo real y soluciones con inteligencia artificial.
 - [Todos los servicios](https://nithios.com/servicios/)
+
+### Servicios específicos
+
+- [CTO externo](https://nithios.com/servicios/cto-externo/): dirección de tecnología por horas (CTO fraccional) para empresas sin un CTO de tiempo completo: hoja de ruta, decisiones de compra o desarrollo, gestión de proveedores, arquitectura y seguridad. Línea de consultoría.
+- [Plataformas web a medida](https://nithios.com/servicios/desarrollo-de-plataformas-web/): plataformas web y sistemas de gestión a la medida de la operación (módulos, usuarios y roles, tableros, reportes e integraciones). Línea de desarrollo.
+- [Aplicaciones móviles](https://nithios.com/servicios/desarrollo-de-aplicaciones-moviles/): apps a medida para Android e iOS con su backend, panel de administración e integraciones. Línea de desarrollo.
+- [Inteligencia artificial para empresas](https://nithios.com/servicios/inteligencia-artificial-para-empresas/): adopción de IA aplicada a la operación: identificación de casos de uso, revisión de datos, prueba de concepto acotada, integración y gobierno de la información. Consultoría + desarrollo.
+- [Automatización de procesos](https://nithios.com/servicios/automatizacion-de-procesos/): levantamiento y rediseño de procesos, integración entre sistemas y automatizaciones a la medida para reducir tareas repetitivas. Consultoría + desarrollo.
+- [Modernización de sistemas](https://nithios.com/servicios/modernizacion-de-sistemas/): diagnóstico de software heredado (legacy), estrategia de modernización, renovación por etapas, migración de datos e integraciones sin frenar la operación. Consultoría + desarrollo.
+
+## Guías
+
+Guías informativas del equipo de Nithios (sin precios ni cifras inventadas: explican factores, criterios y preguntas).
+
+- [¿Cuánto cuesta desarrollar software a medida en Colombia?](https://nithios.com/guias/cuanto-cuesta-desarrollar-software-a-medida-en-colombia/): por qué no hay un precio único, qué factores mueven el costo y cómo pedir cotizaciones comparables.
+- [¿Software a medida o software empaquetado?](https://nithios.com/guias/software-a-medida-vs-software-empaquetado/): diferencias, cuándo conviene cada uno, tabla comparativa y un test rápido para decidir.
+- [¿Qué es un CTO externo y cuándo lo necesita tu empresa?](https://nithios.com/guias/que-es-un-cto-externo/): qué hace, en qué se diferencia de un CTO de planta, un consultor y un proveedor, y cuándo conviene.
+- [Cómo empezar con inteligencia artificial en tu empresa](https://nithios.com/guias/como-empezar-con-inteligencia-artificial-en-tu-empresa/): cómo elegir el primer caso de uso, ejemplos por área, datos y seguridad, y cómo medir resultados.
+- [¿Cómo elegir una empresa de desarrollo de software en Colombia?](https://nithios.com/guias/como-elegir-una-empresa-de-desarrollo-de-software-en-colombia/): criterios verificables, preguntas clave y qué revisar en el contrato y la propiedad del código.
+- [Transformación digital para pymes: por dónde empezar](https://nithios.com/guias/transformacion-digital-para-pymes-por-donde-empezar/): diagnóstico, priorización, qué digitalizar primero y errores que conviene evitar.
+- [Todas las guías](https://nithios.com/guias/)
 
 ## Portafolio
 
@@ -47,4 +68,5 @@
 
 ## Optional
 
+- [Contenido completo en Markdown (llms-full.txt)](https://nithios.com/llms-full.txt): todas las páginas de servicio, guías, portafolio, CEO y preguntas frecuentes en un solo archivo, generado en cada publicación.
 - [Mapa del sitio](https://nithios.com/sitemap-index.xml)

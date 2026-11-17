@@ -2,6 +2,7 @@
 # Consultoría tecnológica y desarrollo de software a medida en Colombia.
 # Permitimos buscadores y asistentes de IA para que nos encuentren y nos citen.
 # Resumen para modelos de lenguaje: https://nithios.com/llms.txt
+# Contenido completo para modelos de lenguaje: https://nithios.com/llms-full.txt
 
 User-agent: *
 Allow: /

@@ -21,6 +21,7 @@ import { projects, sortedProjects } from '@/data/projects';
 import { getService } from '@/data/services';
 import { projectWork, faqPage, ids } from '@/lib/schema';
 import { projectOgImage } from '@/lib/images';
+import { serviceLinks } from '@/lib/enlaces';
 
 export const getStaticPaths = (() =>
   projects.map((project) => ({ params: { slug: project.slug }, props: { project } }))) satisfies GetStaticPaths;
@@ -34,6 +35,8 @@ const crumbs = [
 ];
 const service = getService(p.serviceSlug);
 const others = sortedProjects.filter((o) => o.slug !== p.slug);
+// Servicios específicos que ilustra el caso (projects.ts › relatedServicePages; se omiten si aún no existen).
+const relatedServices = serviceLinks(p.relatedServicePages ?? []);
 // La galería omite la captura que ya se muestra como visual principal.
 const gallery = p.images.filter((img) => img.src !== p.cover);
 const isPrototype = p.status === 'prototipo' && p.stack.length === 0;
@@ -245,6 +248,40 @@ const specs = [
     p.faqs.length > 0 && (
       <Section id="preguntas" eyebrow="Preguntas frecuentes" title={`Sobre ${inSentence}.`} width="narrow" tone="raised">
         <FaqList items={p.faqs} />
+      </Section>
+    )
+  }
+
+  <!-- Servicios relacionados -->
+  {
+    relatedServices.length > 0 && (
+      <Section
+        id="servicios-relacionados"
+        eyebrow="Servicios relacionados"
+        title="Servicios que hay detrás de un proyecto así."
+        titleSize="md"
+      >
+        <div class:list={['grid gap-5 md:grid-cols-2', relatedServices.length >= 3 && 'lg:grid-cols-3']}>
+          {relatedServices.map((l, i) => (
+            <Card
+              tone={i === 0 ? 'gold' : 'outline'}
+              icon={l.icon}
+              eyebrow="Servicio"
+              title={l.name}
+              text={l.summary}
+              href={l.path}
+              revealDelay={(i % 3) * 80}
+              class={relatedServices.length >= 3 && i === 2 ? 'md:max-lg:col-span-2' : undefined}
+            >
+              <Fragment slot="footer">
+                <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300" aria-hidden="true">
+                  Conocer el servicio
+                  <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </Fragment>
+            </Card>
+          ))}
+        </div>
       </Section>
     )
   }

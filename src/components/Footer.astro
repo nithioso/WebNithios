@@ -8,6 +8,7 @@ import Icon from './Icon.astro';
 import WhatsAppButton from './WhatsAppButton.astro';
 import { site, cities, coverage, legalNav, waLink } from '@/data/site';
 import { services } from '@/data/services';
+import { servicePages, servicePagePath } from '@/data/servicios';
 import { sortedProjects } from '@/data/projects';
 import { ceo } from '@/data/ceo';
 
@@ -21,7 +22,11 @@ const year = new Date().getFullYear();
 const columns = [
   {
     title: 'Servicios',
-    links: [{ label: 'Todos los servicios', href: '/servicios/' }, ...services.map((s) => ({ label: s.shortName, href: s.path }))],
+    links: [
+      { label: 'Todos los servicios', href: '/servicios/' },
+      ...services.map((s) => ({ label: s.shortName, href: s.path })),
+      ...servicePages.map((p) => ({ label: p.name, href: servicePagePath(p.slug) })),
+    ],
   },
   {
     title: 'Portafolio',
@@ -31,6 +36,7 @@ const columns = [
     title: 'Nithios',
     links: [
       { label: ceo.name, href: ceo.path },
+      { label: 'Guías', href: '/guias/' },
       { label: 'Preguntas frecuentes', href: '/preguntas-frecuentes/' },
       { label: 'Contacto', href: '/contacto/' },
     ],
@@ -63,7 +69,7 @@ const columns = [
               <ul class="mt-4 space-y-1">
                 {col.links.map((l) => (
                   <li>
-                    <a href={l.href} class="inline-flex min-h-10 items-center text-[0.9375rem] text-smoke transition-colors hover:text-pearl lg:whitespace-nowrap">
+                    <a href={l.href} class="footer-link">
                       {l.label}
                     </a>
                   </li>

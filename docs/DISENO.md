@@ -18,6 +18,8 @@ tipografía grande y ajustada (Inter Variable), hairlines, vidrio sutil, reveals
 `text-gold-shimmer` (brillo de una sola pasada, 1 por vista) · `bg-gold` · `glass` · `glass-strong` · `hairline` / `hairline-t` / `hairline-b` ·
 `gold-ring` (borde degradado 1px, usa ::before) · `glow-gold` (halo radial superior) · `grid-lines` (rejilla tenue con máscara) ·
 `noise` (grano, usa ::after) · `eyebrow` (sobretítulo dorado en mayúsculas) · `prose-nithios` (texto largo) · `link-underline` (solo enlaces sueltos: breadcrumbs, índices) ·
+`prose-guia` (prosa editorial de las guías: medida ~68 car. (columna `max-w-[40rem]`), h2 con filete y `scroll-margin`, enlaces con el mismo estilo que `link-inline`,
+listas con punto/número dorado, tablas con `th scope=col/row` + `aria-label` que en móvil se vuelven tarjetas «Etiqueta: valor» gracias a `data-label` de `enhanceGuideHtml()`, blockquote, code, hr) ·
 `link-inline` (enlace DENTRO de un párrafo: subrayado dorado siempre visible, WCAG 1.4.1; nunca `link-underline` en un párrafo).
 Reveal: atributo `data-reveal` (`""`=sube, `fade`, `scale`, `blur`) + `style="--reveal-delay:120ms"`. NO usarlo en el hero (sobre el pliegue / LCP):
 ahí va `.hero-in` (+ `hero-in-1…4` para escalonar), animación CSS pura sin JS. Si el módulo del observer no corre, `reveal-failsafe`
@@ -139,12 +141,22 @@ Seo: `title`, `description`, `path`, `ogImage?`, `ogImageAlt?`, `ogImageWidth?`/
 - **ProjectGallery** — galería de `ProjectImage[]`; cada captura enlaza al archivo completo (lupa + «Toca la imagen para ampliarla» en móvil). Props: `images`, `label?`, `class?`.
 - **ServiceHeroArt** — tile de vidrio con borde dorado (ícono + entregables reales) para el `aside` de PageHero. Props: `items: {icon, title, points}[]`, `pointsLabel?`.
 - **PortfolioShowcase** — fila de proyecto en /portafolio/ (alterna lado por `index`). Props: `project`, `index?`, `headingLevel?`, `class?`.
+- **ServicePageContent** — cuerpo completo de un servicio específico (hero → qué es → para quién → problemas → qué incluye (bento sin huecos 3–7)
+  → señales → proceso → entregables (+ tecnologías) → cuándo NO conviene → casos → guías → FAQ → relacionados → CtaBand). Props: `page: ServicePage`, `breadcrumbs`.
+  Rejillas sin huérfanas con `gridFor(n)`/`gridFor2(n)` de `src/lib/grid.ts` (5 ítems → 3 + 2 anchas en lg). Señales = situaciones hipotéticas
+  (eyebrow «¿Te suena?», ícono `check-circle`, SIN comillas «»: nunca deben parecer testimonios). Problemas: carrusel en móvil (`data-scroller`).
+  `whatIs.paragraphs` y las respuestas de FAQ admiten enlaces internos `[texto](/ruta/)` (`linkifyHtml` de `src/lib/text.ts`).
+- **GuideCard** — tarjeta de guía (un solo enlace, «Guía · N min de lectura»). Props: `guide: GuideLink`, `size?: 'md'|'lg'`, `headingLevel?`, `revealDelay?`, `class?`. Siempre muestra `summary` (3 líneas; 4 en `lg`).
+- **GuidesBlock** — sección «Guías» (3 GuideCard + «Ver todas las guías») para home, `/servicios/` y líneas. Props: `set: FeaturedGuidesKey` (slugs y textos en `src/data/guias.ts › featuredGuides`), `id?`, `tone?`. No se pinta si ninguna guía existe.
+- **Página de guía** (`pages/guias/[slug].astro`): hero `size="md"` con meta (autor Nithios, fechas, minutos), bloque «Respuesta corta» (`gold-ring glass-strong`),
+  índice de contenidos (móvil: `<details>`; ≥lg: lateral fijo con `aria-current` de la sección visible), prosa `.prose-guia`, FAQ, nota editorial, relacionados, CtaBand.
+  El título del índice lateral es un `<p>` (no h2) y su CTA es `variant="outline"` (máx. 1–2 acentos dorados por vista). /guias/ usa bento de 6 columnas sin huecos.
 - **KrystalMockup** — ilustración CSS rotulada «Ilustración conceptual» (no es captura). Props: `class?`.
 
 Nota Button: en móvil (<sm) el texto puede partir en dos líneas (`text-balance`); desde `sm` es `whitespace-nowrap`. Mantén las etiquetas de
 botones lg ≤ ~24 caracteres para que quepan en una línea a 390 px (p. ej. «Habla con Jonathan», «Abrir WhatsApp directo»). Botones de formulario: `<Button type="submit">`, nunca copiar clases.
 FAB móvil: `html { scroll-padding-bottom: 6rem }` y `<summary>` de FaqList con `max-md:pr-14` para no quedar bajo el botón.
-Carruseles móviles: atributo `data-scroller="<etiqueta>"`; un script les pone `tabindex/role=region/aria-label` solo si desplazan.
+Carruseles móviles: atributo `data-scroller="<etiqueta>"` + `<ScrollerSync />` en el componente; su script les pone `tabindex/role=region/aria-label` solo si desplazan.
 
 ## Patrones recomendados
 - Hero de home: `text-display-2xl`, palabra clave con `text-gold`, `glow-gold` + `grid-lines` de fondo, CTA dorado + glass.

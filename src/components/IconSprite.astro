@@ -1,10 +1,19 @@
 ---
 /**
- * Sprite SVG oculto con los íconos repetidos (SPRITE_ICONS). Lo incluye BaseLayout una vez por página.
+ * Sprite SVG oculto con los íconos repetidos (SPRITE_ICONS) y el logo dorado (#nl-*, ver Logo.astro). Lo incluye BaseLayout una vez por página.
  * Icon.astro los usa con <use href="#i-<nombre>">; el trazo/relleno se hereda del <svg> que los usa.
  */
 import { icons, SPRITE_ICONS } from '@/lib/icons';
-const symbols = [...SPRITE_ICONS].map((n) => `<symbol id="i-${n}" viewBox="0 0 24 24">${icons[n]}</symbol>`).join('');
+import { OPT_LIGHT, OPT_SHADE, OPT_T, WORD, WORD_T, compactPath } from '@/lib/logo';
+// Logo dorado (Logo.astro lo usa con <use href="#nl-…">): degradados + moneda (corte óptico, tamaños sm/md) + wordmark, una sola vez.
+const logoDefs =
+  '<defs>' +
+  '<linearGradient id="nl-luz" x1="8" y1="6" x2="52" y2="60" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f3e2a6"/><stop offset=".55" stop-color="#e0bf5c"/><stop offset="1" stop-color="#c9a03f"/></linearGradient>' +
+  '<linearGradient id="nl-sombra" x1="56" y1="60" x2="10" y2="6" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d4af37"/><stop offset=".5" stop-color="#b8913a"/><stop offset="1" stop-color="#9a7628"/></linearGradient>' +
+  `<g id="nl-coin" transform="${OPT_T}"><path d="${compactPath(OPT_LIGHT)}" fill="url(#nl-luz)"/><path d="${compactPath(OPT_SHADE)}" fill="url(#nl-sombra)"/></g>` +
+  `<path id="nl-word" d="${compactPath(WORD)}" transform="${WORD_T}"/>` +
+  '</defs>';
+const symbols = logoDefs + [...SPRITE_ICONS].map((n) => `<symbol id="i-${n}" viewBox="0 0 24 24">${icons[n]}</symbol>`).join('');
 ---
 
 <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" class="absolute size-0 overflow-hidden" aria-hidden="true" focusable="false" set:html={symbols} />

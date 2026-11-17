@@ -72,11 +72,8 @@ const jsonLdString = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : 
 <meta property="og:image:alt" content={ogImageAlt} />
 
 <!-- Twitter -->
+{/* X/Twitter toma título, descripción, imagen y alt de las og:* cuando faltan las twitter:* (menos HTML). */}
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={image} />
-<meta name="twitter:image:alt" content={ogImageAlt} />
 
 <!-- GEO -->
 <meta name="geo.region" content="CO" />

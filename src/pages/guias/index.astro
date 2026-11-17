@@ -1,0 +1,74 @@
+---
+/**
+ * /guias/ — índice de guías (colección `guias`). Se actualiza solo al añadir un .md en src/content/guias/.
+ * Copy: src/data/guias.ts · JSON-LD: CollectionPage + ItemList.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import GuideCard from '@/components/GuideCard.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import { guidesHub as hub } from '@/data/guias';
+import { getGuides, guidePath } from '@/lib/guias';
+import { guideLinks } from '@/lib/enlaces';
+import { pageOgImage } from '@/lib/images';
+import { highlightHtml } from '@/lib/text';
+import { itemList, type Crumb } from '@/lib/schema';
+
+const path = '/guias/';
+const crumbs: Crumb[] = [{ name: 'Guías', path }];
+const guides = await getGuides();
+const links = await guideLinks(guides.map((g) => g.id));
+const [featured, ...rest] = links;
+const og = await pageOgImage('/guias/');
+
+/*
+ * Bento sin huecos en lg (6 columnas): filas de 3 tarjetas (span 2); si sobran 1 o 2, la última fila va con
+ * tarjetas anchas (span 6 o span 3). En md (2 columnas), con cantidad impar la última ocupa la fila.
+ */
+const restSpan = (i: number) => {
+  const n = rest.length;
+  const tail = n % 3;
+  const inTail = tail > 0 && i >= n - tail;
+  const lg = !inTail ? 'lg:col-span-2' : tail === 1 ? 'lg:col-span-6' : 'lg:col-span-3';
+  return n % 2 === 1 && i === n - 1 ? `${lg} md:col-span-2` : lg;
+};
+---
+
+<BaseLayout
+  title={hub.seoTitle}
+  description={hub.seoDescription}
+  path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
+  breadcrumbs={crumbs}
+  pageType="CollectionPage"
+  jsonLd={[itemList(guides.map((g) => ({ name: g.data.title, path: guidePath(g.id) })), 'Guías de Nithios')]}
+  whatsappMessage={hub.whatsappMessage}
+>
+  <PageHero
+    eyebrow={hub.eyebrow}
+    title={hub.title}
+    titleHtml={highlightHtml(hub.title, hub.titleHighlight)}
+    intro={hub.intro}
+    breadcrumbs={crumbs}
+    whatsappMessage={hub.whatsappMessage}
+    secondary={{ label: 'Ver servicios', href: '/servicios/' }}
+    size="md"
+  />
+
+  {
+    featured && (
+      <Section id="guias" eyebrow={`${links.length} ${links.length === 1 ? 'guía' : 'guías'}`} title={hub.listTitle} intro={hub.listIntro} tone="raised">
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-6">
+          <GuideCard guide={featured} size="lg" class="md:col-span-2 lg:col-span-6 gold-ring" />
+          {rest.map((g, i) => (
+            <GuideCard guide={g} revealDelay={(i % 3) * 90} class={restSpan(i)} />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  <CtaBand title={hub.cta.title} text={hub.cta.text} message={hub.whatsappMessage} secondary={{ label: 'Ver servicios', href: '/servicios/' }} />
+</BaseLayout>

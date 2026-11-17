@@ -1,0 +1,293 @@
+---
+/**
+ * /guias/<slug>/ — artículo de la colección `guias` (src/content/guias/<slug>.md · esquema en src/content.config.ts).
+ * Diseño editorial: hero (h1) → «Respuesta corta» → índice (móvil: desplegable; ≥lg: lateral fijo) → prosa (.prose-guia)
+ * → FAQ propia → servicios relacionados → otras guías → CTA. Autor y editor: la organización Nithios.
+ * JSON-LD: Article + FAQPage + BreadcrumbList (BaseLayout). OG automática (npm run og).
+ */
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PageHero from '@/components/PageHero.astro';
+import Section from '@/components/Section.astro';
+import Card from '@/components/Card.astro';
+import GuideCard from '@/components/GuideCard.astro';
+import FaqList from '@/components/FaqList.astro';
+import CtaBand from '@/components/CtaBand.astro';
+import WhatsAppButton from '@/components/WhatsAppButton.astro';
+import Icon from '@/components/Icon.astro';
+import { site } from '@/data/site';
+import { getGuides, guidePath, readingMinutes, wordCount, formatDate, isoDate, enhanceGuideHtml, type Guide } from '@/lib/guias';
+import { serviceLinks, guideLinks, projectLinks } from '@/lib/enlaces';
+import { guideOgImage } from '@/lib/images';
+import { article, faqPage, ids, type Crumb } from '@/lib/schema';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { gridFor } from '@/lib/grid';
+
+export const getStaticPaths = (async () => {
+  const guides = await getGuides();
+  return guides.map((guide) => ({ params: { slug: guide.id }, props: { guide } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  guide: Guide;
+}
+
+const { guide } = Astro.props;
+const g = guide.data;
+const path = guidePath(guide.id);
+const { headings } = await render(guide);
+// HTML ya renderizado por el Content Layer (Markdown puro, sin componentes) + mejoras de tablas (data-label, roles).
+const bodyHtml = enhanceGuideHtml(guide.rendered?.html ?? '');
+
+if (headings.some((h) => h.depth === 1))
+  throw new Error(`[guias] ${guide.id}.md: no uses «# » (h1) en el cuerpo; el h1 es el title. Empieza en «## ».`);
+const toc = headings.filter((h) => h.depth === 2);
+
+const minutes = readingMinutes(guide);
+const words = wordCount(guide.body);
+const published = g.publishedAt;
+const updated = g.updatedAt && g.updatedAt.getTime() !== g.publishedAt.getTime() ? g.updatedAt : undefined;
+const message = g.whatsappMessage ?? `Hola Nithios, leí la guía «${g.title}» y quiero hablar sobre mi caso.`;
+
+const services = serviceLinks(g.relatedServices);
+const projects = projectLinks(g.relatedProjects);
+let others = await guideLinks(g.relatedGuides.filter((s) => s !== guide.id));
+if (others.length < 2) {
+  // Completa con las guías más recientes para que siempre haya lectura sugerida.
+  const extra = (await getGuides()).map((x) => x.id).filter((id) => id !== guide.id && !others.some((o) => o.slug === id));
+  others = [...others, ...(await guideLinks(extra))].slice(0, 3);
+}
+
+
+const crumbs: Crumb[] = [
+  { name: 'Guías', path: '/guias/' },
+  { name: g.title, path },
+];
+const og = await guideOgImage(guide.id, g.title, g.ogAlt);
+
+const jsonLd = [
+  article({
+    path,
+    headline: g.title,
+    description: g.description,
+    abstract: g.summary,
+    datePublished: isoDate(published),
+    dateModified: updated ? isoDate(updated) : undefined,
+    image: og.src,
+    keywords: g.keywords,
+    wordCount: words,
+    minutes,
+    aboutPaths: services.map((s) => s.path),
+  }),
+  faqPage(g.faqs, path),
+];
+---
+
+<BaseLayout
+  title={g.seoTitle}
+  description={g.description}
+  path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
+  ogType="article"
+  breadcrumbs={crumbs}
+  jsonLd={jsonLd}
+  mainEntityId={ids.article(path)}
+  whatsappMessage={message}
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={isoDate(published)} />
+    {updated && <meta property="article:modified_time" content={isoDate(updated)} />}
+    <meta property="article:author" content={site.name} />
+    <meta property="article:section" content="Guías" />
+  </Fragment>
+
+  <PageHero eyebrow="Guía" title={g.title} breadcrumbs={crumbs} whatsappMessage={false} size="md">
+    <p class="hero-in hero-in-2 mt-8 flex flex-col gap-1.5 text-[0.9375rem] text-smoke sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-3 sm:gap-y-2">
+      <span class="inline-flex items-center gap-2 text-mist">
+        <Icon name="sparkle" size={16} class="text-gold-400" />
+        Por el equipo de {site.name}
+      </span>
+      <span aria-hidden="true" class="max-sm:hidden">·</span>
+      <span>Publicada el <time datetime={isoDate(published)}>{formatDate(published)}</time></span>
+      {
+        updated && (
+          <>
+            <span aria-hidden="true" class="max-sm:hidden">·</span>
+            <span>Actualizada el <time datetime={isoDate(updated)}>{formatDate(updated)}</time></span>
+          </>
+        )
+      }
+      <span aria-hidden="true" class="max-sm:hidden">·</span>
+      <span class="inline-flex items-center gap-1.5"><Icon name="clock" size={15} class="text-gold-400" />{minutes} min de lectura</span>
+    </p>
+  </PageHero>
+
+  <div class="container-x pb-20 md:pb-28">
+    <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_17.5rem] lg:gap-16 xl:gap-24">
+      <article class="min-w-0 max-w-[40rem]">
+        <!-- Respuesta corta: bloque citable por buscadores y asistentes de IA -->
+        <aside class="gold-ring glass-strong relative overflow-hidden rounded-(--radius-card) p-7 md:p-9" aria-labelledby="respuesta-corta-titulo">
+          <h2 id="respuesta-corta-titulo" class="eyebrow flex items-center gap-2 text-[0.75rem]">
+            <Icon name="bolt" size={16} />
+            Respuesta corta
+          </h2>
+          <p class="mt-4 text-lg leading-relaxed font-medium tracking-[-0.01em] text-pearl md:text-xl md:leading-relaxed">{g.summary}</p>
+        </aside>
+
+        {
+          toc.length > 1 && (
+            <details class="group/toc mt-8 rounded-2xl hairline bg-ink-900 lg:hidden">
+              <summary class="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-6 text-pearl [&::-webkit-details-marker]:hidden">
+                <span class="font-medium">En esta guía</span>
+                <Icon name="chevron-down" size={20} class="text-gold-300 transition-transform duration-300 group-open/toc:rotate-180" />
+              </summary>
+              <ol class="toc-list border-t border-line px-6 py-4">
+                {toc.map((h, i) => (
+                  <li>
+                    <a href={`#${h.slug}`} class="flex min-h-11 items-center gap-3 py-1.5 text-[0.9375rem] text-mist hover:text-pearl">
+                      <span class="w-5 shrink-0 text-xs font-semibold text-gold-400 tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          )
+        }
+
+        <div class="prose-guia mt-12 md:mt-14" set:html={bodyHtml} />
+
+        <!-- FAQ propia de la guía -->
+        <section class="mt-20 md:mt-24" aria-labelledby="preguntas-titulo">
+          <p class="eyebrow mb-4">Dudas comunes</p>
+          <h2 id="preguntas-titulo" class="text-display-md font-semibold">Preguntas frecuentes</h2>
+          <FaqList items={g.faqs} class="mt-10" />
+        </section>
+
+        <p class="mt-14 flex items-start gap-3 rounded-2xl border border-line p-5 text-sm leading-relaxed text-smoke">
+          <Icon name="message" size={18} class="mt-0.5 shrink-0 text-gold-400" />
+          <span>
+            Guía publicada por {site.name}, empresa de tecnología colombiana de consultoría tecnológica y desarrollo de software a medida.
+            Es contenido general: cada empresa necesita un análisis propio. Si quieres revisar tu caso, <a href="/contacto/" class="link-inline">escríbenos</a>.
+          </span>
+        </p>
+      </article>
+
+      <!-- Lateral (≥lg): índice + CTA -->
+      <aside class="hidden lg:block" aria-label="Índice y contacto">
+        <div class="sticky top-[calc(var(--header-h)+2rem)] space-y-8">
+          {
+            toc.length > 1 && (
+              <nav aria-labelledby="toc-titulo">
+                <p id="toc-titulo" class="eyebrow text-[0.75rem]">En esta guía</p>
+                <ol class="toc-list mt-4 border-l border-line">
+                  {toc.map((h) => (
+                    <li>
+                      <a
+                        href={`#${h.slug}`}
+                        data-toc-link={h.slug}
+                        class="-ml-px flex min-h-11 items-center border-l border-transparent py-2 pl-4 text-sm leading-snug text-smoke transition-colors hover:border-line-strong hover:text-pearl aria-[current=true]:border-gold-400 aria-[current=true]:text-pearl"
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )
+          }
+          <div class="glass rounded-(--radius-card) p-6">
+            <p class="text-lg font-semibold tracking-[-0.02em] text-pearl">¿Quieres revisar tu caso?</p>
+            <p class="mt-2 text-sm leading-relaxed text-mist">Cuéntanos tu situación y te respondemos con preguntas concretas.</p>
+            <div class="mt-5">
+              <WhatsAppButton message={message} size="sm" variant="outline" fullWidth />
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  {
+    services.length > 0 && (
+      <Section id="servicios-relacionados" eyebrow="Servicios relacionados" title="Cómo te ayuda Nithios con esto" tone="raised" spacing="md">
+        <div class:list={['grid gap-5', gridFor(services.length)]}>
+          {services.map((s, i) => (
+            <Card
+              tone={i === 0 ? 'gold' : 'glass'}
+              icon={s.icon}
+              eyebrow={s.isLine ? 'Línea de servicio' : 'Servicio'}
+              title={s.name}
+              text={s.summary}
+              href={s.path}
+              revealDelay={(i % 3) * 80}
+            >
+              <Fragment slot="footer">
+                <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300" aria-hidden="true">
+                  Conocer el servicio
+                  <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </Fragment>
+            </Card>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    projects.length > 0 && (
+      <Section id="casos" eyebrow="Portafolio" title="Casos relacionados" spacing="md">
+        <div class:list={['grid gap-6', projects.length === 1 ? 'max-w-3xl' : 'md:grid-cols-2']}>
+          {projects.map((pr, i) => (
+            <ProjectCard project={pr} revealDelay={i * 100} />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    others.length > 0 && (
+      <Section id="otras-guias" eyebrow="Guías" title="Sigue leyendo" spacing="md">
+        <div class:list={['grid gap-6', gridFor(others.length)]}>
+          {others.map((o, i) => (
+            <GuideCard guide={o} revealDelay={i * 90} />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  <CtaBand
+    title="¿Lo aterrizamos a tu empresa?"
+    text="Cuéntanos por WhatsApp qué estás evaluando. Te ayudamos a ordenar las preguntas y a decidir el siguiente paso. Atendemos de forma remota a empresas de toda Colombia."
+    message={message}
+    secondary={{ label: 'Ver todas las guías', href: '/guias/' }}
+  />
+</BaseLayout>
+
+<script>
+  /** Índice lateral: marca con aria-current la sección visible (solo ≥lg, donde existe el índice). */
+  let observer: IntersectionObserver | undefined;
+
+  document.addEventListener('astro:page-load', () => {
+    observer?.disconnect();
+    const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    const targets = links
+      .map((a) => document.getElementById(a.dataset.tocLink ?? ''))
+      .filter((el): el is HTMLElement => Boolean(el));
+    const set = (id: string) => links.forEach((a) => a.setAttribute('aria-current', String(a.dataset.tocLink === id)));
+    observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) set(visible[0].target.id);
+      },
+      { rootMargin: '-15% 0px -70% 0px' },
+    );
+    targets.forEach((t) => observer!.observe(t));
+  });
+</script>

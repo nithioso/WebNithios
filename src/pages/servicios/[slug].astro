@@ -1,0 +1,46 @@
+---
+/**
+ * /servicios/<slug>/ — servicios específicos, uno por archivo en src/data/servicios/<slug>.ts.
+ * Las dos líneas (consultoria-tecnologica, desarrollo-de-software-a-medida) son archivos estáticos en esta carpeta
+ * y quedan FUERA de getStaticPaths (src/data/servicios/index.ts impide que un slug choque con ellas).
+ * Cuerpo: ServicePageContent · JSON-LD: Service + FAQPage + BreadcrumbList (BaseLayout) · OG: npm run og.
+ */
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ServicePageContent from '@/components/ServicePageContent.astro';
+import { servicePages, servicePagePath, type ServicePage } from '@/data/servicios';
+import { lineSlugs } from '@/data/mapa-contenido';
+import { servicePageOgImage } from '@/lib/images';
+import { servicePageNode, faqPage, ids, type Crumb } from '@/lib/schema';
+
+export const getStaticPaths = (() =>
+  servicePages
+    .filter((p) => !(lineSlugs as readonly string[]).includes(p.slug))
+    .map((page) => ({ params: { slug: page.slug }, props: { page } }))) satisfies GetStaticPaths;
+
+interface Props {
+  page: ServicePage;
+}
+
+const { page: p } = Astro.props;
+const path = servicePagePath(p.slug);
+const crumbs: Crumb[] = [
+  { name: 'Servicios', path: '/servicios/' },
+  { name: p.name, path },
+];
+const og = await servicePageOgImage(p);
+---
+
+<BaseLayout
+  title={p.seoTitle}
+  description={p.seoDescription}
+  path={path}
+  ogImage={og.src}
+  ogImageAlt={og.alt}
+  breadcrumbs={crumbs}
+  jsonLd={[servicePageNode(p), faqPage(p.faqs, path)]}
+  mainEntityId={ids.service(path)}
+  whatsappMessage={p.whatsappMessage}
+>
+  <ServicePageContent page={p} breadcrumbs={crumbs} />
+</BaseLayout>

@@ -3,7 +3,7 @@
  * Migas de pan visibles. El JSON-LD se genera aparte con breadcrumbList() de src/lib/schema.ts
  * (BaseLayout lo hace automáticamente si se le pasa la prop `breadcrumbs`).
  * <Breadcrumbs items={[{ name: 'Servicios', path: '/servicios/' }, { name: 'Consultoría', path: '/servicios/consultoria-tecnologica/' }]} />
- * "Inicio" se antepone automáticamente; el último ítem es la página actual.
+ * "Inicio" se antepone automáticamente; el último ítem es la página actual (en móvil se trunca en una línea con «…»).
  */
 import Icon from './Icon.astro';
 import type { Crumb } from '@/lib/schema';
@@ -23,10 +23,10 @@ const all: Crumb[] = [{ name: 'Inicio', path: '/' }, ...items];
       all.map((c, i) => {
         const last = i === all.length - 1;
         return (
-          <li class="inline-flex items-center gap-1.5">
+          <li class:list={['inline-flex items-center gap-1.5', last && 'min-w-0 max-sm:flex-1']}>
             {i > 0 && <Icon name="chevron-right" size={14} class="text-ink-500" />}
             {last ? (
-              <span aria-current="page" class="text-mist">
+              <span aria-current="page" class="text-mist max-sm:truncate" title={c.name}>
                 {c.name}
               </span>
             ) : (

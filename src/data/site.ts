@@ -55,6 +55,7 @@ export interface NavItem {
 export const nav: NavItem[] = [
   { label: 'Servicios', href: '/servicios/', description: 'Consultoría tecnológica y desarrollo a medida' },
   { label: 'Portafolio', href: '/portafolio/', description: 'Plataformas y aplicaciones desarrolladas' },
+  { label: 'Guías', href: '/guias/', description: 'Guías para decidir mejor sobre tecnología' },
   { label: 'Fundador', href: '/jonathan-osorio/', description: 'Jonathan Osorio, CEO y Fundador' },
   { label: 'Preguntas', href: '/preguntas-frecuentes/', description: 'Respuestas claras antes de empezar' },
   { label: 'Contacto', href: '/contacto/', description: 'Hablemos por WhatsApp' },

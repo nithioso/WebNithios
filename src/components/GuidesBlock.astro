@@ -1,0 +1,39 @@
+---
+/**
+ * Bloque «Guías» para páginas fuera de /guias/ (home, /servicios/, páginas de línea): 3 GuideCard + enlace al índice.
+ * Textos y slugs en src/data/guias.ts (featuredGuides). Si ninguna guía existe aún, no se pinta nada.
+ * <GuidesBlock set="home" tone="raised" />
+ */
+import Section from './Section.astro';
+import GuideCard from './GuideCard.astro';
+import Button from './Button.astro';
+import { featuredGuides, type FeaturedGuidesKey } from '@/data/guias';
+import { guideLinks } from '@/lib/enlaces';
+
+interface Props {
+  set: FeaturedGuidesKey;
+  id?: string;
+  tone?: 'default' | 'raised' | 'glow';
+}
+
+const { set, id = 'guias', tone = 'default' } = Astro.props;
+const cfg = featuredGuides[set];
+const guides = await guideLinks(cfg.slugs);
+---
+
+{
+  guides.length > 0 && (
+    <Section id={id} eyebrow="Guías" title={cfg.title} intro={cfg.intro} tone={tone}>
+      <div class:list={['grid gap-6 md:grid-cols-2', guides.length >= 3 && 'lg:grid-cols-3']}>
+        {guides.map((g, i) => (
+          <GuideCard guide={g} revealDelay={(i % 3) * 90} class={guides.length >= 3 && i === 2 ? 'md:max-lg:col-span-2' : undefined} />
+        ))}
+      </div>
+      <Fragment slot="actions">
+        <Button href="/guias/" variant="glass" iconRight="arrow-right">
+          Ver todas las guías
+        </Button>
+      </Fragment>
+    </Section>
+  )
+}

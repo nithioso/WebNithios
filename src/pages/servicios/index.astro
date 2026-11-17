@@ -15,11 +15,15 @@ import CtaBand from '@/components/CtaBand.astro';
 import Icon from '@/components/Icon.astro';
 import Reveal from '@/components/Reveal.astro';
 import ServiceHeroArt from '@/components/ServiceHeroArt.astro';
+import GuidesBlock from '@/components/GuidesBlock.astro';
 import { cities, coverage } from '@/data/site';
 import { services, getService } from '@/data/services';
 import { sortedProjects } from '@/data/projects';
 import { faqs } from '@/data/faqs';
 import { servicesHub as hub, getServiceDetail } from '@/data/service-details';
+import { servicePageGroups, servicePages, servicePagePath } from '@/data/servicios';
+import { lineLabels } from '@/data/mapa-contenido';
+import { gridFor } from '@/lib/grid';
 import { allServices, itemList, type Crumb } from '@/lib/schema';
 
 const path = '/servicios/';
@@ -29,12 +33,19 @@ const hubFaqs = hub.faqQuestions
   .map((q) => faqs.find((f) => f.question === q))
   .filter((f): f is NonNullable<typeof f> => Boolean(f));
 
+const groups = servicePageGroups();
+/* Una sola rejilla con los servicios específicos (agrupados por línea, que pasa al eyebrow de cada tarjeta): filas completas, sin huecos. */
+const specific = groups.flatMap((g) => g.items.map((p) => ({ ...p, line: lineLabels[g.parent] })));
+
 const featuredProjects = sortedProjects.filter((p) => p.featured);
 
 const jsonLd = [
   ...allServices(),
   itemList(
-    services.map((s) => ({ name: s.name, path: s.path })),
+    [
+      ...services.map((s) => ({ name: s.name, path: s.path })),
+      ...servicePages.map((p) => ({ name: p.name, path: servicePagePath(p.slug) })),
+    ],
     'Servicios de Nithios',
   ),
   // FAQPage solo en /preguntas-frecuentes/ (estas preguntas salen de faqs.ts): aquí el acordeón es solo visible.
@@ -153,6 +164,31 @@ const og = await pageOgImage('/servicios/');
     </div>
   </Section>
 
+  <!-- Servicios específicos (src/data/servicios/*.ts): una rejilla; la línea de cada uno va en el eyebrow de su tarjeta -->
+  {
+    groups.length > 0 && (
+      <Section
+        id="especificos"
+        eyebrow="Servicios específicos"
+        title="Encuentra el servicio exacto que buscas."
+        intro="Cada servicio parte de una de nuestras dos líneas (consultoría, desarrollo o ambas) y responde a una necesidad concreta de tu empresa."
+      >
+        <div class:list={['grid gap-5', gridFor(specific.length)]}>
+          {specific.map((p, i) => (
+            <Card tone="glass" icon={p.icon} eyebrow={p.line} title={p.name} text={p.summary} href={servicePagePath(p.slug)} headingLevel="h3" revealDelay={(i % 3) * 80}>
+              <Fragment slot="footer">
+                <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gold-300" aria-hidden="true">
+                  Conocer el servicio
+                  <Icon name="arrow-right" size={16} class="transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </Fragment>
+            </Card>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
   <!-- Camino completo -->
   <Section
     id="camino"
@@ -208,6 +244,9 @@ const og = await pageOgImage('/servicios/');
       </Section>
     )
   }
+
+  <!-- Guías (src/data/guias.ts › featuredGuides.servicios) -->
+  <GuidesBlock set="servicios" />
 
   <!-- Cobertura -->
   <Section id="cobertura" eyebrow="Cobertura" title="Servicios de tecnología en toda Colombia" spacing="md">

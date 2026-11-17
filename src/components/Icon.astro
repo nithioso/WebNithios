@@ -4,6 +4,7 @@
  * <Icon name="compass" size={24} class="text-gold-400" />
  * <Icon name="whatsapp" label="WhatsApp" />  → con `label` deja de ser decorativo.
  * Los íconos de SPRITE_ICONS se dibujan con <use> sobre el sprite de BaseLayout (menos HTML).
+ * Trazo, relleno y flex-shrink salen de las clases .ico / .ico-f (global.css); un strokeWidth distinto de 1.6 va en style.
  */
 import { icons, FILLED_ICONS, SPRITE_ICONS, type IconName } from '@/lib/icons';
 
@@ -22,19 +23,13 @@ const inner = SPRITE_ICONS.has(name) ? `<use href="#i-${name}"/>` : icons[name];
 ---
 
 <svg
-  xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24"
   width={size}
   height={size}
-  fill={filled ? 'currentColor' : 'none'}
-  stroke={filled ? 'none' : 'currentColor'}
-  stroke-width={filled ? undefined : strokeWidth}
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  class:list={['shrink-0', className]}
+  class:list={[filled ? 'ico ico-f' : 'ico', className]}
+  style={!filled && strokeWidth !== 1.6 ? `stroke-width:${strokeWidth}` : undefined}
   aria-hidden={label ? undefined : 'true'}
   role={label ? 'img' : undefined}
   aria-label={label}
-  focusable="false"
   set:html={inner}
 />
