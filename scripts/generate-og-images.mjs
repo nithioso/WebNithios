@@ -191,7 +191,7 @@ const defaultHtml = card({
 });
 
 const S = {
-  dragon: (n) => shot('dragon-global-trade', n),
+  com: (n) => shot('plataforma-comercio-internacional', n),
   log: (n) => shot('plataforma-logistica-acero', n),
   tra: (n) => shot('plataforma-transporte-audiovisual', n),
   chelato: (n) => shot('chelato-toons', n),
@@ -282,7 +282,7 @@ async function buildAutoPages() {
 }
 
 async function buildPages() {
-  const dragonTablero = await img(S.dragon('tablero-comercio-internacional'));
+  const comTablero = await img(S.com('tablero-de-operacion'));
   const logPanel = await img(S.log('panel-de-control'));
   const traTorre = await img(S.tra('torre-de-control'));
   const chelatoTabla = await img(S.chelato('tabla-de-puntajes-en-vivo'));
@@ -322,7 +322,7 @@ async function buildPages() {
         sub: 'Plataformas web, apps móviles e IA.',
         cta: 'Hablemos por WhatsApp',
         wa: true,
-        visual: frame(dragonTablero, 'left:600px;top:112px;width:720px;height:450px'),
+        visual: frame(comTablero, 'left:600px;top:112px;width:720px;height:450px'),
         fade: true,
       }),
     },
@@ -335,7 +335,7 @@ async function buildPages() {
         cta: 'Ver el portafolio',
         visual:
           `<div class="visual" style="left:600px;top:112px;display:grid;grid-template-columns:330px 330px;gap:18px">` +
-          [chelatoTabla, dragonTablero, logPanel, traTorre].map((s) => frame(s, 'position:relative;width:330px;height:236px')).join('') +
+          [chelatoTabla, comTablero, logPanel, traTorre].map((s) => frame(s, 'position:relative;width:330px;height:236px')).join('') +
           `</div>`,
         fade: true,
       }),
@@ -417,8 +417,8 @@ async function buildPages() {
       }),
     },
     {
-      out: 'dragon-global-trade-plataforma-comercio-internacional-og.png',
-      html: caseCard({ eyebrow: 'Caso · Prototipo', name: 'Dragon Global <em>Trade</em>', sub: 'Plataforma de comercio internacional en 5 idiomas.', visual: dragonTablero }),
+      out: 'plataforma-comercio-internacional-importaciones-y-exportaciones-og.png',
+      html: caseCard({ eyebrow: 'Caso · Prototipo', name: 'Comercio <em>internacional</em>', sub: 'Importaciones y exportaciones desde China, en 5 idiomas.', visual: comTablero }),
     },
     {
       out: 'plataforma-logistica-acero-pedidos-rutas-y-despachos-og.png',

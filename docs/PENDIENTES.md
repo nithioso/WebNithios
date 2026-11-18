@@ -22,7 +22,7 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 - [ ] **Validar áreas de especialidad de Jonathan** (hoy `focusAreas` solo lista lo derivado de las líneas de servicio; antes figuraban
   arquitectura de software, ciberseguridad y dirección de equipos, retiradas por no estar confirmadas).
 - [ ] **Nacionalidad** (solo si se quiere publicar): añadir campo en `ceo.ts` y `nationality` en `person()`.
-- [ ] **Rol de Jonathan en cada proyecto** (¿participa desde la primera conversación? ¿lideró Dragon/Krystal?). Hasta confirmarlo, el copy
+- [ ] **Rol de Jonathan en cada proyecto** (¿participa desde la primera conversación? ¿lideró el caso de comercio internacional o Krystal?). Hasta confirmarlo, el copy
   NO le atribuye participación personal ni habla de «su equipo» o «su sello» (ronda 2: se retiraron esas frases de `/jonathan-osorio/` y `/servicios/`).
 - [ ] **Cargos de liderazgo previos**: el copy dice solo «casi 20 años de experiencia en diferentes sectores» (sin «liderando iniciativas»). Si se confirma, ampliar en `ceo.ts`.
 - [x] **Perfiles públicos** (`sameAs`): LinkedIn publicado (JSON-LD + enlace visible en la ficha ejecutiva).
@@ -36,19 +36,26 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 - [x] **Casos anonimizados (decisión del usuario).** NOTA INTERNA — no copiar estos nombres a `src/` ni `public/`:
   | Caso público (slug) | Repo / prototipo de origen | Cliente real |
   |---|---|---|
+  | `plataforma-comercio-internacional` («Plataforma de comercio internacional») | `nithioso/dragon-global-trade-prototipo` (subdominio `dragon.nithios.com`) | Dragon Global Trade (DGT; importaciones y exportaciones desde China hacia todo el mundo) |
   | `plataforma-logistica-acero` («Plataforma logística para acero») | `nithioso/armetales` | Armetales |
   | `plataforma-transporte-audiovisual` («Plataforma de transporte audiovisual») | `nithioso/lsto-propuestas-diseno/lystrax-propuesta-unificada.html` | L&STO GROUP S.A.S. (producto «LYSTRAX CONNECT») |
   En el sitio no aparecen esos nombres (ni en textos, alt, JSON-LD, WhatsApp, llms.txt, rutas ni nombres de archivo); `statusNote` y las FAQ dicen
-  que el nombre se reserva por confidencialidad. Las 12 capturas (tema oscuro, 1440×900 @2x → 2880×1800 WebP q80) están en
-  `src/assets/portfolio/plataforma-logistica-acero/` y `.../plataforma-transporte-audiovisual/`. Al capturarlas con Playwright se ocultaron los logos
+  que el nombre se reserva por confidencialidad. Las 18 capturas (tema oscuro, 1440×900 @2x → 2880×1800 WebP q80) están en
+  `src/assets/portfolio/plataforma-comercio-internacional/`, `.../plataforma-logistica-acero/` y `.../plataforma-transporte-audiovisual/`. Al capturarlas con Playwright se ocultaron los logos
   y se reemplazaron en el DOM (TreeWalker) las marcas por «Plataforma logística» / «Plataforma de operación» / «Empresa operadora», la sede
   propia por «CEDI Principal», el ERP de terceros por «ERP», y toda razón social ficticia de terceros (constructoras, ferreterías, depósitos,
   productoras, aliados) por genéricos («Constructora A», «Productora A», «Aliado B»…). Si se recapturan, repetir ese tratamiento y revisar cada imagen.
-  Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
+  Comercio internacional (nov 2026): capturas del prototipo servido en local (superadmin, tema oscuro; la del idioma con locale `zh`), logo oculto,
+  marca → «Plataforma de comercio», razones sociales propias → «Empresa Colombia»/«Empresa China»/«Empresa aliada» (y la razón social china → 贸易公司),
+  clientes ficticios → «Cliente A…H», proveedores → «Proveedor A…K» / 供应商 A…K, dominio de correos de demo → `demo.example`.
+  Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT|dragon|\bdgt\b" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
+- [ ] **Exposición fuera del sitio (decisión del usuario pendiente):** el subdominio público `dragon.nithios.com` y el repo público
+  `nithioso/dragon-global-trade-prototipo` siguen mostrando el nombre del cliente (título, logo, `<meta description>`, datos de demo). El sitio no enlaza
+  ninguno de los dos. Opciones: renombrar/privatizar el repo, anonimizar el prototipo o retirar el subdominio.
 - [ ] Casos anonimizados: stack definitivo (hoy vacío), estado real más allá del prototipo y, si algún día se autoriza, publicar el nombre.
   Las URL antiguas (`/portafolio/<nombre-del-cliente>/`) no tienen redirección a propósito (evita exponer el nombre en `.htaccess`).
-- [x] Capturas de Dragon Global Trade: 6 capturas reales del prototipo (tema oscuro, 2880×1800 WebP) en `src/assets/portfolio/dragon-global-trade/` (nombres `dragon-global-trade-<pantalla>.webp`),
-  tomadas del prototipo estático con datos ficticios de demostración (la página lo aclara en `statusNote`). Regenerar si cambia el prototipo.
+- [x] Capturas del caso de comercio internacional: 6 capturas anonimizadas (ver arriba) en `src/assets/portfolio/plataforma-comercio-internacional/`
+  (`plataforma-comercio-internacional-<pantalla>.webp`). La URL antigua del caso queda en 404 a propósito (sin redirección que exponga el nombre).
 - [ ] Capturas reales de Krystal: hoy se muestra una ilustración conceptual en CSS (`illustration: 'krystal'`, `KrystalMockup.astro`).
   Para publicarlas: guardar 4–6 capturas (1440×900 @2x, tema oscuro si existe; agenda, videollamada, historia clínica, dashboards por rol)
   en `src/assets/portfolio/krystal/`, importarlas en `projects.ts`, llenar `images: [{ src, alt, caption }]` y `cover` (+ `coverAlt`).
@@ -68,14 +75,14 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   el backend; limpiarlos en el repo del juego. En este sitio ya no se nombra el proveedor (`verify:seo` lo comprueba).
 - [ ] Chelato Toons: confirmar si se puede mencionar el nombre de la marca, fechas o resultados de la campaña (hoy no se publica ninguno) y si
   los personajes tienen licencia (mientras no se confirme, seguir sin mostrarlos ni nombrarlos).
-- [ ] Stack tecnológico de Dragon Global Trade (hoy vacío).
+- [ ] Stack tecnológico del caso de comercio internacional (hoy vacío).
 - [ ] Autorización para mencionar clientes/resultados (si aplica).
 
 ## Empresa
 - [ ] **Confirmar oferta "CTO externo" y "ciberseguridad"** como servicios propios. Hoy: "Acompañamiento estratégico continuo" dentro de
   consultoría y "Protección de la información" como criterio transversal, sin sección ni FAQ propias.
 - [ ] ¿Atención en inglés? Hoy JSON-LD y llms.txt dicen solo español; si se confirma, actualizar `schema.ts` y `public/llms.txt` a la vez.
-- [ ] ¿Dominio público de Dragon / Krystal? Si existe, añadir campo opcional `url` en `projects.ts` (el marco de navegador hoy muestra solo el nombre).
+- [ ] ¿Dominio público del caso de comercio internacional / Krystal? Si existe, añadir campo opcional `url` en `projects.ts` (el marco de navegador hoy muestra solo el nombre).
 - [x] Logo definitivo: K · «NTOS en sello» (elegido por el usuario; reemplaza a G «Ligadura NT», archivado en design/logo/v2/nt-ligadura/; design/logo/DECISION.md). Integrado en sitio, favicon/íconos, OG y kit gráfico. Pendiente solo la búsqueda de marca (abajo).
   Límites conocidos: la S se descubre desde ~64 px; a 32 px aguantan N, T y el anillo (con corte óptico); a 16 px es una moneda con una marca oscura. La pieza de luz en «C» podría leerse como «C·NT» o ©.
 - [ ] Razón social / NIT, correo, redes sociales (no publicar hasta confirmar).

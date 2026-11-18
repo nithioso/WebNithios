@@ -1,7 +1,7 @@
 /**
  * /servicios/desarrollo-de-plataformas-web/ — servicio específico (línea desarrollo).
  * Contrato: docs/CONTENIDO.md. Sin cifras, precios, plazos, clientes ni resultados inventados.
- * Dragon, logística y transporte audiovisual: prototipos navegables con datos ficticios (nunca productos en producción).
+ * Comercio internacional, logística y transporte audiovisual: prototipos navegables con datos ficticios (nunca productos en producción).
  */
 import type { ServicePage } from './types';
 
@@ -248,7 +248,7 @@ export default {
       'cuanto-cuesta-desarrollar-software-a-medida-en-colombia',
       'como-elegir-una-empresa-de-desarrollo-de-software-en-colombia',
     ],
-    projects: ['dragon-global-trade', 'plataforma-logistica-acero'],
+    projects: ['plataforma-comercio-internacional', 'plataforma-logistica-acero'],
   },
 
   cta: {

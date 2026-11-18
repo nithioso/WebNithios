@@ -21,7 +21,7 @@ relatedGuides:
   - que-es-un-cto-externo
   - software-a-medida-vs-software-empaquetado
 relatedProjects:
-  - dragon-global-trade
+  - plataforma-comercio-internacional
 faqs:
   - question: '¿Es mejor contratar una empresa de software o un desarrollador independiente?'
     answer: 'Depende del tamaño y del riesgo del proyecto. Un independiente puede bastar para algo acotado, pero el proyecto queda atado a la disponibilidad de una sola persona. Una empresa suele cubrir diseño, desarrollo, pruebas y soporte con continuidad. En ambos casos, exige lo mismo: código en un repositorio tuyo, documentación y un contrato claro.'

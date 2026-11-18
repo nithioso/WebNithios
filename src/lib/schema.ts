@@ -349,7 +349,7 @@ export function allServices(): JsonLd[] {
 
 /**
  * CreativeWork por caso del portafolio. NO SoftwareApplication: Google lo trata como rich result que exige
- * offers + aggregateRating/review (datos que no existen) y Dragon es un prototipo de interfaz.
+ * offers + aggregateRating/review (datos que no existen) y los casos de comercio internacional, logística y transporte son prototipos de interfaz.
  * `image`: URL optimizada (projectOgImage), nunca el original.
  */
 export function projectWork(p: Project, image?: string): JsonLd {

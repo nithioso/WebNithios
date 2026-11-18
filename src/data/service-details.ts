@@ -269,7 +269,7 @@ export const serviceDetails: ServiceDetail[] = [
     sectorsIntro:
       'Trabajamos con todo tipo de empresas. Jonathan Osorio suma casi 20 años de experiencia en tecnología en diferentes sectores, y el método es el mismo en todos: entender el proceso antes de proponer la herramienta. Estos son algunos ámbitos donde la consultoría tecnológica genera impacto:',
     sectors: [
-      { name: 'Comercio exterior y logística', text: 'Trazabilidad de operaciones, compras y proveedores en varios países.', icon: 'globe', projectSlug: 'dragon-global-trade' },
+      { name: 'Comercio exterior y logística', text: 'Trazabilidad de operaciones, compras y proveedores en varios países.', icon: 'globe', projectSlug: 'plataforma-comercio-internacional' },
       { name: 'Salud y bienestar', text: 'Agendas, atención remota e información sensible bien protegida.', icon: 'heart', projectSlug: 'krystal' },
       { name: 'Servicios profesionales', text: 'Gestión de clientes, proyectos y conocimiento del equipo.', icon: 'briefcase' },
       { name: 'Comercio y distribución', text: 'Ventas, inventarios y atención conectados en un mismo flujo.', icon: 'cart' },
@@ -439,7 +439,7 @@ export const serviceDetails: ServiceDetail[] = [
       title: 'Empieza pequeño. Valida rápido. Crece con evidencia.',
       paragraphs: [
         'Un MVP —producto mínimo viable— es la primera versión de tu software con las funciones esenciales para resolver el problema principal. Te permite ponerlo en manos de usuarios reales, aprender de su uso y decidir en qué invertir después, en lugar de construir durante meses algo que nadie ha probado.',
-        'Antes de escribir el código definitivo diseñamos un prototipo navegable para validar flujos e interfaces. Así lo hicimos con Dragon Global Trade, cuya interfaz se construyó como prototipo navegable con datos de demostración para recorrer la experiencia completa antes del desarrollo.',
+        'Antes de escribir el código definitivo diseñamos un prototipo navegable para validar flujos e interfaces. Así lo hicimos con la plataforma de comercio internacional, cuya interfaz se construyó como prototipo navegable con datos de demostración para recorrer la experiencia completa antes del desarrollo.',
       ],
       points: [
         'Alcance enfocado en el problema principal',
@@ -502,7 +502,7 @@ export const serviceDetails: ServiceDetail[] = [
     sectorsIntro:
       'Desarrollamos software para todo tipo de empresas. Nuestro portafolio incluye plataformas para comercio internacional y salud mental; estos son algunos ámbitos donde un desarrollo a medida marca la diferencia:',
     sectors: [
-      { name: 'Comercio exterior y logística', text: 'Operación comercial, compras y logística en una sola plataforma.', icon: 'truck', projectSlug: 'dragon-global-trade' },
+      { name: 'Comercio exterior y logística', text: 'Operación comercial, compras y logística en una sola plataforma.', icon: 'truck', projectSlug: 'plataforma-comercio-internacional' },
       { name: 'Salud y bienestar', text: 'Consultorios, agendas, videollamadas e historia clínica.', icon: 'heart', projectSlug: 'krystal' },
       { name: 'Servicios profesionales', text: 'Portales de clientes, gestión de proyectos y flujos de aprobación.', icon: 'briefcase' },
       { name: 'Comercio y distribución', text: 'Pedidos, inventarios y atención integrados.', icon: 'cart' },

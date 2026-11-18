@@ -32,7 +32,7 @@ src/
 | `/servicios/<slug>/` (servicios específicos) | `pages/servicios/[slug].astro` → `components/ServicePageContent.astro`; datos: un archivo por página en `data/servicios/<slug>.ts` (tipo `ServicePage`, `data/servicios/types.ts`), reunidos por `data/servicios/index.ts` (import.meta.glob + validación) | hechas (7): cto-externo, miembro-de-junta-directiva-tecnologia (Jonathan Osorio como candidato a junta; sección `profile`), inteligencia-artificial-para-empresas, automatizacion-de-procesos, desarrollo-de-aplicaciones-moviles, desarrollo-de-plataformas-web, modernizacion-de-sistemas |
 | `/guias/` · `/guias/<slug>/` | `pages/guias/index.astro` + `pages/guias/[slug].astro`; colección `guias` (`src/content/guias/*.md`, esquema zod en `src/content.config.ts`) | hechas (índice + 6 guías del mapa) |
 | `/portafolio/` | `pages/portafolio/index.astro` | hecha |
-| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (chelato-toons [en línea], dragon-global-trade, plataforma-logistica-acero, plataforma-transporte-audiovisual, krystal; logística y transporte están anonimizados, ver docs/PENDIENTES.md) |
+| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (chelato-toons [en línea], plataforma-comercio-internacional, plataforma-logistica-acero, plataforma-transporte-audiovisual, krystal; comercio internacional, logística y transporte están anonimizados, ver docs/PENDIENTES.md) |
 | `/jonathan-osorio/` | `pages/jonathan-osorio.astro` + `components/CeoPortrait.astro` | hecha |
 | `/contacto/` · `/preguntas-frecuentes/` · `/politica-de-privacidad/` | `pages/*.astro` (+ `components/ContactForm.astro`) | hechas |
 | 404 | `pages/404.astro` | hecha |

@@ -36,7 +36,7 @@ lo entienda en una frase y escriba por WhatsApp.
 | `/guias/transformacion-digital-para-pymes-por-donde-empezar/` | transformación digital para pymes | por dónde empezar la transformación digital, digitalizar una pyme |
 | `/portafolio/` | portafolio de desarrollo de software | casos, plataformas desarrolladas |
 | `/portafolio/chelato-toons/` | desarrollo de videojuegos publicitarios (advergames) en Colombia | juego web para activación de marca, juego con código QR, juego de naves en el celular (producto EN LÍNEA; nunca nombrar a la empresa: «una marca de micheladas») |
-| `/portafolio/dragon-global-trade/` | plataforma de gestión de comercio internacional | software comercio exterior, multiidioma |
+| `/portafolio/plataforma-comercio-internacional/` | software para importadores y exportadores | plataforma de comercio exterior a medida, importar desde China, multiidioma (caso anonimizado) |
 | `/portafolio/krystal/` | software para consultorio psicológico | agenda de citas, videollamadas, historia clínica |
 | `/jonathan-osorio/` | Jonathan Osorio | CEO y Fundador de Nithios, ejecutivo de tecnología (bloque «Disponible como miembro de junta directiva» → enlaza al servicio, que es el dueño de la intención «junta») |
 | `/contacto/` | contactar empresa de software en Colombia | cotizar software, WhatsApp Nithios |
@@ -81,7 +81,7 @@ servicios se habla de «la normativa colombiana de protección de datos personal
 - Primera frase de cada bloque = respuesta directa y autocontenida.
 - Preguntas como subtítulos (h2/h3) con respuesta inmediata en 40–60 palabras (FAQ, bloque "¿Cómo contacto a Nithios?").
 - Entidades explícitas: Nithios (dirigida desde Medellín, cobertura nacional remota), Jonathan Osorio Correa (CEO y Fundador; sameAs LinkedIn), Colombia + ciudades,
-  Chelato Toons (en línea, chelato.nithios.com), Dragon Global Trade, plataforma logística para acero y plataforma de transporte audiovisual (anonimizadas), Krystal, tecnologías.
+  Chelato Toons (en línea, chelato.nithios.com), plataformas de comercio internacional, logística para acero y transporte audiovisual (anonimizadas), Krystal, tecnologías.
 - Intenciones objetivo: "consultoría tecnológica en Colombia", "desarrollo de software a medida en Colombia",
   "empresa de desarrollo de software Bogotá/Medellín", "transformación digital para empresas", "inteligencia artificial para empresas".
 - Ciudades: mención natural ("atendemos de forma remota empresas en Bogotá, Medellín…"); nunca dirección ni "oficina en".
@@ -132,7 +132,7 @@ servicios se habla de «la normativa colombiana de protección de datos personal
   (proyecto: `ogImage` + `ogImageAlt` en `projects.ts`); 4) en la página `const og = await pageOgImage('<ruta>')` y
   `ogImage={og.src} ogImageAlt={og.alt}` en BaseLayout; 5) `npm run build && npm run verify:images`.
 - **Nombres de archivo** (lo que se publica en `/_astro/` es nombre base + hash): minúsculas, sin tildes, con guiones, con la palabra
-  clave y el contexto: `<proyecto|marca>-<qué-muestra>.<ext>` (p. ej. `dragon-global-trade-modulo-comercial-cotizaciones.webp`,
+  clave y el contexto: `<proyecto|marca>-<qué-muestra>.<ext>` (p. ej. `plataforma-comercio-internacional-modulo-comercial-cotizaciones.webp`,
   `plataforma-logistica-acero-seguimiento-de-ruta.webp`, `jonathan-osorio-ceo-nithios.jpg`, `nithios-consultoria-tecnologica-colombia-og.png`).
   Nunca genéricos (`og.png`, `tablero.webp`, `foto.jpg`). Casos anonimizados: solo el nombre genérico del caso, jamás el del cliente.
   Conservan su nombre por convención: `favicon.*`, `apple-touch-icon.png`, `icon-*.png`, `site.webmanifest`, `og-default.png`.

@@ -29,7 +29,7 @@ Los slugs están registrados en `src/data/mapa-contenido.ts`. Solo se escriben a
 | Guía | `transformacion-digital-para-pymes-por-donde-empezar` | — |
 
 Líneas existentes (también enlazables): `consultoria-tecnologica`, `desarrollo-de-software-a-medida`.
-Casos: `chelato-toons`, `dragon-global-trade`, `plataforma-logistica-acero`, `plataforma-transporte-audiovisual`, `krystal`.
+Casos: `chelato-toons`, `plataforma-comercio-internacional`, `plataforma-logistica-acero`, `plataforma-transporte-audiovisual`, `krystal`.
 
 **Enlaces a páginas planificadas que aún no existen**: en los campos tipados (`related`, `relatedServices`, `relatedGuides`)
 puedes usar cualquier slug registrado; si la página todavía no está publicada, el enlace se omite solo y aparece cuando exista.
@@ -155,7 +155,7 @@ clientes, testimonios, casos, premios, certificaciones, alianzas, herramientas �
 - Hechos de Nithios permitidos (están en `src/data/`): dos líneas de servicio; proceso de trabajo; contacto único WhatsApp
   +57 305 302 7559; cobertura remota en toda Colombia, dirigida desde Medellín (no «fundada en» ni «oficina en»);
   portafolio de 5 casos (Chelato Toons, videojuego web EN LÍNEA y hoy ABIERTO (nació con acceso por QR para una activación de marca) de «una marca de micheladas», sin nombrar a la empresa;
-  Dragon Global Trade, plataforma logística para acero y plataforma de transporte audiovisual son
+  plataforma de comercio internacional, plataforma logística para acero y plataforma de transporte audiovisual son
   **prototipos navegables con datos ficticios**; Krystal); Jonathan Osorio, CEO y Fundador, con los logros anonimizados de
   `ceo.ts` (sin fechas ni empleadores).
 - Casos anonimizados: nunca el nombre del cliente ni de su producto. No presentes los prototipos como productos en producción.
@@ -167,7 +167,7 @@ clientes, testimonios, casos, premios, certificaciones, alianzas, herramientas �
 
 - Servicio: `related.services` 2–4 (complementarios, no solo la línea), `related.guides` 1–3 (la guía homónima primero:
   alimenta el botón «Leer la guía» del hero), `related.projects` solo si el caso ilustra ese servicio
-  (p. ej. logística → automatización/plataformas web; Krystal → apps móviles/plataformas web; Dragon → plataformas web).
+  (p. ej. logística → automatización/plataformas web; Krystal → apps móviles/plataformas web; comercio internacional → plataformas web).
 - Guía: `relatedServices` 1–3 (el servicio específico primero), `relatedGuides` 2–3, cuerpo con 3–6 enlaces internos.
 - Ancla = nombre del destino o su keyword, nunca «clic aquí». Una URL no se enlaza dos veces en la misma sección.
 

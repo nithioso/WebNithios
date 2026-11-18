@@ -14,4 +14,4 @@
 
 ## Subdominios en la misma cuenta de Hostinger
 - `chelato.nithios.com` → alias (dominio aparcado) del sitio `orangered-gnat-824659.hostingersite.com`, donde vive el juego Chelato Toons (código aparte; no está en este repo). La dirección temporal redirige 301 al subdominio conservando ruta y `?token=` (regla al final de su `.htaccess`). Los QR deben generarse con `https://chelato.nithios.com/` como URL base.
-- `dragon.nithios.com` → sitio propio con el prototipo Dragon Global Trade.
+- `dragon.nithios.com` → subdominio con el prototipo de comercio internacional (nombre de cliente reservado en lo público; ver docs/PENDIENTES.md).

@@ -71,7 +71,7 @@ export const faqs: Faq[] = [
     category: 'desarrollo',
     question: '¿Qué tipo de software desarrollan?',
     answer:
-      'Desarrollamos aplicativos a la medida de todo tipo: plataformas y aplicaciones web, aplicaciones móviles para Android e iOS, sistemas de gestión empresarial, portales, integraciones entre sistemas y soluciones con inteligencia artificial. Ejemplos de nuestro trabajo son Dragon Global Trade, Krystal y Chelato Toons, un videojuego web para activación de marca.',
+      'Desarrollamos aplicativos a la medida de todo tipo: plataformas y aplicaciones web, aplicaciones móviles para Android e iOS, sistemas de gestión empresarial, portales, integraciones entre sistemas y soluciones con inteligencia artificial. Ejemplos de nuestro trabajo son una plataforma de comercio internacional, Krystal y Chelato Toons, un videojuego web para activación de marca.',
   },
   {
     category: 'desarrollo',

@@ -9,7 +9,7 @@ import type { IconName } from '@/lib/icons';
 import type { Faq } from '@/data/faqs';
 import type { ServicePageSlug } from '@/data/mapa-contenido';
 // OG 1200×630 de cada caso: generadas con `npm run og` (scripts/generate-og-images.mjs).
-import dragonOg from '@/assets/og/dragon-global-trade-plataforma-comercio-internacional-og.png';
+import comercioOg from '@/assets/og/plataforma-comercio-internacional-importaciones-y-exportaciones-og.png';
 import logisticaOg from '@/assets/og/plataforma-logistica-acero-pedidos-rutas-y-despachos-og.png';
 import transporteOg from '@/assets/og/plataforma-transporte-audiovisual-operacion-de-rodajes-og.png';
 import krystalOg from '@/assets/og/krystal-software-consultorios-psicologicos-og.png';
@@ -20,12 +20,12 @@ import chelatoNombre from '@/assets/portfolio/chelato-toons/chelato-toons-nombre
 import chelatoPartida from '@/assets/portfolio/chelato-toons/chelato-toons-partida-puntaje-y-vidas.webp';
 import chelatoFin from '@/assets/portfolio/chelato-toons/chelato-toons-fin-de-partida-y-ranking.webp';
 import chelatoTablaMovil from '@/assets/portfolio/chelato-toons/chelato-toons-tabla-de-puntajes-movil.webp';
-import dragonTablero from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-tablero-comercio-internacional.webp';
-import dragonCotizaciones from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-modulo-comercial-cotizaciones.webp';
-import dragonContenedores from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-logistica-de-contenedores.webp';
-import dragonProyectos from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-proyectos-por-etapa.webp';
-import dragonRoles from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-roles-y-permisos.webp';
-import dragonTableroChino from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-interfaz-en-chino.webp';
+import comercioTablero from '@/assets/portfolio/plataforma-comercio-internacional/plataforma-comercio-internacional-tablero-de-operacion.webp';
+import comercioCotizaciones from '@/assets/portfolio/plataforma-comercio-internacional/plataforma-comercio-internacional-modulo-comercial-cotizaciones.webp';
+import comercioContenedores from '@/assets/portfolio/plataforma-comercio-internacional/plataforma-comercio-internacional-logistica-de-contenedores.webp';
+import comercioProyectos from '@/assets/portfolio/plataforma-comercio-internacional/plataforma-comercio-internacional-proyectos-por-etapa.webp';
+import comercioRoles from '@/assets/portfolio/plataforma-comercio-internacional/plataforma-comercio-internacional-roles-y-permisos.webp';
+import comercioTableroChino from '@/assets/portfolio/plataforma-comercio-internacional/plataforma-comercio-internacional-interfaz-en-chino.webp';
 import logisticaTablero from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-panel-de-control.webp';
 import logisticaCargue from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-optimizacion-de-cargue.webp';
 import logisticaSeguimiento from '@/assets/portfolio/plataforma-logistica-acero/plataforma-logistica-acero-seguimiento-de-ruta.webp';
@@ -291,20 +291,22 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'dragon-global-trade',
-    path: '/portafolio/dragon-global-trade/',
-    name: 'Dragon Global Trade',
-    tagline: 'Prototipo de una plataforma integral para comercio internacional.',
+    slug: 'plataforma-comercio-internacional',
+    path: '/portafolio/plataforma-comercio-internacional/',
+    name: 'Plataforma de comercio internacional',
+    nameInSentence: 'la plataforma de comercio internacional',
+    shortName: 'Comercio internacional',
+    tagline: 'Prototipo de una plataforma integral para importaciones, exportaciones y comercio global.',
     category: 'Comercio internacional',
-    h1Subtitle: 'software de gestión de comercio internacional',
+    h1Subtitle: 'software para importadores y exportadores',
     summary:
-      'Prototipo navegable de una plataforma de gestión de comercio internacional con módulos comercial, compras, logística, proyectos, terceros y datos maestros, interfaz en 5 idiomas y tema claro/oscuro.',
-    seoTitle: 'Dragon Global Trade: software de comercio exterior',
+      'Prototipo navegable de una plataforma de comercio exterior para una empresa que importa y exporta desde China hacia todo el mundo: módulos comercial, compras, logística, proyectos, terceros y datos maestros, interfaz en 5 idiomas y tema claro/oscuro.',
+    seoTitle: 'Software para importadores y exportadores',
     seoDescription:
-      'Dragon Global Trade, plataforma de comercio internacional diseñada por Nithios: comercial, compras, logística, proyectos y terceros en 5 idiomas. Ver prototipo.',
+      'Plataforma de comercio exterior a medida diseñada por Nithios para importar y exportar desde China: comercial, compras, logística y proyectos en 5 idiomas.',
     ogDescription: 'Prototipo navegable de una plataforma de comercio internacional: comercial, compras, logística y proyectos en 5 idiomas.',
     description: [
-      'Dragon Global Trade es el prototipo de una plataforma de gestión de comercio internacional diseñada para reunir en un solo lugar la operación comercial, las compras, la logística y los proyectos de una empresa que compra y vende entre países.',
+      'Este caso es el prototipo de una plataforma de gestión de comercio internacional para una empresa de importaciones y exportaciones que mueve mercancía desde China hacia todo el mundo. Reúne en un solo lugar la operación comercial, las compras, la logística y los proyectos de una empresa que compra y vende entre países.',
       'Está pensada para organizar la información de clientes y proveedores, los datos maestros y la colaboración entre equipos, con control de acceso por roles para que cada persona vea y gestione solo lo que le corresponde.',
       'Su interfaz multiidioma en español, inglés, chino, portugués y francés está pensada para equipos y contrapartes en distintos países, y se apoya en un sistema de diseño propio con tema claro y oscuro.',
     ],
@@ -332,21 +334,21 @@ export const projects: Project[] = [
     security: ['Control de acceso por roles'],
     serviceSlug: 'desarrollo-de-software-a-medida',
     relatedServicePages: ['desarrollo-de-plataformas-web'],
-    monogram: 'D',
+    monogram: 'C',
     featured: true,
     order: 2,
-    whatsappMessage: 'Hola Nithios, vi Dragon Global Trade y quiero una plataforma similar para mi empresa.',
-    cover: dragonTablero,
+    whatsappMessage: 'Hola Nithios, vi el caso de la plataforma de comercio internacional y quiero una plataforma similar para mi empresa de importación o exportación.',
+    cover: comercioTablero,
     coverAlt:
-      'Tablero de Dragon Global Trade en tema oscuro: tareas por atender y gráfico de proyectos activos por fase, con datos de demostración.',
-    ogImage: dragonOg,
+      'Tablero de la plataforma de comercio internacional en tema oscuro: tareas por atender y proyectos activos por fase, con datos ficticios.',
+    ogImage: comercioOg,
     ogImageAlt:
-      'Dragon Global Trade, caso de Nithios: tablero del prototipo de comercio internacional y el botón Ver el caso',
+      'Plataforma de comercio internacional, caso de Nithios: tablero del prototipo de importaciones y exportaciones y el botón Ver el caso',
     headline: 'Todo tu comercio internacional, en una sola pantalla.',
     challenge:
       'Una empresa que importa y exporta suele repartir su operación entre hojas de cálculo, correos y chats: la cotización vive en un archivo, la orden al proveedor en otro y el estado del contenedor en la memoria de alguien. El resultado es información duplicada, decisiones lentas y poca visibilidad de lo que pasa entre países.',
     solution: [
-      'Dragon Global Trade está diseñada para centralizar la operación de punta a punta. Cada área trabaja en su módulo —comercial, compras, logística y proyectos— sobre los mismos datos maestros de clientes, proveedores y productos, así que la información se registra una sola vez y fluye entre equipos.',
+      'La plataforma está diseñada para centralizar la operación de punta a punta. Cada área trabaja en su módulo —comercial, compras, logística y proyectos— sobre los mismos datos maestros de clientes, proveedores y productos, así que la información se registra una sola vez y fluye entre equipos.',
       'El control de acceso por roles define qué puede ver y hacer cada persona, y el módulo de colaboración mantiene a todos alineados alrededor de cada proyecto. La interfaz cambia entre español, inglés, chino, portugués y francés, pensada para equipos y contrapartes en distintos países.',
       'Creamos un sistema de diseño propio, con tema claro y oscuro, para que una plataforma con muchos módulos se sienta coherente, legible y fácil de aprender.',
     ],
@@ -357,49 +359,49 @@ export const projects: Project[] = [
       { title: 'Acceso con criterio', text: 'Cada rol ve y gestiona solo lo que le corresponde.', icon: 'shield' },
     ],
     statusNote:
-      'Dragon Global Trade es un prototipo navegable de interfaz. Las empresas, personas, códigos y cifras que aparecen en las capturas son datos ficticios de demostración.',
+      'Es un prototipo navegable de interfaz. El nombre de la empresa para la que se diseñó se reserva por confidencialidad. Las empresas, personas, códigos y cifras que aparecen en las capturas son datos ficticios de demostración.',
     images: [
       {
-        src: dragonTablero,
-        alt: 'Tablero principal de Dragon Global Trade: lista de pendientes priorizados y gráfico de barras de proyectos activos por fase.',
+        src: comercioTablero,
+        alt: 'Tablero principal de la plataforma de comercio internacional: pendientes priorizados y gráfico de proyectos activos por fase.',
         caption: 'Tablero: lo que conviene resolver primero y el avance de los proyectos por fase.',
       },
       {
-        src: dragonCotizaciones,
-        alt: 'Módulo comercial de Dragon Global Trade: cotizaciones por estado y tabla con cliente, proyecto, estado y total de cada cotización.',
+        src: comercioCotizaciones,
+        alt: 'Módulo comercial de cotizaciones: indicadores por estado y tabla con cliente, proyecto, estado y total de cada cotización.',
         caption: 'Comercial: cotizaciones por estado, desde el borrador hasta la aprobación.',
       },
       {
-        src: dragonContenedores,
-        alt: 'Logística en Dragon Global Trade: indicadores de contenedores y tabla con modalidad, estado, ocupación, ruta y fecha estimada de llegada.',
+        src: comercioContenedores,
+        alt: 'Logística de contenedores: indicadores y tabla con modalidad, estado, ocupación, ruta y fecha estimada de llegada.',
         caption: 'Logística: seguimiento de contenedores, ocupación, ruta y fecha estimada de llegada.',
       },
       {
-        src: dragonProyectos,
-        alt: 'Módulo de proyectos de Dragon Global Trade: indicadores de avance, filtros por etapa y gráfico de proyectos por etapa.',
+        src: comercioProyectos,
+        alt: 'Módulo de proyectos de la plataforma de comercio internacional: indicadores de avance, filtros por etapa y gráfico de proyectos por etapa.',
         caption: 'Proyectos: cada operación organizada por etapas, con alertas de tareas vencidas.',
       },
       {
-        src: dragonRoles,
-        alt: 'Pantalla de roles y permisos de Dragon Global Trade: lista de roles con número de permisos y matriz de permisos por módulo.',
+        src: comercioRoles,
+        alt: 'Roles y permisos de la plataforma de comercio internacional: lista de roles con número de permisos y matriz de permisos por módulo.',
         caption: 'Seguridad: roles y permisos por módulo para controlar quién ve y hace qué.',
       },
       {
-        src: dragonTableroChino,
-        alt: 'Tablero de Dragon Global Trade con la interfaz en chino simplificado, mostrando el cambio de idioma de la plataforma.',
+        src: comercioTableroChino,
+        alt: 'Tablero de la plataforma de comercio internacional con la interfaz en chino simplificado, mostrando el cambio de idioma.',
         caption: 'Multiidioma: el mismo tablero con la interfaz en chino.',
       },
     ],
     faqs: [
       {
         category: 'desarrollo',
-        question: '¿Qué es Dragon Global Trade?',
+        question: '¿Qué es la plataforma de comercio internacional?',
         answer:
-          'Dragon Global Trade es una plataforma de gestión de comercio internacional diseñada por Nithios. Reúne los módulos comercial, compras, logística, proyectos, terceros (clientes y proveedores), datos maestros y colaboración, con control de acceso por roles e interfaz en cinco idiomas.',
+          'Es una plataforma de gestión de comercio internacional diseñada por Nithios para una empresa de importaciones y exportaciones desde China hacia todo el mundo, cuyo nombre se reserva por confidencialidad. Reúne los módulos comercial, compras, logística, proyectos, terceros (clientes y proveedores), datos maestros y colaboración, con control de acceso por roles e interfaz en cinco idiomas.',
       },
       {
         category: 'desarrollo',
-        question: '¿Dragon Global Trade ya está en producción?',
+        question: '¿La plataforma de comercio internacional ya está en producción?',
         answer:
           'No. Hoy es un prototipo navegable de interfaz con datos de demostración: permite recorrer los módulos y validar la experiencia antes de construir el sistema completo. Es la forma en que recomendamos empezar un software de este tamaño.',
       },
@@ -767,7 +769,7 @@ export const portfolioFaqs: Faq[] = [
     category: 'desarrollo',
     question: '¿Qué tipo de software desarrolla Nithios?',
     answer:
-      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás cinco ejemplos: Chelato Toons, un videojuego web para activación de marca; Dragon Global Trade, para comercio internacional; una plataforma logística de pedidos, rutas y despachos para la distribución de acero; una plataforma de operación de transporte especial para producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
+      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás cinco ejemplos: Chelato Toons, un videojuego web para activación de marca; una plataforma de comercio internacional para importaciones y exportaciones desde China; una plataforma logística de pedidos, rutas y despachos para la distribución de acero; una plataforma de operación de transporte especial para producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
   },
   {
     category: 'desarrollo',
@@ -779,7 +781,7 @@ export const portfolioFaqs: Faq[] = [
     category: 'proceso',
     question: '¿Cómo empiezo un proyecto de software a medida con Nithios?',
     answer:
-      'Escríbenos por WhatsApp al +57 305 302 7559 y cuéntanos qué proceso quieres mejorar. Con esa conversación entendemos tu necesidad y te proponemos el siguiente paso, que puede ser una consultoría para definir el alcance o un prototipo navegable como el de Dragon Global Trade.',
+      'Escríbenos por WhatsApp al +57 305 302 7559 y cuéntanos qué proceso quieres mejorar. Con esa conversación entendemos tu necesidad y te proponemos el siguiente paso, que puede ser una consultoría para definir el alcance o un prototipo navegable como el de la plataforma de comercio internacional.',
   },
 ];
 
