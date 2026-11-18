@@ -55,6 +55,11 @@ export interface ServicePageSections {
    * Se pinta justo después de «Qué es». 3–6 tarjetas SOLO con hechos de src/data/ceo.ts; `link` = enlace destacado al perfil.
    */
   profile?: Block<IconItem> & { link: { label: string; href: string } };
+  /**
+   * Modalidades en que se contrata el servicio (opcional; p. ej. junta: miembro independiente, asesor, comité, sesiones).
+   * Se pinta tras el perfil (o tras «Qué es»). 2–4 tarjetas; `when` = una frase de cuándo conviene cada una. Solo modalidades CONFIRMADAS.
+   */
+  modalities?: Block<IconItem & { when: string }>;
   /** Tecnologías o herramientas de referencia (opcional; solo genéricas o ya presentes en src/data). */
   technologies?: Block<string> & { note?: string };
 }

@@ -25,7 +25,7 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 - Servicios específicos: un archivo por página en `src/data/servicios/<slug>.ts` (tipo `ServicePage`) → `/servicios/<slug>/` automático.
   Guías: `src/content/guias/<slug>.md` (esquema zod en `src/content.config.ts`) → `/guias/<slug>/`. Slugs registrados en `src/data/mapa-contenido.ts`.
   Contrato de redacción OBLIGATORIO: `docs/CONTENIDO.md` (referencias: `cto-externo.ts` y `que-es-un-cto-externo.md`).
-  Hechos (7+6): IA, automatización, apps móviles, plataformas web, modernización, CTO externo, miembro de junta directiva (Jonathan como candidato; DISPONIBILIDAD, nunca afirmar que es o fue miembro de una junta) · costo, a medida vs empaquetado, CTO externo, IA, elegir proveedor, pymes.
+  Hechos (7+6): IA, automatización, apps móviles, plataformas web, modernización, CTO externo, miembro de junta directiva (Jonathan como candidato; modalidades confirmadas: miembro independiente, asesor permanente, comité de tecnología, sesiones puntuales; único antecedente confirmado: fue miembro de la junta directiva de la Asociación Drupal Colombia; sin fechas ni cargo; no afirmar otras juntas ni membresía actual) · costo, a medida vs empaquetado, CTO externo, IA, elegir proveedor, pymes.
 - Enlazado: guías destacadas en home/`/servicios/`/líneas → `src/data/guias.ts › featuredGuides` (`GuidesBlock`); casos → servicios: `projects.ts › relatedServicePages`.
 - GEO: `public/llms.txt` (a mano, una línea por página) · `/llms-full.txt` GENERADO por `src/pages/llms-full.txt.ts` (no editar a mano) · sitemap con `<image:image>` (serialize en `astro.config.mjs`).
 - `src/lib/schema.ts` — builders JSON-LD · `src/lib/icons.ts` — set de íconos (`IconName`).

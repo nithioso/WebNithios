@@ -1,8 +1,10 @@
 /**
  * /servicios/miembro-de-junta-directiva-tecnologia/ — Jonathan Osorio como miembro o asesor de junta directiva
  * con enfoque tecnológico (Board Member). Contrato: docs/CONTENIDO.md.
- * VERACIDAD: el perfil usa SOLO hechos de src/data/ceo.ts (sin fechas ni empleadores). NO afirmar que Jonathan es o ha sido
- * miembro de alguna junta (no confirmado: docs/PENDIENTES.md). Sin cifras de honorarios, plazos, requisitos legales ni normas citadas.
+ * VERACIDAD: el perfil usa SOLO hechos de src/data/ceo.ts (sin fechas ni empleadores). Único antecedente de junta confirmado:
+ * ha sido miembro de la junta directiva de la Asociación Drupal Colombia (pasado, sin fechas ni cargo; no afirmar otras juntas,
+ * juntas de empresas ni membresía actual). Modalidades CONFIRMADAS por el usuario (las cuatro de `modalities`).
+ * Sin cifras de honorarios, plazos, requisitos legales ni normas citadas.
  * Diferencia con /servicios/cto-externo/: el CTO externo DIRIGE y ejecuta; el miembro de junta GOBIERNA, supervisa y aconseja.
  */
 import type { ServicePage } from './types';
@@ -25,7 +27,7 @@ export default {
   ogTagline: 'Criterio tecnológico en tu junta directiva',
   ogCta: 'Propón a Jonathan para tu junta',
   intro:
-    'Un miembro de junta directiva experto en tecnología es un consejero que aporta criterio tecnológico al máximo órgano de gobierno de la empresa: supervisa la estrategia digital, las inversiones y el riesgo, sin operar. En Nithios proponemos a Jonathan Osorio para ese rol, como Board Member independiente o asesor de junta, en empresas de toda Colombia y de forma remota.',
+    'Un miembro de junta directiva experto en tecnología es un consejero que aporta criterio tecnológico al máximo órgano de gobierno de la empresa: supervisa la estrategia digital, las inversiones y el riesgo, sin operar. En Nithios proponemos para ese rol a Jonathan Osorio, que ha sido miembro de la junta directiva de la Asociación Drupal Colombia, como miembro independiente, asesor permanente, integrante de un comité de tecnología o para sesiones puntuales, en empresas de toda Colombia y de forma remota.',
 
   sections: {
     whatIs: {
@@ -35,24 +37,24 @@ export default {
       paragraphs: [
         'En muchas juntas hay perfiles financieros, legales y comerciales, pero nadie que pueda evaluar con propiedad un proyecto de software, una inversión en la nube, un plan de ciberseguridad o una propuesta de inteligencia artificial. El resultado es que la tecnología se aprueba por confianza o se pospone por desconfianza, y en ambos casos la junta pierde control sobre una parte cada vez mayor del negocio.',
         'El aporte de un consejero con enfoque tecnológico es de gobierno corporativo de TI: hacer las preguntas correctas, pedir la información adecuada, alertar sobre riesgos y verificar que la tecnología esté alineada con la estrategia. No dirige equipos ni proveedores. Si lo que necesitas es alguien que asuma la dirección de tecnología día a día, el servicio indicado es el de [CTO externo](/servicios/cto-externo/).',
-        'Para este rol, Nithios propone a [Jonathan Osorio Correa](/jonathan-osorio/), su CEO y Fundador: un CTO, director y líder de innovación y tecnología con casi 20 años de experiencia en retail, educación y servicios. La experiencia que lleva a la mesa es la de quien ha estado del otro lado, presentando y ejecutando la estrategia de tecnología ante la alta dirección.',
+        'Para este rol, Nithios propone a [Jonathan Osorio Correa](/jonathan-osorio/), su CEO y Fundador: un CTO, director y líder de innovación y tecnología con casi 20 años de experiencia en retail, educación y servicios. Lleva a la mesa dos miradas: la de quien ha presentado y ejecutado la estrategia de tecnología ante la alta dirección y la de quien ya se ha sentado en una junta directiva, como miembro de la junta de la Asociación Drupal Colombia.',
       ],
     },
 
     profile: {
       title: '¿Por qué Jonathan Osorio para tu junta directiva?',
       intro:
-        'Su perfil combina dirección de tecnología, marcos de gobierno de TI y visión de negocio. Estos son los hechos de su trayectoria que respaldan la postulación.',
+        'Su perfil combina experiencia en junta directiva, dirección de tecnología, marcos de gobierno de TI y visión de negocio. Estos son los hechos de su trayectoria que respaldan la postulación.',
       items: [
+        {
+          icon: 'award',
+          title: 'Experiencia en junta directiva',
+          text: 'Ha sido miembro de la junta directiva de la Asociación Drupal Colombia: conoce el trabajo de una junta desde la mesa, no solo desde la gerencia.',
+        },
         {
           icon: 'briefcase',
           title: 'Casi 20 años dirigiendo tecnología',
-          text: 'CTO, director y líder de innovación y tecnología en organizaciones de retail, educación y servicios, alineando la visión de negocio con la ejecución.',
-        },
-        {
-          icon: 'compass',
-          title: 'Hoy dirige la estrategia de tecnología',
-          text: 'Como CTO de una institución de educación superior dirige la estrategia de innovación y tecnología al servicio de los objetivos estratégicos y financieros.',
+          text: 'CTO, director y líder de innovación en retail, educación y servicios. Hoy, como CTO de una institución de educación superior, dirige su estrategia de innovación y tecnología.',
         },
         {
           icon: 'workflow',
@@ -76,6 +78,37 @@ export default {
         },
       ],
       link: { label: 'Ver la hoja de vida de Jonathan Osorio', href: '/jonathan-osorio/' },
+    },
+
+    modalities: {
+      title: '¿En qué modalidades participa Jonathan Osorio en tu junta?',
+      intro: 'Cuatro formas de sumar criterio tecnológico a tu junta directiva. Elegimos la adecuada contigo, según tus estatutos y lo que la junta necesita.',
+      items: [
+        {
+          icon: 'award',
+          title: 'Miembro independiente de junta',
+          text: 'Integra la junta directiva como miembro independiente, con el alcance que definan los estatutos de tu empresa.',
+          when: 'la junta quiere sumar de forma estable un perfil tecnológico independiente, por ejemplo al profesionalizarse.',
+        },
+        {
+          icon: 'compass',
+          title: 'Asesor permanente de la junta',
+          text: 'Participa en las sesiones como consejero en tecnología, sin ser miembro formal de la junta.',
+          when: 'los estatutos no prevén un nuevo miembro o la junta prefiere empezar con un rol consultivo.',
+        },
+        {
+          icon: 'users',
+          title: 'Comité de tecnología',
+          text: 'Integra el comité de tecnología o de riesgos de la junta, o ayuda a crearlo, y lleva sus conclusiones a la junta plena.',
+          when: 'la tecnología pesa en la estrategia y sus temas ya no caben en la agenda ordinaria de la junta.',
+        },
+        {
+          icon: 'calendar',
+          title: 'Sesiones puntuales',
+          text: 'Acompaña a la junta en sesiones específicas para analizar un tema o una decisión de tecnología concreta.',
+          when: 'hay una decisión puntual: aprobar un ERP, una plataforma propia, un proyecto de IA o un contrato crítico.',
+        },
+      ],
     },
 
     audience: {
@@ -184,7 +217,7 @@ export default {
         },
         {
           title: 'Rol y modalidad',
-          text: 'Acordamos la modalidad: miembro independiente, asesor permanente, integrante de un comité o sesiones puntuales. También la confidencialidad y la información que recibirá antes de cada sesión.',
+          text: 'Elegimos una de las cuatro modalidades: miembro independiente, asesor permanente, comité de tecnología o sesiones puntuales. Acordamos también la confidencialidad y la información previa a cada sesión.',
         },
         {
           title: 'Preparación de cada sesión',
@@ -272,7 +305,7 @@ export default {
     {
       question: '¿Jonathan Osorio puede participar como miembro independiente de nuestra junta?',
       answer:
-        'Sí, es una de las modalidades que proponemos, junto con asesor permanente de la junta, integrante de un comité de tecnología o sesiones puntuales. La independencia depende de los estatutos y reglas de tu empresa y de que no existan vínculos que la comprometan, así que lo revisamos juntos antes de aceptar. Jonathan está radicado en Medellín y puede participar de forma remota con empresas de toda Colombia.',
+        'Sí. Es una de las cuatro modalidades que ofrece, junto con asesor permanente de la junta, comité de tecnología y sesiones puntuales, y ya ha sido miembro de la junta directiva de la Asociación Drupal Colombia. Antes de aceptar revisamos juntos tus estatutos y que no existan vínculos que comprometan su independencia. Jonathan está radicado en Medellín y participa de forma remota con empresas de toda Colombia.',
     },
     {
       question: '¿Qué es un comité de tecnología de la junta directiva y cuándo conviene crearlo?',
@@ -282,7 +315,7 @@ export default {
     {
       question: '¿Puede Nithios venderle servicios a una empresa en cuya junta participa Jonathan?',
       answer:
-        'Es un posible conflicto de interés y se trata como tal desde el inicio. La regla se acuerda con la junta antes de aceptar el rol: por ejemplo, que Nithios no participe como proveedor o que, si lo hace, el conflicto se declare y Jonathan no intervenga en esa decisión. El valor del consejero está en su independencia, y eso se protege por escrito.',
+        'Cualquier posible conflicto de interés se declara desde el inicio y se maneja según las reglas de gobierno corporativo de cada junta. Lo conversamos con la presidencia antes de aceptar el rol, para que quede claro cómo se procede en cada caso.',
     },
     {
       question: '¿Cómo se maneja la confidencialidad de la información de la junta directiva?',

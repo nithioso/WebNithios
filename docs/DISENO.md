@@ -145,7 +145,7 @@ Seo: `title`, `description`, `path`, `ogImage?`, `ogImageAlt?`, `ogImageWidth?`/
   Chip de estado: «Prototipo» o `statusLabel` («En línea») si `status: 'en-produccion'`.
 - **ServiceHeroArt** — tile de vidrio con borde dorado (ícono + entregables reales) para el `aside` de PageHero. Props: `items: {icon, title, points}[]`, `pointsLabel?`.
 - **PortfolioShowcase** — fila de proyecto en /portafolio/ (alterna lado por `index`). Props: `project`, `index?`, `headingLevel?`, `class?`.
-- **ServicePageContent** — cuerpo completo de un servicio específico (hero → qué es → perfil opcional (`sections.profile`, p. ej. Jonathan para la junta) → para quién → problemas → qué incluye (bento sin huecos 3–7)
+- **ServicePageContent** — cuerpo completo de un servicio específico (hero → qué es → perfil opcional (`sections.profile`, p. ej. Jonathan para la junta) → modalidades opcionales (`sections.modalities`, tarjetas con «Cuándo conviene») → para quién → problemas → qué incluye (bento sin huecos 3–7)
   → señales → proceso → entregables (+ tecnologías) → cuándo NO conviene → casos → guías → FAQ → relacionados → CtaBand). Props: `page: ServicePage`, `breadcrumbs`.
   Rejillas sin huérfanas con `gridFor(n)`/`gridFor2(n)` de `src/lib/grid.ts` (5 ítems → 3 + 2 anchas en lg). Señales = situaciones hipotéticas
   (eyebrow «¿Te suena?», ícono `check-circle`, SIN comillas «»: nunca deben parecer testimonios). Problemas: carrusel en móvil (`data-scroller`).

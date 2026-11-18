@@ -94,9 +94,11 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 - [ ] **Logo: búsqueda de antecedentes marcarios** del sello K «NTOS en sello» (moneda con NT calada y corte en S) en SIC Colombia y WIPO (Global Brand Database, clases 9, 35 y 42; incluir búsqueda figurativa/Viena de monedas y sellos circulares) antes de registrar la marca; los monogramas «NT» son frecuentes y la «C» de luz puede confundirse con © (design/logo/DECISION.md).
 
 ## Miembro de junta directiva (`src/data/servicios/miembro-de-junta-directiva-tecnologia.ts`) — CONFIRMAR CON EL USUARIO
-- [ ] **Experiencia previa en juntas**: ¿Jonathan es o ha sido miembro/asesor de alguna junta directiva o comité? Hoy el sitio NO lo afirma
-  (solo «disponible como…»). Si lo es, añadirlo a `ceo.ts` (anonimizado y sin fechas) y al perfil del servicio.
-- [ ] **Modalidades que realmente ofrece**: miembro independiente, asesor permanente, integrante de comité de tecnología, sesiones puntuales.
+- [x] **Experiencia previa en juntas** — RESUELTO: ha sido miembro de la junta directiva de la Asociación Drupal Colombia (`ceo.ts › governance`,
+  ficha, bloque de junta, FAQ, perfil del servicio, JSON-LD `affiliation`, llms.txt). En pasado; no afirmar otras juntas ni membresía actual.
+- [ ] (Opcional) **Periodo y cargo** en la junta de la Asociación Drupal Colombia, solo si el usuario quiere publicarlos (hoy: sin fechas ni cargo).
+- [x] **Modalidades que realmente ofrece** — RESUELTO: las cuatro (miembro independiente, asesor permanente, comité de tecnología,
+  sesiones puntuales) en `sections.modalities` con «Cuándo conviene».
 - [ ] **¿Lo presta él personalmente?** (hoy sí: `providedByCeo: true`, Person como provider en JSON-LD). ¿Presencial en otras ciudades o solo remoto?
 - [ ] **Política de conflicto de interés** (FAQ «¿Puede Nithios venderle servicios a una empresa en cuya junta participa Jonathan?»): hoy dice
   que se declara y se acuerda con la junta; confirmar la regla real. Honorarios, plazos y requisitos legales: no se publican (no confirmados).
@@ -121,3 +123,5 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   (webmail., staging…) añadir `includeSubDomains`; `preload` solo después y registrando en hstspreload.org.
 - [ ] (Opcional) `<lastmod>` del sitemap con fechas reales por página (campo `updatedAt` en src/data o `git log -1 --format=%cI`); hoy se omite.
 - [ ] Tras desplegar: confirmar `Cache-Control: … immutable` en `/_astro/*` (`curl -sI`) y las redirecciones de un solo salto.
+
+- [x] **Regla de conflicto de interés (servicio de junta):** el usuario eligió la versión flexible (nov 2026): el conflicto se declara y se maneja según las reglas de cada junta, sin ejemplos ni compromisos de exclusión de Nithios como proveedor.

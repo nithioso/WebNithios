@@ -186,10 +186,16 @@ export function person(image?: string): JsonLd {
     knowsLanguage: ceo.languages.length
       ? ceo.languages.map((l) => ({ '@type': 'Language', name: l.name, alternateName: l.code }))
       : undefined,
-    description: ceo.summary,
+    // Antecedentes de gobierno (pasados) en la descripción: `affiliation` no expresa tiempo por sí solo.
+    description: [ceo.summary, ...ceo.governance.map((g) => g.statement)].join(' '),
     url: absoluteUrl(ceo.path),
     image: image ? absoluteUrl(image) : undefined,
     worksFor: { '@id': ids.organization },
+    // Pertenencia PASADA a una junta (Asociación Drupal Colombia): `affiliation` y no `memberOf` (que se lee como vigente);
+    // sin roleName ni fechas (no confirmados).
+    affiliation: ceo.governance.length
+      ? ceo.governance.map((g) => stripUndefined({ '@type': 'Organization', name: g.organization, url: g.url }))
+      : undefined,
     knowsAbout: [...new Set([...ceo.focusAreas, ...ceo.knowsAbout])],
     alumniOf: ceo.education.length
       ? [...new Set(ceo.education.map((e) => e.institution))].map((name) => {
@@ -218,7 +224,7 @@ export function person(image?: string): JsonLd {
       })),
     ],
     sameAs: ceo.sameAs.length ? ceo.sameAs : undefined,
-    // Servicios que presta personalmente (p. ej. miembro de junta directiva): disponibilidad, no un cargo actual.
+    // Servicios que presta personalmente (p. ej. miembro de junta directiva): oferta vigente, no un cargo actual en una junta.
     makesOffer: ceoServices.length
       ? ceoServices.map((sp) => ({
           '@type': 'Offer',
@@ -279,7 +285,7 @@ export function servicePageNode(p: ServicePage): JsonLd {
     serviceType: p.name,
     description: p.summary,
     url: absoluteUrl(path),
-    // Servicio prestado personalmente por el CEO: la Person también figura como proveedor (sin afirmar cargos en juntas).
+    // Servicio prestado personalmente por el CEO: la Person también figura como proveedor (sin afirmar cargos vigentes en juntas).
     provider: p.providedByCeo ? [{ '@id': ids.organization }, { '@id': ids.person }] : { '@id': ids.organization },
     areaServed,
     audience: { '@type': 'BusinessAudience', audienceType: 'Empresas en Colombia' },

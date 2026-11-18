@@ -71,6 +71,7 @@ Solo se permite `import type` (el script de OG carga el archivo con Vite; no imp
 | `intro` | 2–3 frases. 1.ª frase = definición citable que nombra el servicio; 2.ª menciona Nithios + «empresas de toda Colombia» + «de forma remota» |
 | `sections.whatIs` | `title` (pregunta «¿Qué es…?»), `answer` (1–2 frases autocontenidas), `paragraphs` (2–3 párrafos de 50–90 palabras) |
 | `sections.profile` | opcional: perfil de quien presta el servicio (3–6 `{icon,title,text}` SOLO con hechos de `ceo.ts`, sin fechas ni empleadores) + `link` al perfil. Se pinta tras «Qué es» |
+| `sections.modalities` | opcional: 2–4 modalidades CONFIRMADAS `{icon,title,text,when}` (`when` = «Cuándo conviene: …», en minúscula y sin repetir «conviene»). Se pinta tras el perfil |
 | `sections.audience` ✱ | `title`, `intro?`, `items`: 4–6 perfiles (una frase cada uno, ≥ 3) |
 | `sections.problems` ✱ | 3–6 `{icon, title (≤ 45 car.), text (25–45 palabras)}` |
 | `sections.includes` ✱ | 4–7 `{icon, title, text, points?}`; la 1.ª es la destacada (con 2–4 `points`). 6 ítems = rejilla perfecta |
@@ -160,8 +161,9 @@ clientes, testimonios, casos, premios, certificaciones, alianzas, herramientas �
   `ceo.ts` (sin fechas ni empleadores).
 - Casos anonimizados: nunca el nombre del cliente ni de su producto. No presentes los prototipos como productos en producción.
 - Prohibido: «clientes», «casos de éxito», «procesos reales», «más de N proyectos», dominios no confirmados, logos de terceros.
-- Prohibido nombrar el proveedor de hosting en lo público (seguridad). Idiomas del CEO SIN nivel. Junta directiva: disponibilidad,
-  nunca afirmar que Jonathan es o ha sido miembro de una junta.
+- Prohibido nombrar el proveedor de hosting en lo público (seguridad). Idiomas del CEO SIN nivel. Junta directiva: único antecedente
+  confirmado: Jonathan fue miembro de la junta directiva de la Asociación Drupal Colombia (en pasado; sin fechas ni cargo); no afirmar
+  otras juntas ni membresía actual. Modalidades confirmadas: miembro independiente, asesor permanente, comité de tecnología, sesiones puntuales.
 
 ## 5. Enlazado interno (cada página)
 

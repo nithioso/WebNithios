@@ -7,6 +7,8 @@
  *  - EMPLEADORES ANONIMIZADOS: nunca el nombre de una empresa o institución donde trabajó ni marcas que la identifiquen;
  *    solo los descriptores aprobados. Las instituciones de FORMACIÓN y las entidades certificadoras sí se nombran.
  *  - Sin correo ni teléfono personal (único contacto: WhatsApp de Nithios).
+ *  - JUNTAS: único antecedente confirmado = fue miembro de la junta directiva de la Asociación Drupal Colombia (se nombra:
+ *    no es un empleador). Sin fechas ni cargo dentro de la junta; en pasado; no afirmar otras juntas ni membresía actual.
  * Foto y cita siguen VACÍAS hasta recibirlas (la UI oculta cada sección vacía). Ver docs/PENDIENTES.md.
  */
 import type { ImageMetadata } from 'astro';
@@ -56,6 +58,18 @@ export interface CompetencyGroup {
   items: string[];
 }
 
+/** Participación en órganos de gobierno (juntas). NO es empleo: no va en `experience`. Sin fechas ni cargo no confirmado. */
+export interface GovernanceItem {
+  /** Rol tal como está confirmado (sin cargo interno de la junta). */
+  role: string;
+  /** Organización (aquí sí se nombra: no es un empleador). */
+  organization: string;
+  /** Sitio oficial verificado (opcional). */
+  url?: string;
+  /** Frase en pasado para textos y JSON-LD. */
+  statement: string;
+}
+
 export interface CeoLocation {
   locality: string;
   region: string;
@@ -101,6 +115,8 @@ export interface Ceo {
   highlights: CeoHighlight[];
   /** Trayectoria: del cargo más reciente al más antiguo, sin fechas y con empleadores anonimizados. */
   experience: ExperienceItem[];
+  /** Órganos de gobierno en los que ha participado (pasado; ver reglas en la cabecera). */
+  governance: GovernanceItem[];
   education: EducationItem[];
   certifications: CertificationItem[];
   competencies: CompetencyGroup[];
@@ -138,7 +154,7 @@ export const ceo: Ceo = {
   bio: [
     'Jonathan Osorio Correa es el CEO y Fundador de Nithios. Ingeniero de Sistemas y Especialista en Gerencia de TI, es un CTO, director y líder de innovación y tecnología con casi 20 años de experiencia. Ha liderado la innovación, la estrategia y las plataformas core de organizaciones de retail, educación y servicios, alineando la visión de negocio con una ejecución operativa de alto impacto.',
     'Esa trayectoria le permite conectar dos mundos que muchas veces no se hablan: la estrategia de negocio y la ejecución técnica. Por eso fundó Nithios, una empresa de tecnología colombiana que acompaña a las organizaciones desde la decisión de qué tecnología adoptar hasta la construcción del software que la hace realidad.',
-    'Su fortaleza está en dirigir equipos multidisciplinarios con delivery ágil para cumplir OKR financieros y técnicos, elevando la productividad y el time-to-value con inteligencia artificial, DevOps, Agile, ITIL, COBIT y TOGAF. Ha dirigido roadmaps de CRM, CDP, MDM, CMS, web, LMS, apps y e-commerce, y ha modernizado infraestructura y tecnología. En sus roles recientes logró eficiencias operativas del 25 al 30 % mediante estandarización, analítica y automatización, optimizando costos y experiencias digitales.',
+    'Su fortaleza está en dirigir equipos multidisciplinarios con delivery ágil para cumplir OKR financieros y técnicos, elevando la productividad y el time-to-value con inteligencia artificial, DevOps, Agile, ITIL, COBIT y TOGAF. Ha dirigido roadmaps de CRM, CDP, MDM, CMS, web, LMS, apps y e-commerce, y ha modernizado infraestructura y tecnología. En sus roles recientes logró eficiencias operativas del 25 al 30 % mediante estandarización, analítica y automatización, optimizando costos y experiencias digitales. También ha participado en el gobierno de la comunidad tecnológica: ha sido miembro de la junta directiva de la Asociación Drupal Colombia.',
     'Está radicado en Medellín, Antioquia, y desde allí dirige Nithios para empresas de toda Colombia, con atención remota. Bajo su liderazgo, Nithios trabaja en dos líneas complementarias: la asesoría y consultoría tecnológica para empresas que quieren mejorar sus procesos, y el desarrollo de aplicativos a la medida con nuevas tecnologías.',
   ],
   quote: '',
@@ -299,6 +315,14 @@ export const ceo: Ceo = {
       ],
     },
   ],
+  governance: [
+    {
+      role: 'Miembro de la junta directiva',
+      organization: 'Asociación Drupal Colombia',
+      url: 'https://asociaciondrupal.org/',
+      statement: 'Ha sido miembro de la junta directiva de la Asociación Drupal Colombia.',
+    },
+  ],
   education: [
     { degree: 'Especialista en Gerencia de TI', institution: 'Universidad Pontificia Bolivariana', locality: 'Medellín' },
     { degree: 'Ingeniero de Sistemas', institution: 'Universidad Salazar y Herrera', locality: 'Medellín' },
@@ -392,6 +416,7 @@ export const ceoPage = {
     { label: 'Perfil', value: 'CTO y líder de innovación y tecnología' },
     { label: 'Formación', value: 'Ingeniero de Sistemas · Especialista en Gerencia de TI' },
     { label: 'Experiencia', value: 'Casi 20 años en retail, educación y servicios' },
+    { label: 'Junta directiva', value: 'Ha sido miembro de la junta de la Asociación Drupal Colombia' },
     { label: 'Ubicación', value: 'Medellín, Antioquia, Colombia' },
     { label: 'Idiomas', value: 'Español · Inglés' },
   ],
@@ -453,13 +478,15 @@ export const ceoPage = {
   },
   /**
    * Bloque «Disponible como miembro de junta directiva» (enlaza a /servicios/miembro-de-junta-directiva-tecnologia/).
-   * Es DISPONIBILIDAD: no afirmar que es o ha sido miembro de alguna junta (no confirmado; docs/PENDIENTES.md).
+   * Antecedente confirmado (`experience`): ha sido miembro de la junta directiva de la Asociación Drupal Colombia (pasado, sin fechas
+   * ni cargo). El resto es DISPONIBILIDAD: no afirmar otras juntas ni una membresía actual.
    */
   board: {
     eyebrow: 'Junta directiva',
     title: 'Disponible como miembro de junta directiva.',
+    experience: 'Ha sido miembro de la junta directiva de la Asociación Drupal Colombia.',
     intro:
-      'Jonathan Osorio está disponible como miembro independiente, asesor de junta o integrante de un comité de tecnología (Board Member con enfoque tecnológico). Aporta a la junta su experiencia dirigiendo tecnología: estrategia digital, inversiones, riesgo, ciberseguridad e inteligencia artificial.',
+      'Hoy está disponible como miembro independiente de junta, asesor permanente de la junta, integrante de un comité de tecnología o para sesiones puntuales (Board Member con enfoque tecnológico). Aporta su experiencia dirigiendo tecnología: estrategia digital, inversiones, riesgo, ciberseguridad e inteligencia artificial.',
     points: [
       'Criterio tecnológico para evaluar lo que presenta la gerencia',
       'Supervisión de inversiones y proyectos de tecnología',
@@ -550,7 +577,7 @@ export const ceoPage = {
     {
       question: '¿Jonathan Osorio está disponible como miembro de junta directiva?',
       answer:
-        'Sí. Jonathan Osorio está disponible como miembro independiente, asesor de junta o integrante de un comité de tecnología en empresas de toda Colombia, para aportar criterio tecnológico a la estrategia, las inversiones digitales y la gestión del riesgo. Cómo funciona está explicado en [miembro de junta directiva experto en tecnología](/servicios/miembro-de-junta-directiva-tecnologia/); para proponerlo, escribe al WhatsApp de Nithios.',
+        'Sí. Jonathan Osorio ha sido miembro de la junta directiva de la Asociación Drupal Colombia y hoy está disponible como miembro independiente de junta, asesor permanente de la junta, integrante de un comité de tecnología o para sesiones puntuales en empresas de toda Colombia, para aportar criterio tecnológico a la estrategia, las inversiones digitales y la gestión del riesgo. Cómo funciona está explicado en [miembro de junta directiva experto en tecnología](/servicios/miembro-de-junta-directiva-tecnologia/); para proponerlo, escribe al WhatsApp de Nithios.',
     },
     {
       question: '¿Cómo puedo hablar con Jonathan Osorio sobre un proyecto?',

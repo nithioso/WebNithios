@@ -76,6 +76,13 @@ export const GET: APIRoute = async () => {
       ...(s.profile
         ? [`#### ${s.profile.title}`, ...(s.profile.intro ? [s.profile.intro] : []), titled(s.profile.items), `Perfil completo: ${absoluteUrl(s.profile.link.href)}`]
         : []),
+      ...(s.modalities
+        ? [
+            `#### ${s.modalities.title}`,
+            ...(s.modalities.intro ? [s.modalities.intro] : []),
+            list(s.modalities.items.map((x) => `**${x.title}.** ${x.text} Cuándo conviene: ${x.when}`)),
+          ]
+        : []),
       `#### ${s.audience.title}`,
       ...(s.audience.intro ? [s.audience.intro] : []),
       list(s.audience.items),

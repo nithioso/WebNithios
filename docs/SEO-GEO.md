@@ -95,7 +95,9 @@ servicios se habla de «la normativa colombiana de protección de datos personal
 - Chelato Toons en JSON-LD: `CreativeWork` con `sameAs` = chelato.nithios.com. NO `VideoGame`/`SoftwareApplication`: Google los valida
   como rich result de software y exige `offers` + `aggregateRating`/`review`, datos que no existen (aparecería como inválido en Search Console).
 - Servicio prestado por el CEO (`providedByCeo`, hoy la junta directiva): `Service.provider` = [Organization, Person] y la Person completa
-  lleva `makesOffer` → ese Service (DISPONIBILIDAD, no un cargo: nunca `memberOf`/`worksFor` de una junta). `knowsAbout` incluye
+  lleva `makesOffer` → ese Service (oferta, no un cargo: nunca `memberOf`/`worksFor` de una junta). Antecedente PASADO confirmado
+  (`ceo.ts › governance`): `affiliation` → Organization «Asociación Drupal Colombia» (url verificada en drupal.org) + frase en
+  `description`; sin `roleName` ni fechas. `knowsAbout` incluye
   «Gobierno corporativo de TI». Idiomas del CEO sin nivel (`knowsLanguage` solo nombre + código).
 - Sitemap: `@astrojs/sitemap` (excluye 404) con **sitemap de imágenes**: `serialize` lee cada página de `dist/` y añade un `<image:image>` por imagen de contenido (`<img>` en `<main>` con alt no vacío; `verify:images` lo comprueba). SIN `<lastmod>` (la fecha del build no es una modificación real; Google descarta lastmod poco fiable). Si se quiere, usar fechas reales por página. `<link rel="sitemap">` en el head.
 - FAQPage: cada pregunta se marca UNA sola vez en todo el sitio. Las generales (`faqs.ts`) solo en `/preguntas-frecuentes/`;

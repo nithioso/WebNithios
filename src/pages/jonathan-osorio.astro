@@ -185,7 +185,7 @@ const og = await pageOgImage('/jonathan-osorio/');
     )
   }
 
-  <!-- DISPONIBLE COMO MIEMBRO DE JUNTA DIRECTIVA (disponibilidad, no un cargo: ver ceo.ts › ceoPage.board) -->
+  <!-- JUNTA DIRECTIVA: antecedente confirmado (Asociación Drupal Colombia, en pasado) + disponibilidad (ver ceo.ts › ceoPage.board) -->
   <Section id="junta-directiva" eyebrow={ceoPage.board.eyebrow} title={ceoPage.board.title} tone={tones.junta}>
     <div class="gold-ring relative overflow-hidden rounded-(--radius-card) bg-ink-850 p-5 sm:p-7 md:p-10" data-reveal>
       <div class="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
@@ -193,7 +193,11 @@ const og = await pageOgImage('/jonathan-osorio/');
           <span class="inline-flex size-12 items-center justify-center rounded-full border border-line-gold text-gold-300">
             <Icon name="award" size={24} />
           </span>
-          <p class="mt-6 text-lead text-pearl">{ceoPage.board.intro}</p>
+          <p class="mt-6 flex items-start gap-3 text-lg font-medium leading-snug text-gold-200">
+            <Icon name="check-circle" size={22} class="mt-0.5 shrink-0 text-gold-400" />
+            <span>{ceoPage.board.experience}</span>
+          </p>
+          <p class="mt-5 text-lead text-pearl">{ceoPage.board.intro}</p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <WhatsAppButton message={ceoPage.board.whatsappMessage} label={ceoPage.board.ctaLabel} />
             <Button href={ceoPage.board.link.href} variant="glass" iconRight="arrow-right">{ceoPage.board.link.label}</Button>

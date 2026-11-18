@@ -3,7 +3,7 @@
  * Cuerpo completo de una página de SERVICIO ESPECÍFICO (/servicios/<slug>/), 100 % data-driven
  * desde src/data/servicios/<slug>.ts (tipo ServicePage). La página aporta BaseLayout (SEO/JSON-LD).
  * <ServicePageContent page={p} breadcrumbs={crumbs} />
- * Orden: hero → qué es → (perfil, si `sections.profile`) → para quién → problemas → qué incluye → señales → proceso → entregables (+ tecnologías)
+ * Orden: hero → qué es → (perfil, si `sections.profile`) → (modalidades, si `sections.modalities`) → para quién → problemas → qué incluye → señales → proceso → entregables (+ tecnologías)
  *        → cuándo NO conviene → casos → guías → FAQ → servicios relacionados → CTA.
  */
 import PageHero from './PageHero.astro';
@@ -110,6 +110,25 @@ const relatedCards = [...lines, ...relatedServices];
           {s.profile.link.label}
         </Button>
       </Fragment>
+    </Section>
+  )
+}
+
+<!-- Modalidades del servicio (opcional) -->
+{
+  s.modalities && (
+    <Section id="modalidades" eyebrow="Modalidades" title={s.modalities.title} intro={s.modalities.intro}>
+      <div class:list={['grid gap-5', gridFor(s.modalities.items.length)]}>
+        {s.modalities.items.map((it, i) => (
+          <Card tone={i === 0 ? 'gold' : 'glass'} icon={it.icon} title={it.title} text={it.text} revealDelay={(i % 2) * 90}>
+            <div class="mt-auto pt-6">
+              <p class="border-t border-line pt-5 leading-relaxed text-pearl">
+                <span class="font-medium text-gold-300">Cuándo conviene:</span> {it.when}
+              </p>
+            </div>
+          </Card>
+        ))}
+      </div>
     </Section>
   )
 }
