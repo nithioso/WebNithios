@@ -2,6 +2,7 @@
 title: '¿Cómo elegir una empresa de desarrollo de software en Colombia?'
 seoTitle: 'Cómo elegir una empresa de desarrollo de software'
 description: 'Criterios verificables, preguntas clave, qué pedir ver y qué revisar en el contrato y la propiedad del código al elegir una empresa de software en Colombia.'
+ogDescription: 'Criterios verificables, preguntas clave y qué revisar en el contrato antes de elegir a tu proveedor de software.'
 summary: 'Elige con evidencia, no con promesas: revisa trabajos que puedas ver y probar, la forma en que el proveedor entiende tu problema, cómo propone trabajar y qué dice el contrato sobre la propiedad del código, los datos y el soporte. La mejor señal es una empresa que hace buenas preguntas y te dice con claridad qué no incluye.'
 publishedAt: 2026-11-17
 keywords:

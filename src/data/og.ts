@@ -29,27 +29,27 @@ export interface PageOg {
 export const pageOg = {
   '/servicios/': {
     src: servicios,
-    alt: 'Servicios de Nithios: tarjetas de consultoría tecnológica y desarrollo de software a medida sobre fondo negro y dorado',
+    alt: 'Servicios de Nithios: «Tecnología que mejora tus procesos», sus líneas de servicio y el botón Hablemos por WhatsApp',
   },
   '/servicios/consultoria-tecnologica/': {
     src: consultoria,
-    alt: 'Consultoría tecnológica de Nithios: los cuatro pasos de trabajo, de la conversación inicial a la implementación acompañada',
+    alt: 'Consultoría tecnológica de Nithios: «Decide mejor qué tecnología adoptar», los cuatro pasos y el botón de WhatsApp',
   },
   '/servicios/desarrollo-de-software-a-medida/': {
     src: desarrollo,
-    alt: 'Desarrollo de software a medida de Nithios: capturas de prototipos de comercio internacional y de optimización de cargue',
+    alt: 'Desarrollo de software a medida de Nithios: «Software hecho para tu operación, no al revés» junto a un prototipo',
   },
   '/portafolio/': {
     src: portafolio,
-    alt: 'Portafolio de Nithios: capturas de Chelato Toons, Dragon Global Trade, la plataforma logística y la de transporte audiovisual',
+    alt: 'Portafolio de Nithios: «Software que diseñamos y construimos» con capturas de cuatro casos y el botón Ver el portafolio',
   },
   '/jonathan-osorio/': {
     src: ceo,
-    alt: 'Retrato en blanco y negro de Jonathan Osorio junto a su nombre y el cargo CEO y Fundador de Nithios',
+    alt: 'Retrato en blanco y negro de Jonathan Osorio, CEO y Fundador de Nithios, con el botón Agenda una conversación',
   },
   '/contacto/': {
     src: contacto,
-    alt: 'Contacto de Nithios por WhatsApp: mensaje de ejemplo y el número +57 305 302 7559',
+    alt: 'Contacto de Nithios: «Hablemos por WhatsApp», el número +57 305 302 7559 y un mensaje de ejemplo',
   },
   '/guias/': {
     src: guias,
@@ -57,15 +57,35 @@ export const pageOg = {
   },
   '/politica-de-privacidad/': {
     src: privacidad,
-    alt: 'Política de privacidad de Nithios según la Ley 1581 de 2012: sin cookies ni analítica y datos usados solo para responderte',
+    alt: 'Política de privacidad de Nithios según la Ley 1581 de 2012: sin cookies ni analítica y datos solo para responderte',
   },
   '/preguntas-frecuentes/': {
     src: preguntas,
-    alt: 'Preguntas frecuentes de Nithios sobre consultoría tecnológica y desarrollo de software a medida',
+    alt: 'Preguntas frecuentes de Nithios: «Respuestas claras antes de empezar» y cuatro preguntas habituales',
   },
 } satisfies Record<string, PageOg>;
 
 export type PageOgPath = keyof typeof pageOg;
+
+/**
+ * og:description de las páginas fijas (≤ 125 car., con gancho, frase completa). Las vistas previas sociales muestran
+ * ~125 car. en móvil; la meta description (140–160) sigue siendo la de buscadores. Servicios específicos, guías y casos
+ * llevan la suya en su propio dato (`ogDescription`). BaseLayout la toma de aquí por `path`.
+ */
+export const pageSocial = {
+  '/': 'Consultoría tecnológica y desarrollo de software a medida para empresas de toda Colombia. Cuéntanos tu proyecto.',
+  '/servicios/': 'Consultoría para decidir qué tecnología adoptar y desarrollo a medida para construirla. Elige por dónde empezar.',
+  '/servicios/consultoria-tecnologica/':
+    'Decide qué tecnología adoptar, en qué orden y cómo implementarla, con un diagnóstico y un plan claros para tu empresa.',
+  '/servicios/desarrollo-de-software-a-medida/':
+    'Plataformas web, apps móviles y sistemas de gestión hechos para tu operación. Desarrollo a medida en toda Colombia.',
+  '/portafolio/': 'Un videojuego en línea para una marca, prototipos de comercio exterior, logística y transporte, y software para consultorios.',
+  '/guias/': 'Guías claras para decidir sobre software a medida, CTO externo, inteligencia artificial y transformación digital.',
+  '/jonathan-osorio/': 'CTO y líder de innovación con casi 20 años en retail, educación y servicios. Conoce al CEO y Fundador de Nithios.',
+  '/contacto/': 'Escríbenos por WhatsApp al +57 305 302 7559 y cuéntanos tu proyecto. Atención remota para empresas de toda Colombia.',
+  '/preguntas-frecuentes/': 'Qué hace Nithios, cómo trabaja, cuánto cuesta un proyecto y cómo empezar: respuestas claras antes de escribirnos.',
+  '/politica-de-privacidad/': 'Sin cookies ni analítica: qué datos tratamos cuando nos escribes, para qué los usamos y cómo ejercer tus derechos.',
+} satisfies Record<string, string>;
 
 /* ---------- OG automáticas (servicios específicos y guías) ---------- */
 
@@ -86,7 +106,7 @@ export function clampAlt(text: string, max = 140): string {
   return text.slice(0, max - 1).replace(/\s+\S*$/, '') + '…';
 }
 
-export const servicePageOgAlt = (name: string, h1: string) =>
-  clampAlt(`${name}, servicio de Nithios en Colombia: «${h1}» y lo que incluye, en dorado sobre negro`);
+export const servicePageOgAlt = (name: string) =>
+  clampAlt(`${name}, servicio de Nithios en Colombia: lo que incluye y el botón para escribir por WhatsApp`);
 
-export const guideOgAlt = (title: string) => clampAlt(`Guía de Nithios: «${title}» y los temas que cubre, en dorado sobre negro`);
+export const guideOgAlt = (title: string) => clampAlt(`Guía de Nithios: «${title}», los temas que cubre y el botón Lee la guía`);

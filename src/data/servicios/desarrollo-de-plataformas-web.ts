@@ -19,6 +19,8 @@ export default {
   seoTitle: 'Desarrollo de plataformas web a medida',
   seoDescription:
     'Desarrollo de plataformas web y sistemas de gestión a medida en Colombia: módulos, roles, reportes e integraciones para ordenar tu operación. Hablemos.',
+  ogDescription: 'Plataformas web y sistemas de gestión a la medida: módulos, roles, tableros e integraciones para tu operación.',
+  ogTagline: 'Sistemas de gestión web hechos a tu medida',
   intro:
     'Una plataforma web a medida es un sistema de navegador hecho para los procesos de tu empresa, para que la operación salga de hojas de cálculo y chats. En Nithios las desarrollamos de forma remota para empresas de toda Colombia.',
 

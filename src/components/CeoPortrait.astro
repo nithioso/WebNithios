@@ -4,6 +4,7 @@
  * - Si `ceo.photo` existe (ImageMetadata importada en src/data/ceo.ts) → <Image> optimizada.
  * - Si no → monograma "JO" dorado (arte decorativo, aria-hidden; el nombre ya está en el <h1>).
  * <CeoPortrait />  ·  <CeoPortrait size="sm" />
+ * Rendimiento: `lg` (hero de /jonathan-osorio/) carga con prioridad; `sm` (home, bajo el pliegue) es lazy.
  * Para sustituir por foto: ver docs/PENDIENTES.md (sección Jonathan Osorio).
  */
 import { Image } from 'astro:assets';
@@ -34,8 +35,9 @@ const initials = `${ceo.givenName.charAt(0)}${ceo.familyName.charAt(0)}`.toUpper
         src={ceo.photo}
         alt={ceo.photoAlt ?? ceo.name}
         widths={[360, 540, 720, 1040]}
-        sizes="(min-width: 1024px) 26rem, 90vw"
-        priority
+        sizes={size === 'lg' ? '(min-width: 1024px) 26rem, 90vw' : '(min-width: 640px) 18rem, 16rem'}
+        priority={size === 'lg'}
+        loading={size === 'lg' ? 'eager' : 'lazy'}
         class="absolute inset-0 size-full object-cover"
       />
     ) : (

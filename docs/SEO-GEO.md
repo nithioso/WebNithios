@@ -21,6 +21,7 @@ lo entienda en una frase y escriba por WhatsApp.
 | `/servicios/consultoria-tecnologica/` | consultoría tecnológica en Colombia | asesoría tecnológica para empresas, transformación digital, diagnóstico tecnológico, hoja de ruta tecnológica (la IA se enlaza a su servicio y a su guía; no se optimiza aquí) |
 | `/servicios/desarrollo-de-software-a-medida/` | desarrollo de software a medida en Colombia | empresa de desarrollo de software Bogotá/Medellín, aplicaciones web y móviles, apps a la medida |
 | `/servicios/cto-externo/` | CTO externo en Colombia | CTO por horas, CTO fraccional, director de tecnología por horas, CTO as a service |
+| `/servicios/miembro-de-junta-directiva-tecnologia/` | miembro de junta directiva experto en tecnología | asesor de junta directiva en tecnología, consejero independiente tecnología, Board Member tecnología, gobierno corporativo de TI, comité de tecnología junta directiva (Jonathan Osorio como candidato; GOBIERNA y aconseja; «dirigir la tecnología» es de `cto-externo`) |
 | `/servicios/inteligencia-artificial-para-empresas/` | inteligencia artificial para empresas en Colombia | implementar IA en la empresa, consultoría en IA, casos de uso de IA |
 | `/servicios/automatizacion-de-procesos/` | automatización de procesos empresariales | automatizar procesos, integración de sistemas, RPA/low-code (genérico) |
 | `/servicios/desarrollo-de-aplicaciones-moviles/` | desarrollo de aplicaciones móviles en Colombia | apps a medida iOS y Android, empresa de desarrollo de apps |
@@ -37,12 +38,23 @@ lo entienda en una frase y escriba por WhatsApp.
 | `/portafolio/chelato-toons/` | desarrollo de videojuegos publicitarios (advergames) en Colombia | juego web para activación de marca, juego con código QR, juego de naves en el celular (producto EN LÍNEA; nunca nombrar a la empresa: «una marca de micheladas») |
 | `/portafolio/dragon-global-trade/` | plataforma de gestión de comercio internacional | software comercio exterior, multiidioma |
 | `/portafolio/krystal/` | software para consultorio psicológico | agenda de citas, videollamadas, historia clínica |
-| `/jonathan-osorio/` | Jonathan Osorio | CEO y Fundador de Nithios, ejecutivo de tecnología |
+| `/jonathan-osorio/` | Jonathan Osorio | CEO y Fundador de Nithios, ejecutivo de tecnología (bloque «Disponible como miembro de junta directiva» → enlaza al servicio, que es el dueño de la intención «junta») |
 | `/contacto/` | contactar empresa de software en Colombia | cotizar software, WhatsApp Nithios |
 | `/preguntas-frecuentes/` | preguntas sobre consultoría tecnológica y desarrollo de software | cuánto cuesta, cuánto tarda, cómo empezar transformación digital (respuestas breves que enlazan a la guía de cada tema) |
 | `/politica-de-privacidad/` | política de privacidad Nithios | Ley 1581 de 2012 |
 
 Las `keywords` de cada servicio en `services.ts` guían el copy (no se imprimen como meta keywords: Google las ignora).
+
+**Intención → URL única (temas que se solapan).**
+| Intención de búsqueda | URL dueña | Las demás páginas… |
+|---|---|---|
+| contratar dirección de tecnología por horas | `/servicios/cto-externo/` | junta y consultoría la mencionan y enlazan |
+| criterio tecnológico en la junta / consejero / Board Member | `/servicios/miembro-de-junta-directiva-tecnologia/` | CTO externo (párrafo + relacionado), guía CTO (tabla) y CEO (bloque + FAQ) enlazan |
+| diagnóstico y hoja de ruta tecnológica | `/servicios/consultoria-tecnologica/` | servicios específicos la enlazan como línea madre |
+| qué es / cuándo contratar un CTO (informativa) | `/guias/que-es-un-cto-externo/` | el servicio enlaza a la guía («Leer la guía») |
+| empresa de desarrollo de software en Colombia (comercial) | `/servicios/desarrollo-de-software-a-medida/` | la guía «cómo elegir» es informativa y enlaza |
+| precio de software a medida | `/guias/cuanto-cuesta-desarrollar-software-a-medida-en-colombia/` | FAQs responden en 1–2 frases y enlazan |
+| quién es Jonathan Osorio | `/jonathan-osorio/` | Person completo solo allí; el resto, `personRef()` |
 
 **Anti-canibalización.** Cada intención tiene UNA URL dueña (tabla de arriba). Las demás páginas que tocan el tema responden en 1–2 frases
 y enlazan a la dueña: FAQs de las líneas → servicio específico; FAQs generales → guía; guía ↔ servicio con enlaces cruzados (la guía
@@ -80,6 +92,11 @@ servicios se habla de «la normativa colombiana de protección de datos personal
 - `public/llms.txt`: resumen citable (entidad, servicios, servicios específicos, guías, portafolio, FAQ breves, URLs; una línea por página). **Actualizar al agregar proyectos o páginas.**
 - `/llms-full.txt` (`src/pages/llms-full.txt.ts`): contenido completo en Markdown limpio, GENERADO en cada build desde `src/data` y `src/content/guias`
   (no se edita a mano). Enlazado desde `llms.txt` (sección Optional) y comentado en `robots.txt`.
+- Chelato Toons en JSON-LD: `CreativeWork` con `sameAs` = chelato.nithios.com. NO `VideoGame`/`SoftwareApplication`: Google los valida
+  como rich result de software y exige `offers` + `aggregateRating`/`review`, datos que no existen (aparecería como inválido en Search Console).
+- Servicio prestado por el CEO (`providedByCeo`, hoy la junta directiva): `Service.provider` = [Organization, Person] y la Person completa
+  lleva `makesOffer` → ese Service (DISPONIBILIDAD, no un cargo: nunca `memberOf`/`worksFor` de una junta). `knowsAbout` incluye
+  «Gobierno corporativo de TI». Idiomas del CEO sin nivel (`knowsLanguage` solo nombre + código).
 - Sitemap: `@astrojs/sitemap` (excluye 404) con **sitemap de imágenes**: `serialize` lee cada página de `dist/` y añade un `<image:image>` por imagen de contenido (`<img>` en `<main>` con alt no vacío; `verify:images` lo comprueba). SIN `<lastmod>` (la fecha del build no es una modificación real; Google descarta lastmod poco fiable). Si se quiere, usar fechas reales por página. `<link rel="sitemap">` en el head.
 - FAQPage: cada pregunta se marca UNA sola vez en todo el sitio. Las generales (`faqs.ts`) solo en `/preguntas-frecuentes/`;
   la home y `/servicios/` muestran el acordeón sin JSON-LD. Servicios, casos y portafolio marcan solo sus preguntas propias.
@@ -90,6 +107,17 @@ servicios se habla de «la normativa colombiana de protección de datos personal
 - `public/.well-known/security.txt`: NO se publica hasta tener un correo real de contacto de seguridad.
 
 ## Imágenes: Open Graph, nombres y textos alternativos
+- **Plantilla OG v2 (nov 2026, tras un inspector de metaetiquetas que marcó «sin llamada a la acción»)**: TODAS las OG llevan logo K,
+  titular ≥ 64 px (máx. 3 líneas; el script lo ajusta y avisa si no cabe), propuesta de valor corta, **botón dorado con la llamada a la
+  acción** («Hablemos por WhatsApp →», «Lee la guía →», «Ver el caso →», «Agenda una conversación →», «Propón a Jonathan para tu junta →»…)
+  y nithios.com. Zona segura central 1080×560 (WhatsApp/LinkedIn recortan), ningún texto < 26 px. Que la imagen tenga CTA **no se puede
+  verificar automáticamente**: al cambiar una OG, mírala a tamaño completo y reducida a ~400 px (`og-sheet` en el scratchpad o
+  `sharp(...).resize(400)`) y comprueba que el titular y el botón se leen. Servicios: `ogTagline` (≤ 60) y `ogCta` (≤ 34) opcionales.
+- **og:description ≠ meta description**: la meta description (140–160) es para buscadores; `og:description` es para vistas previas en
+  chats y redes, que muestran ~125 car. en móvil. Cada página define `ogDescription` (≤ 125, frase completa con gancho): servicios
+  específicos, guías (frontmatter) y casos en su dato; páginas fijas en `src/data/og.ts › pageSocial`. Si falta, `socialDescription()`
+  (`src/lib/text.ts`) la deriva en frases completas y el build avisa `[seo] sin ogDescription propia`. `og:title`: el title sin
+  « | Nithios» si pasa de 55 car. (`socialTitle()`), o `ogTitle` explícito. X/Twitter hereda ambos de las og:*.
 - **OG propia por página (1200×630)**: home → `public/og-default.png` (alt `site.defaultOgImageAlt`); servicios, consultoría, desarrollo,
   portafolio, CEO, contacto y FAQ → `src/data/og.ts` (`pageOgImage(path)`); cada caso → `ogImage`/`ogImageAlt` en `projects.ts`.
   Privacidad y 404 usan og-default. Astro publica cada PNG como JPEG 1200×630 (q88, < 110 KB) con el nombre base + hash.
@@ -139,8 +167,48 @@ servicios se habla de «la normativa colombiana de protección de datos personal
   6. `form-action` permite `https://wa.me` y `https://api.whatsapp.com` (respaldo sin JS del formulario de contacto).
   **`npm run build` ejecuta `postbuild` → `scripts/csp-hashes.mjs` y falla si un hash no está en la CSP** (copia el que marque `FALTA`).
 
+## Verificación automática: `npm run verify:seo`
+`scripts/verify-seo.mjs`, tras `npm run build` (o contra producción: `npm run verify:seo -- --remote=https://nithios.com`). Falla (código 1) ante:
+- **Por página**: title ausente/> 60/duplicado; description fuera de 140–160/duplicada; ≠ 1 `<h1>`; saltos de encabezado; `lang` ≠ es-CO;
+  canonical ≠ URL con slash final; robots no indexable; hreflang es-CO/x-default ≠ canonical; OG incompleto (og:title ≤ 60,
+  **og:description ≤ 125**, og:url = canonical, og:image absoluta 1200×630 existente + alt, og:locale es_CO); twitter:card; sin BreadcrumbList (salvo home).
+- **JSON-LD**: no parsea; @context; nodos sin @type; @id duplicados; referencias `{"@id"}` que no resuelven a ningún nodo publicado; propiedades
+  mínimas por tipo (Organization, WebSite, WebPage, BreadcrumbList —último ítem = URL—, Service, Article —fechas ISO, author, publisher, image—,
+  FAQPage, Person, CreativeWork, ItemList); prohibidas (aggregateRating, review, priceRange, openingHours, address de la organización);
+  Organization idéntica en todas las páginas y con areaServed Colombia + knowsAbout; FAQ repetida en dos páginas.
+- **Rastreo**: sitemap = exactamente las páginas indexables; robots.txt con Sitemap, sin `Disallow: /` y con los bots clave; llms.txt enlaza
+  cada página indexable y llms-full.txt cubre servicios, guías y casos; profundidad ≤ 3 clics desde la home; ≥ 3 páginas que enlazan a cada URL
+  desde el contenido (`<main>`); anclas genéricas («aquí», «leer más»…); 404 con noindex y sin canonical; ninguna mención del proveedor de hosting.
+Junto con `verify:images` (OG, alt, nombres) y `verify:links` (enlaces y anclas) cubre los puntos técnicos. Ejecutar los tres antes de publicar.
+
+## Qué está garantizado y qué no
+**Garantizado (implementación técnica, verificada por scripts en cada build):** metadatos completos y únicos, canonical/hreflang, datos
+estructurados válidos y coherentes, sitemap y robots correctos, llms.txt/llms-full.txt al día, enlazado interno sin huérfanas, OG propia
+1200×630 con alt, rendimiento alto (Lighthouse móvil 99–100), HTTPS, cabeceras y caché correctas, cero datos falsos.
+**NO garantizado (depende de factores externos):** posiciones en Google o Bing, aparición en AI Overviews o citas en ChatGPT, Claude,
+Perplexity, Gemini o Copilot. Influyen la autoridad del dominio (dominio nuevo), los enlaces externos, la antigüedad, la competencia por
+cada palabra clave, las señales de marca y perfiles de empresa, y que los buscadores rastreen e indexen (Search Console). Nadie puede
+prometer un puesto ni una cita.
+**Acciones fuera del sitio (usuario):**
+- [ ] Google Search Console (propiedad de dominio por DNS) + enviar sitemap + solicitar indexación de las URL nuevas (junta directiva) y de las cambiadas.
+- [ ] Bing Webmaster Tools (importar desde GSC) + IndexNow tras cada despliegue.
+- [ ] Perfil de Negocio de Google como empresa de servicios SIN dirección (área: Colombia) y página de empresa en LinkedIn → añadir a `sameAs`.
+- [ ] Enlaces de calidad: perfil de Jonathan en LinkedIn enlazando a nithios.com y a `/servicios/miembro-de-junta-directiva-tecnologia/`; directorios
+  serios del sector (cámaras de comercio, gremios TI) con NAP idéntico: «Nithios · WhatsApp +57 305 302 7559 · Colombia (dirigida desde Medellín)».
+- [ ] Publicar contenido propio de forma regular (guías nuevas) y compartirlo; pedir menciones a aliados reales.
+- [ ] Revisar cada mes en GSC: páginas indexadas, consultas, Core Web Vitals reales (CrUX) y mejoras (breadcrumbs, FAQ).
+
+## Auditoría nov 2026 (dist/ + producción)
+- Producción (build anterior): 200/301/404 correctos; HTTPS, HSTS, CSP, COOP, nosniff; brotli en HTML/CSS/JS/TXT/XML; `/_astro/*` 1 año
+  immutable; `/x/index.html` → `/x/` y `/x` → `/x/` en un salto. Hallazgos corregidos en el código: og:description de 147–160 car. en las
+  28 páginas (→ ≤ 125), OG sin llamada a la acción (→ plantilla v2), «Hostinger» publicado en Chelato Toons y llms (→ eliminado), llms.txt sin
+  la URL de la home, `/404.html` accesible con 200 (→ `X-Robots-Tag: noindex`), retrato del CEO con prioridad alta en la home bajo el pliegue
+  (→ lazy; LCP móvil de la home 2,57 s → 2,2 s en local), alt de las OG desactualizados, `keywords` de casos como texto mezclado (→ lista).
+- No corregible desde `.htaccess`: `http://www.nithios.com/ruta` hace 2 saltos (el CDN de Hostinger fuerza HTTPS antes de leer `.htaccess`,
+  y luego www→apex). Inocuo para SEO; se resolvería con la redirección www→apex en el panel/CDN.
+
 ## Checklist de publicación
-1. `npm run build` sin avisos `[seo]`/`[og]` (incluye la verificación de hashes CSP); `npm run check` sin errores; `npm run verify:links` OK.
+1. `npm run build` sin avisos `[seo]`/`[og]` (incluye la verificación de hashes CSP); `npm run check` sin errores; `npm run verify:links`, `verify:images` y `verify:seo` OK.
 2. Subir `dist/` a `public_html` de Hostinger (incluye `.htaccess`). Activar SSL (Let's Encrypt) para `nithios.com` y `www.nithios.com`.
 3. Probar: `http://` y `www.` redirigen a `https://nithios.com/`; `/contacto` → `/contacto/`; una URL inexistente muestra la 404 con estado 404;
    cabeceras en https://securityheaders.com y consola del navegador sin errores de CSP; formulario de contacto abre WhatsApp.

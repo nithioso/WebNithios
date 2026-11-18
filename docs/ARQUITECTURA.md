@@ -9,6 +9,7 @@ scripts/generate-og-images.mjs      npm run og: OG 1200×630 por página (Playwr
                                     (+ automáticas para cada servicio específico y cada guía; `npm run og -- --only=auto`)
 scripts/verify-images.mjs           npm run verify:images: auditoría de og:image, alt, nombres de imagen y sitemap de imágenes sobre dist/
 scripts/verify-links.mjs            npm run verify:links: enlaces internos (existencia, slash final, anclas) sobre dist/
+scripts/verify-seo.mjs              npm run verify:seo: metadatos, OG (og:description ≤ 125), JSON-LD, sitemap, robots, llms y enlazado (dist/ o --remote=URL)
 scripts/csp-hashes.mjs   postbuild: verifica los hashes sha256 de los <script is:inline> contra la CSP de public/.htaccess; falla el build si falta alguno
 design/logo/            exploración y logo oficial K «NTOS en sello» (DECISION.md, v3/ntos-sello/ → final/*.svg → npm run brand; v2/, v3/ y monograma/ = archivo)
 design/brand-kit/       kit gráfico descargable (npm run kit, LEEME.md)
@@ -28,7 +29,7 @@ src/
 | `/` | `pages/index.astro` + `components/HomeHero.astro` | hecha |
 | `/servicios/` | `pages/servicios/index.astro` (contenido en `servicesHub`) | hecha |
 | `/servicios/consultoria-tecnologica/` · `/servicios/desarrollo-de-software-a-medida/` | archivos sueltos en `pages/servicios/` → `components/ServiceDetailContent.astro` + `data/service-details.ts` | hechas |
-| `/servicios/<slug>/` (servicios específicos) | `pages/servicios/[slug].astro` → `components/ServicePageContent.astro`; datos: un archivo por página en `data/servicios/<slug>.ts` (tipo `ServicePage`, `data/servicios/types.ts`), reunidos por `data/servicios/index.ts` (import.meta.glob + validación) | hechas (6): cto-externo, inteligencia-artificial-para-empresas, automatizacion-de-procesos, desarrollo-de-aplicaciones-moviles, desarrollo-de-plataformas-web, modernizacion-de-sistemas |
+| `/servicios/<slug>/` (servicios específicos) | `pages/servicios/[slug].astro` → `components/ServicePageContent.astro`; datos: un archivo por página en `data/servicios/<slug>.ts` (tipo `ServicePage`, `data/servicios/types.ts`), reunidos por `data/servicios/index.ts` (import.meta.glob + validación) | hechas (7): cto-externo, miembro-de-junta-directiva-tecnologia (Jonathan Osorio como candidato a junta; sección `profile`), inteligencia-artificial-para-empresas, automatizacion-de-procesos, desarrollo-de-aplicaciones-moviles, desarrollo-de-plataformas-web, modernizacion-de-sistemas |
 | `/guias/` · `/guias/<slug>/` | `pages/guias/index.astro` + `pages/guias/[slug].astro`; colección `guias` (`src/content/guias/*.md`, esquema zod en `src/content.config.ts`) | hechas (índice + 6 guías del mapa) |
 | `/portafolio/` | `pages/portafolio/index.astro` | hecha |
 | `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (chelato-toons [en línea], dragon-global-trade, plataforma-logistica-acero, plataforma-transporte-audiovisual, krystal; logística y transporte están anonimizados, ver docs/PENDIENTES.md) |
@@ -55,7 +56,7 @@ src/
 - **projects.ts**: `Project` {slug, path, name, tagline, category, summary, seoTitle, seoDescription, description[], status, statusLabel,
   features[{title,text,icon}], highlights[], platforms[], languages[], stack[], security[], serviceSlug, cover?, coverAlt?, monogram,
   h1Subtitle (2.ª línea del h1, alineada con seoTitle), ogImage?/ogImageAlt? (OG 1200×630 sin cover), coverPhone?/coverPhoneAlt? (móvil superpuesto al cover),
-  liveUrl?/liveNote? (producto en línea: enlace al dominio confirmado), galleryIntro?, featured, order, whatsappMessage}. `projects`, `sortedProjects`, `getProject(slug)`.
+  liveUrl?/liveLabel? (producto en línea: enlace al dominio confirmado), galleryIntro?, featured, order, whatsappMessage}. `projects`, `sortedProjects`, `getProject(slug)`.
   `ProjectImage.frame?: 'browser'|'phone'` (por defecto según proporción).
   Status `'sin-especificar'` = no confirmado (no mostrar badge de estado como hecho).
 - **ceo.ts**: `ceo` {name, fullName 'Jonathan Osorio Correa', givenName, familyName, familyNames, professionalHeadline, location{locality,region,country,countryCode},
@@ -106,6 +107,11 @@ const crumbs = [{ name: 'Servicios', path: '/servicios/' }, { name: s.shortName,
   <CtaBand message={s.whatsappMessage} />
 </BaseLayout>
 ```
+
+## Metadatos sociales
+- `og:description` ≤ 125 car. (≠ meta description 140–160): `ogDescription` en servicios específicos, guías y casos; páginas fijas en
+  `src/data/og.ts › pageSocial` (BaseLayout lo toma por `path`); si falta, `socialDescription()` la deriva. `og:title` corto: `socialTitle()`.
+- OG v2 con botón de llamada a la acción: `scripts/generate-og-images.mjs` (`card()`), ver docs/SEO-GEO.md › Imágenes.
 
 ## JS en cliente
 - `BaseLayout`: observador de scroll-reveal (`[data-reveal]` → `.is-visible`, añade `.reveal-ready` a `<html>`), en `astro:page-load`. Incluye `IconSprite`.

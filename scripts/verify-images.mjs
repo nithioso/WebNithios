@@ -22,7 +22,7 @@ const DEFAULT_OG_OK = new Set(['/', '/404/']);
 const CONVENTION = /^(favicon|apple-touch-icon|icon-\d+|icon-maskable-\d+|og-default)$/;
 const GENERIC = /^(og|tablero|image|imagen|img|foto|photo|picture|captura|screenshot|cover|portada|banner|hero|logo|reportes?|dashboard|thumb|\d+)$/;
 const IMG_EXT = /\.(png|jpe?g|webp|avif|gif|svg)$/i;
-const CONTENT_IMG = /\/_astro\/(dragon-global-trade|plataforma-|jonathan-osorio|krystal)/;
+const CONTENT_IMG = /\/_astro\/(dragon-global-trade|plataforma-|jonathan-osorio|krystal|chelato-toons)/;
 
 const errors = [];
 const fail = (m) => errors.push(m);

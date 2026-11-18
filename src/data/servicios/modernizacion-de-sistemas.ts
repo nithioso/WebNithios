@@ -18,6 +18,8 @@ export default {
   seoTitle: 'Modernización de sistemas legacy en Colombia',
   seoDescription:
     'Modernización de sistemas legacy en Colombia: renovamos y migramos software heredado por etapas, sin frenar tu operación y protegiendo tus datos. Hablemos.',
+  ogDescription: 'Renueva tu software heredado por etapas, migra tus datos y conecta tus sistemas sin frenar la operación.',
+  ogTagline: 'Renueva tu software sin frenar la operación',
   intro:
     'La modernización de sistemas lleva un software heredado (legacy) a una base segura y mantenible, renovándolo por partes, migrándolo o reemplazándolo. En Nithios la hacemos de forma remota para empresas de toda Colombia, por etapas y sin frenar la operación.',
 

@@ -50,6 +50,11 @@ export interface ServicePageSections {
   signals: Block<string>;
   /** Cuándo NO conviene (3–5 casos honestos, con la alternativa recomendada en `text`). */
   notAFit: Block<TitledText>;
+  /**
+   * Perfil de la persona que presta el servicio (opcional; p. ej. miembro de junta = Jonathan Osorio).
+   * Se pinta justo después de «Qué es». 3–6 tarjetas SOLO con hechos de src/data/ceo.ts; `link` = enlace destacado al perfil.
+   */
+  profile?: Block<IconItem> & { link: { label: string; href: string } };
   /** Tecnologías o herramientas de referencia (opcional; solo genéricas o ya presentes en src/data). */
   technologies?: Block<string> & { note?: string };
 }
@@ -86,6 +91,12 @@ export interface ServicePage {
   seoTitle: string;
   /** Meta description: 140–160 car. */
   seoDescription: string;
+  /** og:description para vistas previas en chats y redes: ≤ 125 car., frase completa con gancho. */
+  ogDescription: string;
+  /** Propuesta de valor corta para la imagen OG (≤ 60 car.). */
+  ogTagline: string;
+  /** Texto del botón de la imagen OG (≤ 34 car., sin flecha). Por defecto «Hablemos por WhatsApp». */
+  ogCta?: string;
   /** Respuesta directa y citable de 2–3 frases (hero). La 1.ª frase define el servicio y menciona a Nithios y Colombia. */
   intro: string;
   sections: ServicePageSections;
@@ -98,6 +109,12 @@ export interface ServicePage {
   keywords: string[];
   /** Banda de cierre (opcional; hay un texto genérico por defecto). title ≤ 60 car., text 1–2 frases. */
   cta?: { title: string; text: string };
+  /** Texto del botón de WhatsApp (hero y banda de cierre). Por defecto «Hablemos por WhatsApp». */
+  ctaLabel?: string;
+  /** Botón secundario del hero. Por defecto «Leer la guía» (primera guía relacionada). */
+  heroSecondary?: { label: string; href: string };
+  /** true = el servicio lo presta personalmente el CEO (JSON-LD: provider incluye la Person y la Person lo ofrece). */
+  providedByCeo?: boolean;
   /** Alt de la imagen OG (opcional; por defecto se genera de `name` y `h1`). ≤ 140 car. */
   ogAlt?: string;
 }

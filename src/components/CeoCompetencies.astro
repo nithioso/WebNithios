@@ -73,7 +73,7 @@ const span = (i: number) => (i < 2 ? 'lg:col-span-3' : 'lg:col-span-2');
           {languages.map((l) => (
             <div class="flex items-baseline justify-between gap-4 py-3 first:pt-0 last:pb-0">
               <dt class="text-pearl">{l.name}</dt>
-              <dd class="text-sm font-medium text-gold-300">{l.level}</dd>
+              {l.level && <dd class="text-sm font-medium text-gold-300">{l.level}</dd>}
             </div>
           ))}
         </dl>

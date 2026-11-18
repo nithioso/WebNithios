@@ -218,8 +218,22 @@ export function person(image?: string): JsonLd {
       })),
     ],
     sameAs: ceo.sameAs.length ? ceo.sameAs : undefined,
+    // Servicios que presta personalmente (p. ej. miembro de junta directiva): disponibilidad, no un cargo actual.
+    makesOffer: ceoServices.length
+      ? ceoServices.map((sp) => ({
+          '@type': 'Offer',
+          name: sp.name,
+          description: sp.summary,
+          url: absoluteUrl(servicePagePath(sp.slug)),
+          itemOffered: { '@id': ids.service(servicePagePath(sp.slug)) },
+          areaServed: { '@type': 'Country', name: 'Colombia' },
+        }))
+      : undefined,
   });
 }
+
+/** Servicios específicos que presta personalmente el CEO (`providedByCeo`). */
+const ceoServices = servicePages.filter((sp) => sp.providedByCeo);
 
 /** Service por línea de servicio. */
 export function service(s: Service): JsonLd {
@@ -265,7 +279,8 @@ export function servicePageNode(p: ServicePage): JsonLd {
     serviceType: p.name,
     description: p.summary,
     url: absoluteUrl(path),
-    provider: { '@id': ids.organization },
+    // Servicio prestado personalmente por el CEO: la Person también figura como proveedor (sin afirmar cargos en juntas).
+    provider: p.providedByCeo ? [{ '@id': ids.organization }, { '@id': ids.person }] : { '@id': ids.organization },
     areaServed,
     audience: { '@type': 'BusinessAudience', audienceType: 'Empresas en Colombia' },
     isRelatedTo: lines.map((slug) => ({ '@id': ids.service(`/servicios/${slug}/`) })),
@@ -348,7 +363,9 @@ export function projectWork(p: Project, image?: string): JsonLd {
     creator: { '@id': ids.organization },
     author: { '@id': ids.organization },
     genre: p.category,
-    keywords: [...p.highlights, ...p.stack].join(', '),
+    keywords: [...p.highlights, ...p.stack],
+    // Producto en línea: su dominio público identifica la obra (p. ej. chelato.nithios.com).
+    sameAs: p.liveUrl,
     abstract: `${p.headline} Funcionalidades: ${p.features.map((f) => f.title).join(', ')}.`,
     image: image ? absoluteUrl(image) : undefined,
     creativeWorkStatus: p.status === 'sin-especificar' ? undefined : p.statusLabel,

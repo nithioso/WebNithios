@@ -21,6 +21,7 @@ export const servicePageSlugs = [
   'desarrollo-de-aplicaciones-moviles',
   'desarrollo-de-plataformas-web',
   'modernizacion-de-sistemas',
+  'miembro-de-junta-directiva-tecnologia',
 ] as const;
 export type ServicePageSlug = (typeof servicePageSlugs)[number];
 

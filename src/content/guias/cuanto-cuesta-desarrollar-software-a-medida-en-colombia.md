@@ -2,6 +2,7 @@
 title: '¿Cuánto cuesta desarrollar software a medida en Colombia?'
 seoTitle: 'Cuánto cuesta el software a medida en Colombia'
 description: 'Por qué no hay un precio único para el software a medida en Colombia, qué factores mueven el costo y cómo pedir y comparar cotizaciones sin sorpresas.'
+ogDescription: 'No hay un precio único: estos son los factores que mueven el costo y cómo pedir cotizaciones que sí puedas comparar.'
 summary: 'No existe un precio único: el costo de un software a medida depende del alcance, las integraciones, la seguridad, el número de plataformas y el soporte que necesites después. La forma honesta de saberlo es describir bien tu necesidad, pedir cotizaciones sobre la misma base y comparar qué incluye cada una, no solo el valor final.'
 publishedAt: 2026-11-17
 keywords:

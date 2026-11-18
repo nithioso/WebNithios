@@ -19,7 +19,7 @@ export const site = {
   defaultOgImage: '/og-default.png',
   /** Texto alternativo de og-default.png (qué muestra la imagen). */
   defaultOgImageAlt:
-    'Logo de Nithios y el lema «Consultoría tecnológica y desarrollo de software a medida en Colombia» en dorado sobre negro',
+    'Logo de Nithios, «Consultoría tecnológica y software a medida» en dorado sobre negro y el botón Hablemos por WhatsApp',
   themeColor: '#000000',
   founder: 'Jonathan Osorio',
   whatsapp: {

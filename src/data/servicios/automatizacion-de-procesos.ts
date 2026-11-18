@@ -18,6 +18,8 @@ export default {
   seoTitle: 'Automatización de procesos en Colombia',
   seoDescription:
     'Automatización de procesos empresariales en Colombia: conectamos tus sistemas y eliminamos la doble digitación y las tareas repetitivas con control. Hablemos.',
+  ogDescription: 'Menos tareas repetitivas y sistemas que se hablan: automatizamos los procesos de tu empresa a la medida.',
+  ogTagline: 'Menos tareas repetitivas, sistemas conectados',
   intro:
     'La automatización de procesos usa software para que las tareas repetitivas y basadas en reglas se ejecuten solas. En Nithios la hacemos de forma remota para empresas de toda Colombia: primero ordenamos el proceso, después lo automatizamos.',
 

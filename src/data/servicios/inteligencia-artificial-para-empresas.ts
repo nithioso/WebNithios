@@ -18,6 +18,8 @@ export default {
   seoTitle: 'Inteligencia artificial para empresas en Colombia',
   seoDescription:
     'Inteligencia artificial para empresas en Colombia: casos de uso con sentido de negocio, pruebas con tus datos e integración segura a tus procesos. Hablemos.',
+  ogDescription: 'Encuentra dónde la inteligencia artificial aporta valor en tu empresa y pruébala con bajo riesgo, de la idea a la operación.',
+  ogTagline: 'IA aplicada a tu operación, con bajo riesgo',
   intro:
     'La inteligencia artificial para empresas es usar modelos de IA en tareas concretas: clasificar documentos, responder consultas o extraer datos. En Nithios acompañamos a empresas de toda Colombia, de forma remota, del primer caso de uso a su integración.',
 

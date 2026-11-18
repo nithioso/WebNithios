@@ -7,6 +7,7 @@
  *   geo meta para Colombia y JSON-LD (@graph) ya construido por BaseLayout.
  */
 import { site, absoluteUrl } from '@/data/site';
+import { socialDescription, socialTitle, OG_DESCRIPTION_MAX } from '@/lib/text';
 
 interface Props {
   title: string;
@@ -18,6 +19,10 @@ interface Props {
   ogImageWidth?: number;
   ogImageHeight?: number;
   noindex?: boolean;
+  /** og:title corto (opcional). Por defecto: el title, sin « | Nithios» si pasa de 55 car. */
+  ogTitle?: string;
+  /** og:description ≤ 125 car. (opcional). Por defecto se deriva de `description` en frases completas. */
+  ogDescription?: string;
   /** Documento JSON-LD completo (normalmente graph([...])). */
   jsonLd?: Record<string, unknown>;
 }
@@ -32,17 +37,24 @@ const {
   ogImageWidth = 1200,
   ogImageHeight = 630,
   noindex = false,
+  ogTitle,
+  ogDescription,
   jsonLd,
 } = Astro.props;
 
 const title = rawTitle.includes(site.name) ? rawTitle : `${rawTitle} | ${site.name}`;
 const canonical = absoluteUrl(path);
 const image = absoluteUrl(ogImage);
+// Descripción y título SOCIALES (vistas previas en chats y redes): más cortos que los de buscadores.
+const ogTitleText = ogTitle ?? socialTitle(title);
+const ogDesc = ogDescription ?? socialDescription(description);
 
 {
   if (title.length > 60) console.warn(`[seo] title > 60 car. (${title.length}) en ${path}: "${title}"`);
   if (!noindex && (description.length < 140 || description.length > 160))
     console.warn(`[seo] description fuera de 140–160 car. (${description.length}) en ${path}`);
+  if (ogDesc.length > OG_DESCRIPTION_MAX) console.warn(`[seo] og:description > ${OG_DESCRIPTION_MAX} car. (${ogDesc.length}) en ${path}`);
+  if (!noindex && !ogDescription) console.warn(`[seo] sin ogDescription propia en ${path} (se deriva de la description)`);
 }
 
 // Escapa "<" para que el JSON-LD no pueda cerrar el <script>.
@@ -63,8 +75,8 @@ const jsonLdString = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : 
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={site.name} />
 <meta property="og:locale" content={site.locale} />
-<meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:title" content={ogTitleText} />
+<meta property="og:description" content={ogDesc} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={image} />
 <meta property="og:image:width" content={String(ogImageWidth)} />
@@ -72,7 +84,7 @@ const jsonLdString = jsonLd ? JSON.stringify(jsonLd).replace(/</g, '\\u003c') : 
 <meta property="og:image:alt" content={ogImageAlt} />
 
 <!-- Twitter -->
-{/* X/Twitter toma título, descripción, imagen y alt de las og:* cuando faltan las twitter:* (menos HTML). */}
+{/* X/Twitter toma título, descripción (la social ≤ 125), imagen y alt de las og:* cuando faltan las twitter:* (menos HTML). */}
 <meta name="twitter:card" content="summary_large_image" />
 
 <!-- GEO -->

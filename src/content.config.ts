@@ -23,6 +23,8 @@ const guias = defineCollection({
         .refine((t) => (t.includes('Nithios') ? t : t + SUFFIX).length <= 60, 'seoTitle > 60 car. contando « | Nithios»'),
       /** Meta description: 140–160 car. */
       description: z.string().min(140, 'description < 140 car.').max(160, 'description > 160 car.'),
+      /** og:description (vistas previas sociales): ≤ 125 car., frase completa. */
+      ogDescription: z.string().min(60).max(125, 'ogDescription > 125 car.'),
       /** «Respuesta corta» destacada al inicio: 2–4 frases que responden la pregunta del título por sí solas (≤ 450 car.). */
       summary: z.string().min(120).max(450),
       /** Fechas ISO (AAAA-MM-DD). updatedAt solo si hubo un cambio real de contenido. */

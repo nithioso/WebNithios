@@ -23,6 +23,9 @@ function validate(file: string, p: ServicePage): void {
   if (fullTitle(p.seoTitle).length > 60) errs.push(`seoTitle > 60 car. con sufijo (${fullTitle(p.seoTitle).length})`);
   const d = p.seoDescription.length;
   if (d < 140 || d > 160) errs.push(`seoDescription fuera de 140–160 car. (${d})`);
+  if (p.ogDescription.length > 125) errs.push(`ogDescription > 125 car. (${p.ogDescription.length})`);
+  if (p.ogTagline.length > 60) errs.push(`ogTagline > 60 car. (${p.ogTagline.length})`);
+  if (p.ogCta && p.ogCta.length > 34) errs.push(`ogCta > 34 car. (${p.ogCta.length})`);
   if (p.h1Highlight && !p.h1.includes(p.h1Highlight)) errs.push('h1Highlight no es un fragmento literal de h1');
   if (p.faqs.length < 5 || p.faqs.length > 6) errs.push(`faqs debe tener 5–6 preguntas (${p.faqs.length})`);
   if (p.ogAlt && p.ogAlt.length > 140) errs.push(`ogAlt > 140 car. (${p.ogAlt.length})`);

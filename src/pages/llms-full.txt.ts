@@ -73,6 +73,9 @@ export const GET: APIRoute = async () => {
       `#### ${s.whatIs.title}`,
       s.whatIs.answer,
       s.whatIs.paragraphs.join('\n\n'),
+      ...(s.profile
+        ? [`#### ${s.profile.title}`, ...(s.profile.intro ? [s.profile.intro] : []), titled(s.profile.items), `Perfil completo: ${absoluteUrl(s.profile.link.href)}`]
+        : []),
       `#### ${s.audience.title}`,
       ...(s.audience.intro ? [s.audience.intro] : []),
       list(s.audience.items),
@@ -139,7 +142,7 @@ export const GET: APIRoute = async () => {
     list(ceo.education.map((e) => `${e.degree} — ${e.institution}`)),
     ...(ceo.certifications.length ? ['### Certificaciones', list(ceo.certifications.map((c) => `${c.name} — ${c.issuer}`))] : []),
     '### Idiomas',
-    list(ceo.languages.map((l) => `${l.name}: ${l.level}`)),
+    list(ceo.languages.map((l) => l.name)),
   );
 
   /* ---------- Preguntas frecuentes generales ---------- */

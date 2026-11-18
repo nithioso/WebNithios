@@ -20,6 +20,8 @@ export default {
   seoTitle: 'Desarrollo de apps móviles en Colombia',
   seoDescription:
     'Desarrollo de aplicaciones móviles a medida en Colombia para iOS y Android: alcance claro, prototipo, integración con tus sistemas y publicación. Hablemos.',
+  ogDescription: 'Apps a medida para Android e iOS con su backend y panel de administración, pensadas para tu operación.',
+  ogTagline: 'Apps Android e iOS hechas para tu operación',
   intro:
     'El desarrollo de aplicaciones móviles a medida es crear una app para Android e iOS alrededor de los procesos, los usuarios y los sistemas de tu empresa. En Nithios lo hacemos de forma remota para empresas de toda Colombia.',
 

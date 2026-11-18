@@ -1,5 +1,5 @@
 # ==========================================================================
-# Nithios — Apache / LiteSpeed (Hostinger) · sitio estático Astro (dist/)
+# Nithios — Apache / LiteSpeed · sitio estático Astro (dist/)
 # Decisiones documentadas en docs/SEO-GEO.md → "Seguridad y .htaccess".
 # ==========================================================================
 
@@ -67,6 +67,10 @@ AddType font/woff2 .woff2
   <FilesMatch "\.(html|xml|txt|webmanifest)$">
     Header set Cache-Control "public, max-age=0, must-revalidate"
   </FilesMatch>
+  # La página 404 es accesible como /404.html (200): que no se indexe nunca (además de su meta robots).
+  <Files "404.html">
+    Header set X-Robots-Tag "noindex, follow"
+  </Files>
   # Activos de /_astro/ (nombre con hash): un año, inmutables → ver public/_astro/.htaccess
   # (un .htaccess por carpeta funciona igual en Apache y LiteSpeed; las variables [E=] no siempre).
 </IfModule>

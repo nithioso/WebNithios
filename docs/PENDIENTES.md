@@ -26,7 +26,7 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   NO le atribuye participación personal ni habla de «su equipo» o «su sello» (ronda 2: se retiraron esas frases de `/jonathan-osorio/` y `/servicios/`).
 - [ ] **Cargos de liderazgo previos**: el copy dice solo «casi 20 años de experiencia en diferentes sectores» (sin «liderando iniciativas»). Si se confirma, ampliar en `ceo.ts`.
 - [x] **Perfiles públicos** (`sameAs`): LinkedIn publicado (JSON-LD + enlace visible en la ficha ejecutiva).
-- [ ] Nivel de inglés (si se quiere publicar).
+- [x] Nivel de idiomas: NO se publica (decisión del usuario, nov 2026). `ceo.languages` solo lleva nombre y código.
 - [ ] ¿Dónde se fundó Nithios? NO confirmado: el sitio solo dice que Jonathan está radicado en Medellín y que Nithios se dirige desde allí
   (se retiraron «nace en Medellín» del FAQ del portafolio y «Desde Medellín fundó Nithios» de la ficha del CEO). Sin dirección física.
 
@@ -62,6 +62,10 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   PROPIEDAD INTELECTUAL: los héroes y villanos del juego son personajes reconocibles de caricaturas de terceros → NO se publican: no se capturó la
   selección de héroe y los sprites se sustituyeron por PNG transparentes al capturar (la partida muestra solo HUD, disparos y fondo).
   Los nombres y puntajes de las capturas son datos de prueba (lo aclara `statusNote`). Si se recaptura, repetir ese tratamiento.
+- [x] Chelato Toons ABIERTO sin código QR (nov 2026, indicación del usuario): el sitio dice que nació con acceso por QR para la activación y,
+  terminado el evento, quedó abierto en chelato.nithios.com. [ ] Confirmar que el juego en producción ya no pide código (hoy lo decide su `config.js`/backend).
+- [ ] **Seguridad (fuera de este repo)**: `https://chelato.nithios.com/config.js` es público y sus comentarios nombran el proveedor de hosting y
+  el backend; limpiarlos en el repo del juego. En este sitio ya no se nombra el proveedor (`verify:seo` lo comprueba).
 - [ ] Chelato Toons: confirmar si se puede mencionar el nombre de la marca, fechas o resultados de la campaña (hoy no se publica ninguno) y si
   los personajes tienen licencia (mientras no se confirme, seguir sin mostrarlos ni nombrarlos).
 - [ ] Stack tecnológico de Dragon Global Trade (hoy vacío).
@@ -81,6 +85,15 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 - [ ] Alta en Google Business Profile / Search Console / Bing Webmaster tras publicar.
 
 - [ ] **Logo: búsqueda de antecedentes marcarios** del sello K «NTOS en sello» (moneda con NT calada y corte en S) en SIC Colombia y WIPO (Global Brand Database, clases 9, 35 y 42; incluir búsqueda figurativa/Viena de monedas y sellos circulares) antes de registrar la marca; los monogramas «NT» son frecuentes y la «C» de luz puede confundirse con © (design/logo/DECISION.md).
+
+## Miembro de junta directiva (`src/data/servicios/miembro-de-junta-directiva-tecnologia.ts`) — CONFIRMAR CON EL USUARIO
+- [ ] **Experiencia previa en juntas**: ¿Jonathan es o ha sido miembro/asesor de alguna junta directiva o comité? Hoy el sitio NO lo afirma
+  (solo «disponible como…»). Si lo es, añadirlo a `ceo.ts` (anonimizado y sin fechas) y al perfil del servicio.
+- [ ] **Modalidades que realmente ofrece**: miembro independiente, asesor permanente, integrante de comité de tecnología, sesiones puntuales.
+- [ ] **¿Lo presta él personalmente?** (hoy sí: `providedByCeo: true`, Person como provider en JSON-LD). ¿Presencial en otras ciudades o solo remoto?
+- [ ] **Política de conflicto de interés** (FAQ «¿Puede Nithios venderle servicios a una empresa en cuya junta participa Jonathan?»): hoy dice
+  que se declara y se acuerda con la junta; confirmar la regla real. Honorarios, plazos y requisitos legales: no se publican (no confirmados).
+- [ ] Revisión del texto por Jonathan antes de promocionar la URL (LinkedIn, Search Console).
 
 ## Guías y servicios específicos (SEO/GEO)
 - [ ] **Revisión del CEO antes de producción** de las 6 guías (`src/content/guias/`) y de los 6 servicios específicos (`src/data/servicios/`):

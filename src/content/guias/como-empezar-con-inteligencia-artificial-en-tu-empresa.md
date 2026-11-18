@@ -2,6 +2,7 @@
 title: 'Cómo empezar con inteligencia artificial en tu empresa: guía práctica'
 seoTitle: 'Cómo empezar con IA en tu empresa: guía práctica'
 description: 'Cómo empezar con inteligencia artificial en tu empresa: el primer caso de uso, ejemplos por área, datos y seguridad, cómo medir resultados y errores comunes.'
+ogDescription: 'Cómo elegir el primer caso de uso de inteligencia artificial, cuidar tus datos y medir si de verdad funcionó.'
 summary: 'Para empezar con inteligencia artificial en tu empresa, elige un proceso concreto con volumen y reglas claras, mide cómo funciona hoy, prueba la IA con tus propios datos en un piloto acotado y con una persona revisando los resultados, y solo después decide si se integra a la operación. Empieza por el problema, no por la herramienta.'
 publishedAt: 2026-11-17
 keywords:

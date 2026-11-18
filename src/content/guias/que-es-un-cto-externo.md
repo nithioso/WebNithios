@@ -2,6 +2,7 @@
 title: '¿Qué es un CTO externo y cuándo lo necesita tu empresa?'
 seoTitle: 'Qué es un CTO externo y cuándo lo necesitas'
 description: 'Qué es un CTO externo, qué hace, en qué se diferencia de un CTO de planta o de un consultor, cuándo conviene a una empresa en Colombia y cómo elegir uno.'
+ogDescription: 'Qué hace un CTO externo, en qué se diferencia de un CTO de planta y cuándo le conviene a tu empresa.'
 summary: 'Un CTO externo es un director de tecnología que trabaja para tu empresa con dedicación parcial: define prioridades, toma decisiones técnicas, supervisa proveedores y responde ante la gerencia. Conviene cuando la tecnología ya pesa en el negocio, pero nadie la dirige y aún no se justifica un CTO de tiempo completo.'
 publishedAt: 2026-11-17
 keywords:
@@ -63,6 +64,8 @@ Son cuatro figuras que a menudo se confunden. Esta comparación ayuda a ubicarla
 | Proveedor de desarrollo | Por contrato | Construcción del software | No representa tus intereses frente a sí mismo |
 
 La diferencia con el proveedor merece atención: un buen CTO externo **trabaja para ti**, no para quien te vende el software. Por eso puede recomendarte no construir algo, cambiar de proveedor o comprar una herramienta que ya existe.
+
+Tampoco hay que confundirlo con un consejero de la junta: el CTO externo dirige y ejecuta, mientras que un [miembro de junta directiva experto en tecnología](/servicios/miembro-de-junta-directiva-tecnologia/) supervisa y aconseja desde el máximo órgano de gobierno, sin operar.
 
 ## Cuándo necesita una empresa un CTO externo
 

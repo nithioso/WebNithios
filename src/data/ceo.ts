@@ -46,7 +46,8 @@ export interface CeoLanguage {
   name: string;
   /** Código BCP 47 (JSON-LD). */
   code: string;
-  level: string;
+  /** Nivel: NO se publica (decisión del usuario: sin nivel de idiomas). */
+  level?: string;
 }
 
 export interface CompetencyGroup {
@@ -124,8 +125,8 @@ export const ceo: Ceo = {
   credentialsSummary: 'Ingeniero de Sistemas y Especialista en Gerencia de TI',
   location: { locality: 'Medellín', region: 'Antioquia', country: 'Colombia', countryCode: 'CO' },
   languages: [
-    { name: 'Español', code: 'es', level: 'Nativo' },
-    { name: 'Inglés', code: 'en', level: 'B2' },
+    { name: 'Español', code: 'es' },
+    { name: 'Inglés', code: 'en' },
   ],
   jobTitle: 'CEO y Fundador',
   company: 'Nithios',
@@ -152,6 +153,7 @@ export const ceo: Ceo = {
   knowsAbout: [
     'Estrategia de TI',
     'Gerencia de TI',
+    'Gobierno corporativo de TI',
     'Transformación digital',
     'Inteligencia artificial',
     'Analítica de datos',
@@ -391,7 +393,7 @@ export const ceoPage = {
     { label: 'Formación', value: 'Ingeniero de Sistemas · Especialista en Gerencia de TI' },
     { label: 'Experiencia', value: 'Casi 20 años en retail, educación y servicios' },
     { label: 'Ubicación', value: 'Medellín, Antioquia, Colombia' },
-    { label: 'Idiomas', value: 'Español nativo · Inglés B2' },
+    { label: 'Idiomas', value: 'Español · Inglés' },
   ],
   profileTitle: 'Un ejecutivo que habla el idioma del negocio y el de la tecnología.',
   highlights: {
@@ -448,6 +450,25 @@ export const ceoPage = {
     /** Postura institucional de Nithios (no es una cita atribuida a una persona). */
     statement:
       'Creemos que la transformación digital no empieza con software: empieza con una buena pregunta sobre el negocio. Nuestro trabajo es encontrar la respuesta correcta y construirla bien.',
+  },
+  /**
+   * Bloque «Disponible como miembro de junta directiva» (enlaza a /servicios/miembro-de-junta-directiva-tecnologia/).
+   * Es DISPONIBILIDAD: no afirmar que es o ha sido miembro de alguna junta (no confirmado; docs/PENDIENTES.md).
+   */
+  board: {
+    eyebrow: 'Junta directiva',
+    title: 'Disponible como miembro de junta directiva.',
+    intro:
+      'Jonathan Osorio está disponible como miembro independiente, asesor de junta o integrante de un comité de tecnología (Board Member con enfoque tecnológico). Aporta a la junta su experiencia dirigiendo tecnología: estrategia digital, inversiones, riesgo, ciberseguridad e inteligencia artificial.',
+    points: [
+      'Criterio tecnológico para evaluar lo que presenta la gerencia',
+      'Supervisión de inversiones y proyectos de tecnología',
+      'Riesgo tecnológico, ciberseguridad y continuidad',
+      'Postura de la junta frente a la inteligencia artificial',
+    ],
+    link: { label: 'Servicio de junta directiva', href: '/servicios/miembro-de-junta-directiva-tecnologia/' },
+    ctaLabel: 'Proponer a Jonathan para tu junta',
+    whatsappMessage: 'Hola Nithios, quiero proponer a Jonathan Osorio como miembro de la junta directiva de mi empresa.',
   },
   domains: {
     title: 'Las áreas que lidera Nithios.',
@@ -525,6 +546,11 @@ export const ceoPage = {
       question: '¿Qué hace Jonathan Osorio en Nithios?',
       answer:
         'Como CEO y Fundador, dirige la estrategia de Nithios y sus dos líneas de servicio: la asesoría y consultoría tecnológica para empresas que quieren mejorar sus procesos, y el desarrollo de software a medida con nuevas tecnologías. Aporta su experiencia en ITIL, COBIT, TOGAF, Scrum, DevOps e inteligencia artificial.',
+    },
+    {
+      question: '¿Jonathan Osorio está disponible como miembro de junta directiva?',
+      answer:
+        'Sí. Jonathan Osorio está disponible como miembro independiente, asesor de junta o integrante de un comité de tecnología en empresas de toda Colombia, para aportar criterio tecnológico a la estrategia, las inversiones digitales y la gestión del riesgo. Cómo funciona está explicado en [miembro de junta directiva experto en tecnología](/servicios/miembro-de-junta-directiva-tecnologia/); para proponerlo, escribe al WhatsApp de Nithios.',
     },
     {
       question: '¿Cómo puedo hablar con Jonathan Osorio sobre un proyecto?',

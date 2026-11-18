@@ -3,7 +3,7 @@
  * Cuerpo completo de una página de SERVICIO ESPECÍFICO (/servicios/<slug>/), 100 % data-driven
  * desde src/data/servicios/<slug>.ts (tipo ServicePage). La página aporta BaseLayout (SEO/JSON-LD).
  * <ServicePageContent page={p} breadcrumbs={crumbs} />
- * Orden: hero → qué es → para quién → problemas → qué incluye → señales → proceso → entregables (+ tecnologías)
+ * Orden: hero → qué es → (perfil, si `sections.profile`) → para quién → problemas → qué incluye → señales → proceso → entregables (+ tecnologías)
  *        → cuándo NO conviene → casos → guías → FAQ → servicios relacionados → CTA.
  */
 import PageHero from './PageHero.astro';
@@ -61,7 +61,8 @@ const relatedCards = [...lines, ...relatedServices];
   intro={p.intro}
   breadcrumbs={breadcrumbs}
   whatsappMessage={p.whatsappMessage}
-  secondary={firstGuide ? { label: 'Leer la guía', href: firstGuide.path } : { label: 'Ver servicios', href: '/servicios/' }}
+  ctaLabel={p.ctaLabel}
+  secondary={p.heroSecondary ?? (firstGuide ? { label: 'Leer la guía', href: firstGuide.path } : { label: 'Ver servicios', href: '/servicios/' })}
   size="md"
 >
   <ul class="mt-12 flex flex-wrap gap-2.5" aria-label="Datos del servicio" data-reveal="fade" style="--reveal-delay:320ms">
@@ -94,6 +95,24 @@ const relatedCards = [...lines, ...relatedServices];
     </Reveal>
   </div>
 </Section>
+
+<!-- Perfil de quien presta el servicio (opcional) -->
+{
+  s.profile && (
+    <Section id="perfil" eyebrow="Perfil" title={s.profile.title} intro={s.profile.intro} tone="glow">
+      <div class:list={['grid gap-5', gridFor(s.profile.items.length)]}>
+        {s.profile.items.map((it, i) => (
+          <Card tone={i === 0 ? 'gold' : 'glass'} icon={it.icon} title={it.title} text={it.text} revealDelay={(i % 3) * 90} />
+        ))}
+      </div>
+      <Fragment slot="actions">
+        <Button href={s.profile.link.href} variant="glass" iconRight="arrow-right">
+          {s.profile.link.label}
+        </Button>
+      </Fragment>
+    </Section>
+  )
+}
 
 <!-- Para quién -->
 <Section id="para-quien" eyebrow="Para quién" title={s.audience.title} intro={s.audience.intro} tone="raised">
@@ -313,7 +332,8 @@ const relatedCards = [...lines, ...relatedServices];
   text={p.cta?.text ??
     'Cuéntanos tu situación por WhatsApp. Te respondemos con preguntas concretas y, si tiene sentido, con una propuesta ajustada a tu caso. Atendemos de forma remota a empresas de toda Colombia.'}
   message={p.whatsappMessage}
-  secondary={{ label: 'Ver todos los servicios', href: '/servicios/' }}
+  ctaLabel={p.ctaLabel}
+  secondary={p.heroSecondary ?? { label: 'Ver todos los servicios', href: '/servicios/' }}
 />
 
 <ScrollerSync />

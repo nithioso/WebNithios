@@ -2,6 +2,7 @@
 title: 'Transformación digital para pymes: por dónde empezar sin perder plata'
 seoTitle: 'Transformación digital para pymes: cómo empezar'
 description: 'Transformación digital para pymes en Colombia: por dónde empezar, cómo priorizar, qué digitalizar primero y qué errores evitar para invertir con criterio.'
+ogDescription: 'Por dónde empezar la transformación digital de una pyme: diagnóstico, prioridades y errores que conviene evitar.'
 summary: 'La transformación digital de una pyme no empieza comprando software, sino eligiendo uno o dos procesos que hoy duelen, ordenándolos y digitalizándolos con la herramienta más simple que los resuelva. Se avanza por etapas cortas, se mide si mejoró y solo entonces se pasa al siguiente frente.'
 publishedAt: 2026-11-17
 keywords:

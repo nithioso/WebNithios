@@ -60,6 +60,7 @@ const specs = [
 <BaseLayout
   title={p.seoTitle}
   description={p.seoDescription}
+  ogDescription={p.ogDescription}
   path={p.path}
   ogImage={og?.src}
   ogImageWidth={og?.width}
@@ -100,11 +101,10 @@ const specs = [
       p.liveUrl && (
         <div class="hero-in hero-in-3 mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
           <div>
-            <Button href={p.liveUrl} variant="outline" size="sm" iconRight="arrow-up-right" ariaLabel={`Ver ${liveHost} (se abre en una pestaña nueva)`}>
-              Ver {liveHost}
+            <Button href={p.liveUrl} variant="outline" size="sm" iconRight="arrow-up-right" ariaLabel={`${p.liveLabel ?? `Ver ${liveHost}`} (se abre en una pestaña nueva)`}>
+              {p.liveLabel ?? `Ver ${liveHost}`}
             </Button>
           </div>
-          {p.liveNote && <p class="text-sm text-smoke">{p.liveNote}</p>}
         </div>
       )
     }

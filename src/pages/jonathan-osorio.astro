@@ -47,6 +47,7 @@ const sections = {
   trayectoria: hasExperience,
   formacion: hasEducation,
   competencias: hasCompetencies,
+  junta: true,
   vision: true,
   dominio: true,
   metodo: true,
@@ -183,6 +184,34 @@ const og = await pageOgImage('/jonathan-osorio/');
       </Section>
     )
   }
+
+  <!-- DISPONIBLE COMO MIEMBRO DE JUNTA DIRECTIVA (disponibilidad, no un cargo: ver ceo.ts › ceoPage.board) -->
+  <Section id="junta-directiva" eyebrow={ceoPage.board.eyebrow} title={ceoPage.board.title} tone={tones.junta}>
+    <div class="gold-ring relative overflow-hidden rounded-(--radius-card) bg-ink-850 p-5 sm:p-7 md:p-10" data-reveal>
+      <div class="grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+        <div>
+          <span class="inline-flex size-12 items-center justify-center rounded-full border border-line-gold text-gold-300">
+            <Icon name="award" size={24} />
+          </span>
+          <p class="mt-6 text-lead text-pearl">{ceoPage.board.intro}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <WhatsAppButton message={ceoPage.board.whatsappMessage} label={ceoPage.board.ctaLabel} />
+            <Button href={ceoPage.board.link.href} variant="glass" iconRight="arrow-right">{ceoPage.board.link.label}</Button>
+          </div>
+        </div>
+        <ul class="space-y-4 self-center">
+          {
+            ceoPage.board.points.map((pt) => (
+              <li class="flex items-start gap-3 text-lg leading-snug text-mist">
+                <Icon name="check-circle" size={22} class="mt-0.5 shrink-0 text-gold-400" />
+                <span>{pt}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </Section>
 
   <!-- VISIÓN Y FILOSOFÍA DE LIDERAZGO -->
   <Section id="vision" eyebrow="Visión y liderazgo" title={ceoPage.vision.title} intro={ceoPage.vision.intro} tone={tones.vision}>

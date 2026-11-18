@@ -18,6 +18,8 @@ export default {
   seoTitle: 'CTO externo en Colombia: dirección de tecnología',
   seoDescription:
     'CTO externo para empresas en Colombia: dirección de tecnología por horas para priorizar inversiones, supervisar proveedores y decidir con criterio. Hablemos.',
+  ogDescription: 'Un director de tecnología por horas que prioriza inversiones y supervisa proveedores, sin contratar un CTO de planta.',
+  ogTagline: 'Dirección de tecnología sin un CTO de planta',
   intro:
     'Un CTO externo es un director de tecnología con dedicación parcial que prioriza inversiones, supervisa proveedores y responde ante la gerencia. En Nithios lo ofrecemos de forma remota a empresas de toda Colombia.',
 
@@ -31,6 +33,7 @@ export default {
         'La diferencia con un consultor tradicional está en la responsabilidad. Un consultor entrega un diagnóstico o una recomendación y se va; un CTO externo se sienta en la mesa de decisiones, participa en el comité o en las reuniones de gerencia, hace seguimiento a lo que se acordó y responde por la coherencia de la tecnología de la empresa a lo largo del tiempo.',
         'La diferencia con un proveedor de desarrollo también es clara: el CTO externo no vende horas de programación ni defiende un producto. Su trabajo es representar los intereses de tu empresa frente a proveedores, plataformas y equipos, incluido cuando la mejor decisión es no construir nada o comprar una herramienta que ya existe.',
         'En la práctica, el rol se adapta a tu etapa: en una empresa que apenas empieza a digitalizarse se concentra en ordenar prioridades y elegir bien; en una que ya tiene software propio, en arquitectura, seguridad, calidad y gestión del equipo o del proveedor; y en una que prepara un proyecto grande, en definir el alcance y vigilar la ejecución.',
+        'Un CTO externo tampoco es un consejero de la junta directiva: dirige y ejecuta la tecnología junto a la gerencia. Si lo que tu empresa necesita es criterio tecnológico en el máximo órgano de gobierno, sin funciones ejecutivas, el servicio indicado es el de [miembro de junta directiva experto en tecnología](/servicios/miembro-de-junta-directiva-tecnologia/).',
         'Nithios está dirigida por [Jonathan Osorio Correa](/jonathan-osorio/), CEO y Fundador, con trayectoria como CTO y líder de innovación en organizaciones de retail, educación y servicios.',
       ],
     },
@@ -243,7 +246,7 @@ export default {
   ],
 
   related: {
-    services: ['modernizacion-de-sistemas', 'inteligencia-artificial-para-empresas', 'desarrollo-de-plataformas-web'],
+    services: ['modernizacion-de-sistemas', 'inteligencia-artificial-para-empresas', 'miembro-de-junta-directiva-tecnologia'],
     guides: [
       'que-es-un-cto-externo',
       'como-elegir-una-empresa-de-desarrollo-de-software-en-colombia',

@@ -6,8 +6,9 @@
  *   - public/og-default.png                     → home y páginas sin OG propia (nombre fijo por convención)
  *   - src/assets/og/<nombre-descriptivo>-og.png → una por página / caso (importadas en src/data/og.ts y src/data/projects.ts)
  *
- * Línea visual: negro + dorado, logo oficial K «NTOS en sello» (design/logo/final/logo-horizontal.svg),
- * Inter Variable del proyecto (incrustada desde @fontsource-variable/inter) y pie con nithios.com.
+ * Línea visual (v2): negro + dorado, logo oficial K «NTOS en sello» (design/logo/final/logo-horizontal.svg), Inter Variable
+ * incrustada, titular ≥ 64 px, propuesta de valor corta, BOTÓN DORADO con la llamada a la acción y nithios.com.
+ * Zona segura 1080×560 (los chats y redes recortan los bordes); ningún texto < 26 px. Ver docs/SEO-GEO.md › Imágenes.
  * Las capturas salen de src/assets/portfolio/**; la ilustración de Krystal se captura de dist/ (si existe, tras
  * `npm run build`) en design/og/krystal-ilustracion-agenda-y-videollamada.png y se reutiliza si no hay dist/.
  *
@@ -95,52 +96,98 @@ async function captureKrystal(browser) {
   console.log('Ilustración de Krystal capturada:', path.relative(root, KRYSTAL_VISUAL));
 }
 
-// ---------- plantilla base ----------
+// ---------- plantilla base (v2: titular + propuesta de valor + botón de llamada a la acción) ----------
+/*
+ * Retícula 1200×630 con ZONA SEGURA 1080×560 (x 60–1140, y 35–595): WhatsApp, LinkedIn y X recortan los bordes.
+ * Columna de texto x 72–700: logo K (arriba), eyebrow 26 px, titular 64–80 px (máx. 3 líneas, se ajusta solo),
+ * propuesta de valor 30 px (máx. 2 líneas) y botón dorado con la llamada a la acción (34 px, abajo).
+ * Visual a la derecha (captura, foto o panel con textos ≥ 26 px). nithios.com arriba a la derecha (alineado con el logo). Nada < 26 px.
+ * El script fitCopy() reduce el titular hasta 64 px y recorta la propuesta si no cabe; avisa si aun así se desborda.
+ */
 const css = `
 @font-face{font-family:'InterOG';src:url(data:font/woff2;base64,${font}) format('woff2');font-weight:100 900;font-display:block}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1200px;height:630px;background:#000;overflow:hidden}
-body{position:relative;font-family:'InterOG',system-ui,sans-serif;font-optical-sizing:auto;color:#f5f1e8;-webkit-font-smoothing:antialiased}
-.halo{position:absolute;inset:0;background:radial-gradient(70% 90% at 82% -10%,rgba(212,175,55,.24),transparent 60%),radial-gradient(50% 60% at 0% 110%,rgba(212,175,55,.10),transparent 70%)}
-.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(80% 80% at 70% 20%,#000,transparent 75%)}
-.logo{position:absolute;left:72px;top:64px;height:44px;z-index:3}
-.logo svg{height:44px;width:auto;display:block}
-.copy{position:absolute;left:72px;top:150px;bottom:120px;width:var(--copy-w,520px);display:flex;flex-direction:column;justify-content:center;z-index:3}
-.eyebrow{font-size:19px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#d9b64a;margin-bottom:20px}
-h1{font-size:var(--h1,58px);line-height:1.04;font-weight:650;letter-spacing:-.035em;text-wrap:balance}
-h1 em{font-style:normal;background:linear-gradient(100deg,#f3e2a6 0%,#d4af37 45%,#a8842f 75%,#ead27c 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{margin-top:22px;font-size:25px;line-height:1.35;color:#b9b2a6;letter-spacing:-.01em;text-wrap:pretty}
-.foot{position:absolute;left:72px;bottom:56px;font-size:22px;font-weight:550;color:#b3ada3;letter-spacing:-.01em;z-index:3;display:flex;align-items:center;gap:14px}
-.foot i{display:block;width:44px;height:1px;background:linear-gradient(90deg,rgba(212,175,55,.9),rgba(212,175,55,0))}
-.frame{position:absolute;border-radius:16px;border:1px solid rgba(212,175,55,.38);background:#0d0d0d;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 90px rgba(212,175,55,.10)}
-.frame .bar{height:30px;display:flex;align-items:center;gap:7px;padding:0 14px;background:#141414;border-bottom:1px solid rgba(255,255,255,.07)}
-.frame .bar b{width:9px;height:9px;border-radius:50%;background:#3a3a3a}
-.frame .bar span{margin-left:12px;font-size:12.5px;color:#9a948a;letter-spacing:.01em}
-.frame img{display:block;width:100%;height:calc(100% - 30px);object-fit:cover;object-position:left top}
-.glass{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.09);border-radius:18px}
+body{position:relative;font-family:'InterOG',system-ui,sans-serif;font-optical-sizing:auto;color:#f7f3ea;-webkit-font-smoothing:antialiased}
+.halo{position:absolute;inset:0;background:radial-gradient(60% 85% at 88% -5%,rgba(212,175,55,.28),transparent 62%),radial-gradient(45% 55% at -5% 105%,rgba(212,175,55,.14),transparent 70%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(80% 80% at 75% 20%,#000,transparent 75%)}
+.logo{position:absolute;left:72px;top:56px;height:52px;z-index:4}
+.logo svg{height:52px;width:auto;display:block}
+.copy{position:absolute;left:72px;top:134px;height:330px;width:var(--copy-w,620px);display:flex;flex-direction:column;justify-content:flex-start;z-index:4}
+.copy>*{flex:none}
+.eyebrow{font-size:26px;font-weight:650;letter-spacing:.1em;text-transform:uppercase;color:#e2c15c;margin-bottom:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+h1{font-size:var(--h1,76px);line-height:1.02;font-weight:700;letter-spacing:-.04em;text-wrap:balance}
+h1 em{font-style:normal;background:linear-gradient(100deg,#f6e7b0 0%,#d9b443 45%,#b48c32 75%,#efd685 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin-top:18px;font-size:30px;line-height:1.28;font-weight:500;color:#d2cbbf;letter-spacing:-.015em;text-wrap:pretty;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cta{position:absolute;left:72px;top:486px;z-index:5;display:inline-flex;align-items:center;gap:16px;height:82px;padding:0 40px 0 36px;border-radius:999px;
+  background:linear-gradient(135deg,#f6e3a0 0%,#dcb648 48%,#b98f2e 100%);color:#0a0a0a;font-size:34px;font-weight:750;letter-spacing:-.02em;white-space:nowrap;
+  box-shadow:0 18px 50px rgba(212,175,55,.32),inset 0 1px 0 rgba(255,255,255,.55)}
+.cta svg{width:34px;height:34px;flex:none}
+.url{position:absolute;right:72px;top:62px;z-index:5;font-size:28px;font-weight:600;color:#cfc8bc;letter-spacing:-.01em;display:flex;align-items:center;gap:14px}
+.url i{display:block;width:40px;height:2px;background:linear-gradient(90deg,rgba(212,175,55,0),rgba(212,175,55,.9))}
+.visual{position:absolute;z-index:2}
+.fade{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.92) 52%,rgba(0,0,0,.25) 72%,rgba(0,0,0,0) 85%),linear-gradient(0deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,0) 30%)}
+.frame{position:absolute;border-radius:18px;border:1.5px solid rgba(212,175,55,.45);background:#0d0d0d;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.7),0 0 90px rgba(212,175,55,.12)}
+.frame .bar{height:34px;display:flex;align-items:center;gap:8px;padding:0 16px;background:#141414;border-bottom:1px solid rgba(255,255,255,.07)}
+.frame .bar b{width:11px;height:11px;border-radius:50%;background:#3a3a3a}
+.frame img{display:block;width:100%;height:calc(100% - 34px);object-fit:cover;object-position:left top}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1.5px solid rgba(255,255,255,.11);border-radius:22px}
+.panel{position:absolute;left:744px;top:132px;width:396px;max-height:440px;overflow:hidden;padding:24px 28px;z-index:4}
+.panel small{display:block;font-size:26px;font-weight:650;letter-spacing:.08em;color:#e2c15c}
+.panel ul{list-style:none;margin-top:8px;display:flex;flex-direction:column}
+.panel li{display:flex;align-items:flex-start;gap:16px;padding:13px 0;font-size:27px;font-weight:600;line-height:1.18;letter-spacing:-.02em;border-top:1px solid rgba(255,255,255,.1)}
+.panel li:first-child{border-top:0}
+.panel li span{flex:none;margin-top:1px;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#0a0a0a;background:linear-gradient(135deg,#f3e2a6,#c9a24b)}
+.panel li span svg{width:18px;height:18px}
+.panel li b{font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 `;
-const page = ({ body, extra = '', vars = '', halo = true }) =>
-  `<!doctype html><html lang="es-CO"><head><meta charset="utf-8"><style>${css}${extra}</style></head><body style="${vars}">${halo ? '<div class="halo"></div><div class="grid"></div>' : ''}<div class="logo">${logo}</div>${body}</body></html>`;
-const copy = ({ eyebrow, title, sub }) =>
-  `<div class="copy">${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}<h1>${title}</h1>${sub ? `<p class="sub">${sub}</p>` : ''}</div><div class="foot"><i></i>nithios.com</div>`;
-const frame = (src, label, style) => `<div class="frame" style="${style}"><div class="bar"><b></b><b></b><b></b><span>${label}</span></div><img src="${src}" alt=""></div>`;
+const arrow =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
+const waIcon =
+  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2a9.8 9.8 0 0 0-8.4 14.9L2.2 21.8l4.8-1.3A9.8 9.8 0 1 0 12 2.2Zm0 17.8a8 8 0 0 1-4.1-1.1l-.3-.2-2.8.8.8-2.7-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.8 3 .6a2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .1-1.2c0-.1-.2-.2-.5-.3Z"/></svg>';
+const check = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg>';
 
-// ---------- plantillas ----------
-/** Caso de portafolio: texto a la izquierda, visual enmarcado que sangra por la derecha. */
-async function caseTemplate({ name, sub, eyebrow, visual, label, h1 = '62px' }) {
-  return page({
-    vars: `--copy-w:470px;--h1:${h1}`,
-    body: copy({ eyebrow, title: name, sub }) + frame(visual, label, 'left:590px;top:96px;width:720px;height:440px'),
-  });
-}
+/** Ajusta el titular (80 → 64 px) y recorta la propuesta de valor si no caben en la caja de texto. */
+const fitScript = `<script>
+(async()=>{await document.fonts.ready;const c=document.querySelector('.copy');if(!c)return;const h=c.querySelector('h1'),s=c.querySelector('.sub');
+let fs=parseFloat(getComputedStyle(h).fontSize);const over=()=>c.scrollHeight>c.clientHeight+1;
+const lines=()=>Math.round(h.getBoundingClientRect().height/(parseFloat(getComputedStyle(h).fontSize)*1.02));
+while((over()||lines()>3)&&fs>64){fs-=2;h.style.fontSize=fs+'px';}
+if(over()&&s){s.style.webkitLineClamp='1';} if(over()&&s){s.remove();}
+const used=[...c.children].reduce((a,el)=>Math.max(a,el.offsetTop+el.offsetHeight),0);c.style.paddingTop=Math.max(0,(c.clientHeight-used)/2)+'px';
+document.body.dataset.fit=(over()||lines()>3)?'overflow':'ok';document.body.dataset.h1=fs+'px/'+lines()+'l';})();
+</script>`;
 
-const defaultHtml = page({
-  extra: `.copy{top:170px;width:1000px;justify-content:flex-start}h1{font-size:70px;max-width:960px}
-  .rule{position:absolute;left:72px;right:72px;bottom:118px;height:1px;background:linear-gradient(90deg,rgba(212,175,55,0),rgba(212,175,55,.7),rgba(212,175,55,0))}
-  .wa{position:absolute;right:72px;bottom:56px;font-size:22px;font-weight:550;color:#b3ada3}.wa b{color:#e0c05a;font-weight:600}`,
-  body:
-    copy({ title: 'Consultoría tecnológica y <em>desarrollo de software a medida</em> en Colombia' }) +
-    '<div class="rule"></div><div class="wa">Hablemos por WhatsApp · <b>+57 305 302 7559</b></div>',
+/**
+ * Tarjeta OG estándar. `cta` = texto del botón (sin flecha). `wa`: botón con ícono de WhatsApp.
+ * `visual`: HTML del lado derecho (captura enmarcada, foto o panel). `fade`: velo para que el texto se lea sobre la captura.
+ */
+const card = ({ eyebrow, title, sub, cta, wa = false, visual = '', fade = false, extra = '', vars = '' }) =>
+  `<!doctype html><html lang="es-CO"><head><meta charset="utf-8"><style>${css}${extra}</style></head><body style="${vars}">` +
+  `<div class="halo"></div><div class="grid"></div>${visual}${fade ? '<div class="fade"></div>' : ''}` +
+  `<div class="logo">${logo}</div>` +
+  `<div class="copy">${eyebrow ? `<p class="eyebrow">${eyebrow}</p>` : ''}<h1>${title}</h1>${sub ? `<p class="sub">${sub}</p>` : ''}</div>` +
+  `<div class="cta">${wa ? waIcon : ''}<span>${cta}</span>${arrow}</div>` +
+  `<div class="url"><i></i>nithios.com</div>${fitScript}</body></html>`;
+
+const frame = (src, style) => `<div class="frame visual" style="${style}"><div class="bar"><b></b><b></b><b></b></div><img src="${src}" alt=""></div>`;
+const panel = (label, items, numbered = false) =>
+  `<div class="panel glass"><small>${label}</small><ul>${items
+    .slice(0, 4)
+    .map((t, i) => `<li><span>${numbered ? `<em style="font-style:normal;font-size:16px;font-weight:750">${i + 1}</em>` : check}</span><b>${esc(t)}</b></li>`)
+    .join('')}</ul></div>`;
+
+/** Caso de portafolio: captura que sangra por la derecha bajo un velo, texto a la izquierda y botón «Ver el caso». */
+const caseCard = ({ eyebrow, name, sub, visual, cta = 'Ver el caso' }) =>
+  card({ eyebrow, title: name, sub, cta, visual: frame(visual, 'left:560px;top:112px;width:760px;height:450px'), fade: true });
+
+const defaultHtml = card({
+  eyebrow: 'Empresa de tecnología · Colombia',
+  title: 'Consultoría tecnológica y <em>software a medida</em>',
+  sub: 'Te ayudamos a decidir qué tecnología adoptar y a construirla.',
+  cta: 'Hablemos por WhatsApp',
+  wa: true,
+  vars: '--copy-w:1000px',
 });
 
 const S = {
@@ -151,7 +198,7 @@ const S = {
 };
 
 // ---------- datos de páginas automáticas ----------
-const lineLabels = { consultoria: 'Consultoría tecnológica', desarrollo: 'Desarrollo a medida', ambas: 'Consultoría + desarrollo' };
+const lineLabels = { consultoria: 'Consultoría', desarrollo: 'Desarrollo a medida', ambas: 'Consultoría + desarrollo' };
 
 /** Servicios específicos validados por src/data/servicios/index.ts (Vite SSR: import.meta.glob + alias @/). */
 async function loadServicePages() {
@@ -190,37 +237,38 @@ async function loadGuides() {
   return out;
 }
 
-const fitH1 = (t, sizes = [[90, 44], [72, 48], [58, 52], [0, 58]]) => `${sizes.find(([n]) => t.length > n)[1]}px`;
-const autoCss = `.panel{position:absolute;left:668px;top:104px;width:460px;padding:30px 32px 26px}
-  .panel small{display:block;font-size:15px;font-weight:600;letter-spacing:.14em;color:#d9b64a}
-  .panel ul{list-style:none;margin-top:14px;display:flex;flex-direction:column}
-  .panel li{display:flex;align-items:center;gap:16px;padding:14px 0;font-size:21px;font-weight:550;line-height:1.25;letter-spacing:-.015em;border-top:1px solid rgba(255,255,255,.08)}
-  .panel li:first-child{border-top:0}
-  .panel li span{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:650;color:#e0c05a;border:1px solid rgba(212,175,55,.5)}
-  .panel li:first-child span{color:#0a0a0a;border:0;background:linear-gradient(135deg,#f3e2a6,#c9a24b)}
-  .panel li b{font-weight:550;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .copy .eyebrow{line-height:1.3}`;
-const check = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></svg>';
+/** Titular de la OG de un servicio: su nombre, con la última palabra en dorado. */
+const goldLast = (t) => {
+  const i = t.lastIndexOf(' ');
+  return i < 0 ? `<em>${esc(t)}</em>` : `${esc(t.slice(0, i))} <em>${esc(t.slice(i + 1))}</em>`;
+};
+/** Titular de una guía: el seoTitle sin « | Nithios», con lo que sigue a «:» (o la última palabra) en dorado. */
+const guideTitle = (g) => {
+  const t = (g.seoTitle ?? g.title).replace(/\s*\|\s*Nithios$/, '');
+  const i = t.indexOf(': ');
+  return i > 0 ? `${esc(t.slice(0, i + 1))} <em>${esc(t.slice(i + 2))}</em>` : goldLast(t);
+};
 
 function servicePageTemplate(p) {
-  const items = p.sections.includes.items.slice(0, 5).map((x) => `<li><span>${check}</span><b>${esc(x.title)}</b></li>`).join('');
-  return page({
-    vars: `--copy-w:540px;--h1:${fitH1(p.h1)}`,
-    extra: autoCss,
-    body:
-      copy({ eyebrow: `Servicio · ${esc(lineLabels[p.parent])}`, title: hl(p.h1, p.h1Highlight), sub: '' }) +
-      `<div class="panel glass"><small>QUÉ INCLUYE</small><ul>${items}</ul></div>`,
+  return card({
+    vars: '--copy-w:640px',
+    eyebrow: `Servicio · ${esc(lineLabels[p.parent])}`,
+    title: goldLast(p.name),
+    sub: esc(p.ogTagline),
+    cta: esc(p.ogCta ?? 'Hablemos por WhatsApp'),
+    wa: !p.ogCta,
+    visual: panel('QUÉ INCLUYE', p.sections.includes.items.map((x) => x.title)),
   });
 }
 
 function guideTemplate(g) {
-  const items = g.h2.slice(0, 5).map((t, i) => `<li><span>${String(i + 1).padStart(2, '0')}</span><b>${esc(t)}</b></li>`).join('');
-  return page({
-    vars: `--copy-w:540px;--h1:${fitH1(g.title)}`,
-    extra: autoCss,
-    body:
-      copy({ eyebrow: `Guía · ${g.minutes} min de lectura`, title: esc(g.title), sub: '' }) +
-      `<div class="panel glass"><small>EN ESTA GUÍA</small><ul>${items}</ul></div>`,
+  return card({
+    vars: '--copy-w:640px',
+    eyebrow: `Guía · ${g.minutes} min de lectura`,
+    title: guideTitle(g),
+    sub: '',
+    cta: 'Lee la guía',
+    visual: panel('EN ESTA GUÍA', g.h2, true),
   });
 }
 
@@ -236,221 +284,153 @@ async function buildAutoPages() {
 async function buildPages() {
   const dragonTablero = await img(S.dragon('tablero-comercio-internacional'));
   const logPanel = await img(S.log('panel-de-control'));
-  const logCargue = await img(S.log('optimizacion-de-cargue'));
   const traTorre = await img(S.tra('torre-de-control'));
   const chelatoTabla = await img(S.chelato('tabla-de-puntajes-en-vivo'));
   const chelatoFin = await img(S.chelato('fin-de-partida-y-ranking'), 500);
   const krystal = await img(KRYSTAL_VISUAL);
   const photo = await img(r('src', 'assets', 'ceo', 'jonathan-osorio-ceo-nithios.jpg'), 900);
-  const proto = 'Prototipo navegable · datos ficticios';
-
-  const steps = (items) =>
-    items.map((t, i) => `<li><span>${String(i + 1).padStart(2, '0')}</span>${t}</li>`).join('');
 
   return [
     { out: r('public', 'og-default.png'), html: defaultHtml },
     {
       out: 'nithios-servicios-consultoria-y-desarrollo-de-software-og.png',
-      html: page({
-        vars: '--copy-w:520px',
-        extra: `.cards{position:absolute;left:640px;top:118px;width:488px;display:flex;flex-direction:column;gap:22px}
-        .card{padding:30px 32px}.card small{display:block;font-size:15px;font-weight:600;letter-spacing:.14em;color:#d9b64a}
-        .card strong{display:block;margin-top:12px;font-size:30px;font-weight:620;letter-spacing:-.02em}
-        .card p{margin-top:8px;font-size:19.5px;line-height:1.35;color:#b0a99d}
-        .card.gold{border-color:rgba(212,175,55,.45);background:linear-gradient(180deg,rgba(212,175,55,.13),rgba(212,175,55,.03))}`,
-        body:
-          copy({ eyebrow: 'Servicios', title: 'Tecnología que <em>mejora tus procesos</em>', sub: 'Dos líneas de servicio, un solo equipo de principio a fin.' }) +
-          `<div class="cards"><div class="card glass gold"><small>01 · CONSULTORÍA</small><strong>Consultoría tecnológica</strong><p>Decide mejor qué tecnología adoptar y cómo hacerla rendir.</p></div>
-           <div class="card glass"><small>02 · DESARROLLO</small><strong>Software a medida</strong><p>Software hecho para tu operación, no al revés.</p></div></div>`,
+      html: card({
+        eyebrow: 'Servicios',
+        title: 'Tecnología que <em>mejora tus procesos</em>',
+        sub: 'Consultoría para decidir y desarrollo a medida para construir.',
+        cta: 'Hablemos por WhatsApp',
+        wa: true,
+        visual: panel('DOS LÍNEAS', ['Consultoría tecnológica', 'Software a medida', 'CTO externo y junta directiva', 'IA y automatización']),
       }),
     },
     {
       out: 'nithios-consultoria-tecnologica-colombia-og.png',
-      html: page({
-        vars: '--copy-w:540px;--h1:56px',
-        extra: `.plan{position:absolute;left:668px;top:112px;width:460px;padding:30px 34px}
-        .plan small{font-size:15px;font-weight:600;letter-spacing:.14em;color:#d9b64a}
-        .plan ol{list-style:none;margin-top:18px;display:flex;flex-direction:column}
-        .plan li{display:flex;align-items:center;gap:18px;padding:17px 0;font-size:23px;font-weight:550;letter-spacing:-.015em;border-top:1px solid rgba(255,255,255,.08)}
-        .plan li:first-child{border-top:0}
-        .plan li span{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:16px;font-weight:650;color:#0a0a0a;background:linear-gradient(135deg,#f3e2a6,#c9a24b)}
-        .plan li:not(:first-child) span{background:transparent;color:#e0c05a;border:1px solid rgba(212,175,55,.5)}`,
-        body:
-          copy({ eyebrow: 'Consultoría tecnológica', title: 'Decide mejor qué tecnología adoptar y <em>cómo hacerla rendir</em>', sub: 'Para empresas de toda Colombia.' }) +
-          `<div class="plan glass"><small>CÓMO TRABAJAMOS</small><ol>${steps(['Conversación inicial', 'Diagnóstico', 'Plan y recomendaciones', 'Implementación acompañada'])}</ol></div>`,
+      html: card({
+        eyebrow: 'Consultoría tecnológica',
+        title: 'Decide mejor qué <em>tecnología adoptar</em>',
+        sub: 'Diagnóstico, plan y acompañamiento en toda Colombia.',
+        cta: 'Hablemos por WhatsApp',
+        wa: true,
+        visual: panel('CÓMO TRABAJAMOS', ['Conversación inicial', 'Diagnóstico', 'Plan y recomendaciones', 'Implementación acompañada'], true),
       }),
     },
     {
       out: 'nithios-desarrollo-de-software-a-medida-colombia-og.png',
-      html: page({
-        vars: '--copy-w:500px;--h1:58px',
-        body:
-          copy({ eyebrow: 'Desarrollo de software a medida', title: 'Software hecho para tu operación, <em>no al revés</em>', sub: 'Plataformas web, apps móviles, sistemas de gestión e IA.' }) +
-          frame(dragonTablero, proto, 'left:640px;top:84px;width:660px;height:400px;opacity:.9') +
-          frame(logCargue, proto, 'left:600px;top:300px;width:560px;height:340px'),
+      html: card({
+        eyebrow: 'Desarrollo a medida',
+        title: 'Software hecho para tu operación, <em>no al revés</em>',
+        sub: 'Plataformas web, apps móviles e IA.',
+        cta: 'Hablemos por WhatsApp',
+        wa: true,
+        visual: frame(dragonTablero, 'left:600px;top:112px;width:720px;height:450px'),
+        fade: true,
       }),
     },
     {
       out: 'nithios-portafolio-software-a-medida-og.png',
-      html: page({
-        vars: '--copy-w:480px;--h1:58px',
-        extra: `.mosaic{position:absolute;left:600px;top:70px;display:grid;grid-template-columns:330px 330px;gap:18px}
-        .mosaic .frame{position:relative}`,
-        body:
-          copy({ eyebrow: 'Portafolio', title: 'Software que <em>diseñamos y desarrollamos</em>', sub: 'Activación de marca, comercio internacional, logística, transporte y salud mental.' }) +
-          `<div class="mosaic">${[
-            [chelatoTabla, 'chelato.nithios.com'],
-            [dragonTablero, 'Dragon Global Trade'],
-            [logPanel, 'Logística para acero'],
-            [traTorre, 'Transporte audiovisual'],
-          ]
-            .map(([s, l]) => frame(s, l, 'width:330px;height:236px'))
-            .join('')}</div>`,
+      html: card({
+        eyebrow: 'Portafolio',
+        title: 'Software que <em>diseñamos y construimos</em>',
+        sub: 'Un juego en línea y plataformas a medida.',
+        cta: 'Ver el portafolio',
+        visual:
+          `<div class="visual" style="left:600px;top:112px;display:grid;grid-template-columns:330px 330px;gap:18px">` +
+          [chelatoTabla, dragonTablero, logPanel, traTorre].map((s) => frame(s, 'position:relative;width:330px;height:236px')).join('') +
+          `</div>`,
+        fade: true,
       }),
     },
     {
       out: 'jonathan-osorio-ceo-fundador-nithios-og.png',
-      html: page({
-        vars: '--copy-w:560px;--h1:76px',
-        extra: `.photo{position:absolute;right:0;top:0;width:620px;height:630px;background:url(${photo}) center 22%/cover no-repeat;
-          mask-image:linear-gradient(90deg,transparent 0%,#000 38%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 38%)}
-        .photo::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 70%,rgba(0,0,0,.6))}
-        .role{display:inline-flex;margin-top:26px;align-items:center;gap:12px;font-size:23px;font-weight:600;color:#e0c05a;padding:12px 20px;border:1px solid rgba(212,175,55,.4);border-radius:999px;background:rgba(212,175,55,.08);align-self:flex-start}`,
-        body:
-          `<div class="photo"></div>` +
-          `<div class="copy"><h1>Jonathan <em>Osorio</em></h1><p class="role">CEO y Fundador · Nithios</p><p class="sub">Liderazgo tecnológico con visión de negocio.</p></div><div class="foot"><i></i>nithios.com</div>`,
+      html: card({
+        vars: '--copy-w:600px;--h1:80px',
+        extra: `.photo{position:absolute;right:0;top:0;width:640px;height:630px;z-index:2;background:url(${photo}) center 22%/cover no-repeat;
+          mask-image:linear-gradient(90deg,transparent 0%,#000 42%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 42%)}
+          .photo::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.85) 0%,transparent 35%)}`,
+        eyebrow: 'CEO y Fundador · Nithios',
+        title: 'Jonathan <em>Osorio</em>',
+        sub: 'Liderazgo tecnológico con visión de negocio.',
+        cta: 'Agenda una conversación',
+        visual: `<div class="photo"></div>`,
       }),
     },
     {
       out: 'nithios-contacto-whatsapp-og.png',
-      html: page({
-        vars: '--copy-w:520px;--h1:64px',
-        extra: `.chat{position:absolute;left:660px;top:118px;width:468px;padding:26px 28px 30px}
-        .chat header{display:flex;align-items:center;gap:14px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08)}
-        .chat header span{width:46px;height:46px;border-radius:50%;background:#0a0a0a;border:1px solid rgba(212,175,55,.5);display:grid;place-items:center}
-        .chat header span svg{width:30px;height:auto}
-        .chat header strong{font-size:21px;font-weight:620}.chat header em{display:block;font-style:normal;font-size:16px;color:#9a948a;margin-top:2px}
-        .msg{margin:24px 0 0 auto;max-width:360px;padding:16px 20px;border-radius:18px 18px 4px 18px;font-size:20px;line-height:1.38;color:#0d0d0d;background:linear-gradient(135deg,#f3e2a6,#d4af37)}
-        .num{margin-top:26px;font-size:34px;font-weight:650;letter-spacing:-.02em;color:#f5f1e8;text-align:center}
-        .num small{display:block;font-size:15px;font-weight:600;letter-spacing:.14em;color:#d9b64a;margin-bottom:6px}`,
-        body:
-          copy({ eyebrow: 'Contacto', title: 'Hablemos por <em>WhatsApp</em>', sub: 'Cuéntanos tu proyecto. Atención remota en toda Colombia.' }) +
-          `<div class="chat glass"><header><span>${logo.replace(/viewBox="[^"]+"/, 'viewBox="3 3 58 58"')}</span><div><strong>Nithios</strong><em>WhatsApp</em></div></header>
-          <p class="msg">Hola Nithios, quiero contarles sobre un proyecto de tecnología para mi empresa.</p>
-          <p class="num"><small>ÚNICO CANAL DE CONTACTO</small>+57 305 302 7559</p></div>`,
+      html: card({
+        eyebrow: 'Contacto',
+        title: 'Hablemos por <em>WhatsApp</em>',
+        sub: '+57 305 302 7559 · Atención remota en toda Colombia.',
+        cta: 'Escríbenos ahora',
+        wa: true,
+        extra: `.chat{position:absolute;left:760px;top:118px;width:380px;padding:24px 26px 28px;z-index:4}
+          .chat header{display:flex;align-items:center;gap:14px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.1)}
+          .chat header span{width:52px;height:52px;border-radius:50%;background:#0a0a0a;border:1.5px solid rgba(212,175,55,.55);display:grid;place-items:center}
+          .chat header span svg{width:34px;height:auto}
+          .chat header strong{font-size:28px;font-weight:650}
+          .msg{margin:22px 0 0 auto;padding:16px 20px;border-radius:20px 20px 4px 20px;font-size:27px;line-height:1.3;font-weight:550;color:#0d0d0d;background:linear-gradient(135deg,#f3e2a6,#d4af37)}`,
+        visual: `<div class="chat glass"><header><span>${logo.replace(/viewBox="[^"]+"/, 'viewBox="3 3 58 58"')}</span><strong>Nithios</strong></header>
+          <p class="msg">Hola Nithios, quiero contarles sobre un proyecto para mi empresa.</p></div>`,
       }),
     },
     {
       out: 'nithios-guias-de-tecnologia-para-empresas-og.png',
-      html: page({
-        vars: '--copy-w:540px;--h1:60px',
-        extra: autoCss,
-        body:
-          copy({ eyebrow: 'Guías', title: 'Guías para <em>decidir mejor</em> sobre tecnología', sub: 'Criterios, preguntas y factores, sin tecnicismos.' }) +
-          `<div class="panel glass"><small>TEMAS</small><ul>${[
-            'Software a medida',
-            'CTO externo',
-            'Inteligencia artificial',
-            'Transformación digital',
-            'Elegir un proveedor',
-          ]
-            .map((t, i) => `<li><span>${String(i + 1).padStart(2, '0')}</span><b>${t}</b></li>`)
-            .join('')}</ul></div>`,
+      html: card({
+        eyebrow: 'Guías',
+        title: 'Guías para <em>decidir mejor</em> sobre tecnología',
+        sub: 'Criterios y preguntas, sin tecnicismos.',
+        cta: 'Lee las guías',
+        visual: panel('TEMAS', ['Software a medida', 'CTO externo', 'Inteligencia artificial', 'Transformación digital']),
       }),
     },
     {
       out: 'nithios-politica-de-privacidad-datos-personales-og.png',
-      html: page({
-        vars: '--copy-w:540px;--h1:60px',
-        extra: autoCss,
-        body:
-          copy({ eyebrow: 'Legal · Ley 1581 de 2012', title: 'Política de <em>privacidad</em>', sub: 'Qué datos tratamos, para qué y cómo ejercer tus derechos.' }) +
-          `<div class="panel glass"><small>EN POCAS PALABRAS</small><ul>${[
-            'Sin cookies ni analítica',
-            'El formulario no envía datos a servidores',
-            'Datos solo para responderte',
-            'Nunca vendemos tus datos',
-          ]
-            .map((t) => `<li><span>${check}</span><b>${t}</b></li>`)
-            .join('')}</ul></div>`,
+      html: card({
+        eyebrow: 'Ley 1581 de 2012',
+        title: 'Política de <em>privacidad</em>',
+        sub: 'Qué datos tratamos, para qué y cómo ejercer tus derechos.',
+        cta: 'Lee la política',
+        visual: panel('EN POCAS PALABRAS', ['Sin cookies ni analítica', 'Datos solo para responderte', 'Nunca vendemos tus datos']),
       }),
     },
     {
       out: 'nithios-preguntas-frecuentes-og.png',
-      html: page({
-        vars: '--copy-w:500px;--h1:58px',
-        extra: `.faq{position:absolute;left:630px;top:112px;width:500px;display:flex;flex-direction:column;gap:16px}
-        .q{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 24px;font-size:21.5px;font-weight:560;line-height:1.3;letter-spacing:-.015em}
-        .q span{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid rgba(212,175,55,.5);color:#e0c05a;display:grid;place-items:center;font-size:22px;font-weight:400}
-        .q.open{border-color:rgba(212,175,55,.45);background:linear-gradient(180deg,rgba(212,175,55,.12),rgba(212,175,55,.03))}`,
-        body:
-          copy({ eyebrow: 'Preguntas frecuentes', title: 'Respuestas claras <em>antes de empezar</em>', sub: 'Sobre consultoría tecnológica y desarrollo de software a medida.' }) +
-          `<div class="faq">${[
-            '¿Qué hace Nithios?',
-            '¿En qué ciudades de Colombia trabajan?',
-            '¿Pueden ayudarnos a usar inteligencia artificial en la empresa?',
-            '¿Cómo empiezo la transformación digital de mi empresa?',
-          ]
-            .map((q, i) => `<div class="q glass${i === 0 ? ' open' : ''}">${q}<span>${i === 0 ? '−' : '+'}</span></div>`)
-            .join('')}</div>`,
+      html: card({
+        eyebrow: 'Preguntas frecuentes',
+        title: 'Respuestas claras <em>antes de empezar</em>',
+        sub: 'Costos, tiempos, cobertura y cómo trabajamos.',
+        cta: 'Lee las respuestas',
+        visual: panel('PREGUNTAS', ['¿Qué hace Nithios?', '¿En qué ciudades trabajan?', '¿Cuánto cuesta un proyecto?', '¿Cómo empiezo?']),
       }),
     },
     {
-      // Chelato Toons: producto en línea. Sin personajes (propiedad de terceros): tabla de puntajes + fin de partida.
+      // Chelato Toons: producto en línea y abierto. Sin personajes (propiedad de terceros): tabla de puntajes + fin de partida.
       out: 'chelato-toons-videojuego-activacion-de-marca-og.png',
-      html: page({
-        vars: '--copy-w:470px;--h1:72px',
-        extra: `.phone{position:absolute;left:1000px;top:150px;width:170px;padding:7px;border-radius:30px;background:#161616;border:1px solid rgba(212,175,55,.38);box-shadow:0 30px 80px rgba(0,0,0,.8)}
-        .phone div{border-radius:24px;overflow:hidden;background:#000;padding-top:16px}
-        .phone img{display:block;width:100%}`,
-        body:
-          copy({ eyebrow: 'Caso de portafolio · En línea', title: 'Chelato <em>Toons</em>', sub: 'Videojuego web para activación de marca: se juega con código QR desde el celular.' }) +
-          frame(chelatoTabla, 'chelato.nithios.com', 'left:590px;top:96px;width:720px;height:440px') +
-          `<div class="phone"><div><img src="${chelatoFin}" alt=""></div></div>`,
+      html: card({
+        eyebrow: 'Caso · En línea',
+        title: 'Chelato <em>Toons</em>',
+        sub: 'Videojuego web para activación de marca, abierto para jugar.',
+        cta: 'Ver el caso',
+        extra: `.phone{position:absolute;left:968px;top:128px;width:190px;padding:8px;border-radius:32px;background:#161616;border:1.5px solid rgba(212,175,55,.45);box-shadow:0 30px 80px rgba(0,0,0,.8);z-index:4}
+          .phone div{border-radius:25px;overflow:hidden;background:#000;padding-top:16px}.phone img{display:block;width:100%}`,
+        visual: frame(chelatoTabla, 'left:560px;top:112px;width:760px;height:450px') + `<div class="phone"><div><img src="${chelatoFin}" alt=""></div></div>`,
+        fade: true,
       }),
     },
     {
       out: 'dragon-global-trade-plataforma-comercio-internacional-og.png',
-      html: await caseTemplate({
-        eyebrow: 'Caso de portafolio · Prototipo',
-        name: 'Dragon Global <em>Trade</em>',
-        sub: 'Plataforma de gestión de comercio internacional: comercial, compras, logística y proyectos.',
-        visual: dragonTablero,
-        label: proto,
-      }),
+      html: caseCard({ eyebrow: 'Caso · Prototipo', name: 'Dragon Global <em>Trade</em>', sub: 'Plataforma de comercio internacional en 5 idiomas.', visual: dragonTablero }),
     },
     {
       out: 'plataforma-logistica-acero-pedidos-rutas-y-despachos-og.png',
-      html: await caseTemplate({
-        eyebrow: 'Caso de portafolio · Prototipo',
-        name: 'Plataforma logística <em>para acero</em>',
-        sub: 'Pedidos, rutas, cargue y despachos: de la bodega a la obra.',
-        visual: logPanel,
-        label: proto,
-        h1: '54px',
-      }),
+      html: caseCard({ eyebrow: 'Caso · Prototipo', name: 'Plataforma logística <em>para acero</em>', sub: 'Pedidos, rutas y despachos: de la bodega a la obra.', visual: logPanel }),
     },
     {
       out: 'plataforma-transporte-audiovisual-operacion-de-rodajes-og.png',
-      html: await caseTemplate({
-        eyebrow: 'Caso de portafolio · Prototipo',
-        name: 'Plataforma de transporte <em>audiovisual</em>',
-        sub: 'Transporte especial para producciones: cada servicio de rodaje, del pedido al pago.',
-        visual: traTorre,
-        label: proto,
-        h1: '50px',
-      }),
+      html: caseCard({ eyebrow: 'Caso · Prototipo', name: 'Transporte <em>audiovisual</em>', sub: 'Cada servicio de rodaje, del pedido al pago.', visual: traTorre }),
     },
     {
       out: 'krystal-software-consultorios-psicologicos-og.png',
-      html: await caseTemplate({
-        eyebrow: 'Caso de portafolio',
-        name: 'Krystal',
-        sub: 'Software para consultorios psicológicos: agenda, videollamadas e historia clínica.',
-        visual: krystal,
-        label: 'Ilustración conceptual',
-        h1: '76px',
-      }),
+      html: caseCard({ eyebrow: 'Caso de portafolio', name: '<em>Krystal</em>', sub: 'Software para consultorios psicológicos.', visual: krystal }),
     },
   ];
 }
@@ -471,11 +451,14 @@ try {
   if (!jobs.length) console.warn('Ninguna OG coincide con', only);
   for (const { out, html } of jobs) {
     await tab.setContent(html, { waitUntil: 'load' });
-    await tab.evaluate(() => document.fonts.ready);
+    if (process.env.OG_DEBUG && out.includes(process.env.OG_DEBUG)) console.log(await tab.evaluate(() => [...document.querySelectorAll('.copy, .copy > *')].map((e) => `${e.className||e.tagName} top=${e.getBoundingClientRect().top|0} h=${e.getBoundingClientRect().height|0} pad=${e.style.paddingTop}`)));
+    await tab.waitForFunction(() => document.body.dataset.fit, null, { timeout: 5000 }).catch(() => {});
+    const fit = await tab.evaluate(() => [document.body.dataset.fit, document.body.dataset.h1]);
+    if (fit[0] === 'overflow') console.warn(`⚠ ${out}: el texto no cabe en la caja (${fit[1]}); acorta el titular o la propuesta`);
     const png = await sharp(await tab.screenshot({ type: 'png' })).png({ compressionLevel: 9 }).toBuffer();
     const file = path.isAbsolute(out) ? out : path.join(OUT_DIR, out);
     await writeFile(file, png);
-    console.log(`OG ${path.relative(root, file)} (${Math.round(png.length / 1024)} KB fuente)`);
+    console.log(`OG ${path.relative(root, file)} (${Math.round(png.length / 1024)} KB fuente · titular ${fit[1]})`);
   }
 } finally {
   await browser.close();

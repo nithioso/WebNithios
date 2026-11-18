@@ -24,6 +24,7 @@ import IconSprite from '@/components/IconSprite.astro';
 import { site } from '@/data/site';
 import { ceoPhotoUrl } from '@/lib/images';
 import { ceo } from '@/data/ceo';
+import { pageSocial } from '@/data/og';
 import { graph, organization, website, person, personRef, webPage, breadcrumbList, type Crumb, type JsonLd } from '@/lib/schema';
 
 interface Props {
@@ -39,6 +40,10 @@ interface Props {
   /** Nodos JSON-LD adicionales (sin @context). */
   jsonLd?: object[];
   noindex?: boolean;
+  /** og:title corto (opcional; por defecto el title sin « | Nithios» si pasa de 55 car.). */
+  ogTitle?: string;
+  /** og:description ≤ 125 car. Si falta, se busca en src/data/og.ts › pageSocial[path] y, si no, se deriva de description. */
+  ogDescription?: string;
   breadcrumbs?: Crumb[];
   pageType?: string | string[];
   mainEntityId?: string;
@@ -56,6 +61,8 @@ const {
   ogImageHeight,
   jsonLd = [],
   noindex = false,
+  ogTitle,
+  ogDescription,
   breadcrumbs,
   pageType,
   mainEntityId,
@@ -97,6 +104,8 @@ const nodes: JsonLd[] = [
       ogImageWidth={ogImageWidth}
       ogImageHeight={ogImageHeight}
       noindex={noindex}
+      ogTitle={ogTitle}
+      ogDescription={ogDescription ?? (pageSocial as Record<string, string>)[path]}
       jsonLd={graph(nodes)}
     />
     <meta name="theme-color" content={site.themeColor} />

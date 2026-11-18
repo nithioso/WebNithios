@@ -28,5 +28,34 @@ export function linkifyHtml(text: string): string {
   return out + escapeHtml(text.slice(last));
 }
 
+/** Límite de og:description (vistas previas en WhatsApp, LinkedIn, X y Facebook muestran ~125 car. en móvil). */
+export const OG_DESCRIPTION_MAX = 125;
+
+/**
+ * Descripción social (og:description) a partir de la meta description cuando la página no define `ogDescription`:
+ * frases completas que quepan en 125 car.; si la primera frase ya es más larga, corta en la última pausa natural
+ * (coma, dos puntos, punto y coma, raya) y cierra con punto; nunca corta palabras.
+ */
+export function socialDescription(text: string, max = OG_DESCRIPTION_MAX): string {
+  const t = stripLinks(text).trim();
+  if (t.length <= max) return t;
+  const sentences = t.match(/[^.!?]+[.!?]+(\s|$)/g) ?? [];
+  let out = '';
+  for (const s of sentences) {
+    if ((out + s).trim().length > max) break;
+    out += s;
+  }
+  if (out.trim()) return out.trim();
+  const head = t.slice(0, max);
+  const cut = Math.max(head.lastIndexOf(', '), head.lastIndexOf(': '), head.lastIndexOf('; '), head.lastIndexOf(' — '));
+  if (cut > 60) return head.slice(0, cut).trim() + '.';
+  return head.slice(0, head.lastIndexOf(' ')).replace(/[,:;]$/, '') + '…';
+}
+
+/** og:title: el title sin « | Nithios» cuando el completo pasa de ~55 car. (las tarjetas sociales lo truncan). */
+export function socialTitle(title: string, max = 55): string {
+  return title.length > max ? title.replace(/\s*\|\s*Nithios$/, '') : title;
+}
+
 /** Quita la sintaxis de enlace Markdown y deja solo el texto (JSON-LD, meta, OG). */
 export const stripLinks = (text: string) => text.replace(MD_LINK, '$1');

@@ -68,7 +68,7 @@ async function generatedOg(file: string, alt: string): Promise<OgImage> {
 
 /** OG de un servicio específico (generada por `npm run og` desde src/data/servicios). */
 export function servicePageOgImage(p: ServicePage): Promise<OgImage> {
-  return generatedOg(servicePageOgFile(p.slug), p.ogAlt ?? servicePageOgAlt(p.name, p.h1));
+  return generatedOg(servicePageOgFile(p.slug), p.ogAlt ?? servicePageOgAlt(p.name));
 }
 
 /** OG de una guía (generada por `npm run og` desde src/content/guias). */

@@ -20,6 +20,7 @@ Los slugs están registrados en `src/data/mapa-contenido.ts`. Solo se escriben a
 | Servicio | `desarrollo-de-aplicaciones-moviles` | `desarrollo` |
 | Servicio | `desarrollo-de-plataformas-web` | `desarrollo` |
 | Servicio | `modernizacion-de-sistemas` | `ambas` |
+| Servicio | `miembro-de-junta-directiva-tecnologia` (Jonathan Osorio como candidato a junta; `providedByCeo`) | `consultoria` |
 | Guía | `cuanto-cuesta-desarrollar-software-a-medida-en-colombia` | — |
 | Guía | `software-a-medida-vs-software-empaquetado` | — |
 | Guía | `que-es-un-cto-externo` (hecha) | — |
@@ -62,8 +63,14 @@ Solo se permite `import type` (el script de OG carga el archivo con Vite; no imp
 | `summary` | 1–2 frases, ≤ 200 car. Se usa en tarjetas, Service.description y enlaces relacionados |
 | `seoTitle` ✱ | ≤ 60 car. contando « \| Nithios» (se añade si no aparece «Nithios») |
 | `seoDescription` ✱ | 140–160 car. Keyword + Colombia + beneficio + llamada suave («Hablemos.») |
+| `ogDescription` ✱ | ≤ 125 car., frase completa con gancho: og:description de las vistas previas en WhatsApp/LinkedIn/X (≠ seoDescription) |
+| `ogTagline` ✱ | ≤ 60 car.: propuesta de valor que se imprime en la imagen OG bajo el nombre |
+| `ogCta` | opcional ≤ 34 car.: texto del botón de la imagen OG (por defecto «Hablemos por WhatsApp») |
+| `ctaLabel` / `heroSecondary` | opcionales: texto del botón de WhatsApp (hero y cierre) y botón secundario del hero (por defecto «Leer la guía») |
+| `providedByCeo` | `true` solo si lo presta Jonathan en persona (JSON-LD: provider = Organization + Person, y `makesOffer` en la Person) |
 | `intro` | 2–3 frases. 1.ª frase = definición citable que nombra el servicio; 2.ª menciona Nithios + «empresas de toda Colombia» + «de forma remota» |
 | `sections.whatIs` | `title` (pregunta «¿Qué es…?»), `answer` (1–2 frases autocontenidas), `paragraphs` (2–3 párrafos de 50–90 palabras) |
+| `sections.profile` | opcional: perfil de quien presta el servicio (3–6 `{icon,title,text}` SOLO con hechos de `ceo.ts`, sin fechas ni empleadores) + `link` al perfil. Se pinta tras «Qué es» |
 | `sections.audience` ✱ | `title`, `intro?`, `items`: 4–6 perfiles (una frase cada uno, ≥ 3) |
 | `sections.problems` ✱ | 3–6 `{icon, title (≤ 45 car.), text (25–45 palabras)}` |
 | `sections.includes` ✱ | 4–7 `{icon, title, text, points?}`; la 1.ª es la destacada (con 2–4 `points`). 6 ítems = rejilla perfecta |
@@ -95,6 +102,7 @@ FAQPage, BreadcrumbList), el índice de contenidos y la OG (`npm run og`) se gen
 title: '¿Pregunta o titular con la keyword?'          # h1, 10–90 car.
 seoTitle: 'Titular corto con keyword'                # ≤ 60 car. contando « | Nithios»
 description: '…'                                      # 140–160 car.
+ogDescription: '…'                                    # ≤ 125 car., frase completa (vistas previas sociales)
 summary: '…'                                          # «Respuesta corta»: 2–4 frases, 120–450 car., responde sola
 publishedAt: 2026-11-17                               # fecha de las guías iniciales
 # updatedAt: AAAA-MM-DD                               # solo si hubo un cambio real de contenido
@@ -146,12 +154,14 @@ clientes, testimonios, casos, premios, certificaciones, alianzas, herramientas �
   Ya verificada en el sitio: Ley 1581 de 2012 (protección de datos personales).
 - Hechos de Nithios permitidos (están en `src/data/`): dos líneas de servicio; proceso de trabajo; contacto único WhatsApp
   +57 305 302 7559; cobertura remota en toda Colombia, dirigida desde Medellín (no «fundada en» ni «oficina en»);
-  portafolio de 5 casos (Chelato Toons, videojuego web EN LÍNEA para una activación de marca de «una marca de micheladas», sin nombrar a la empresa;
+  portafolio de 5 casos (Chelato Toons, videojuego web EN LÍNEA y hoy ABIERTO (nació con acceso por QR para una activación de marca) de «una marca de micheladas», sin nombrar a la empresa;
   Dragon Global Trade, plataforma logística para acero y plataforma de transporte audiovisual son
   **prototipos navegables con datos ficticios**; Krystal); Jonathan Osorio, CEO y Fundador, con los logros anonimizados de
   `ceo.ts` (sin fechas ni empleadores).
 - Casos anonimizados: nunca el nombre del cliente ni de su producto. No presentes los prototipos como productos en producción.
 - Prohibido: «clientes», «casos de éxito», «procesos reales», «más de N proyectos», dominios no confirmados, logos de terceros.
+- Prohibido nombrar el proveedor de hosting en lo público (seguridad). Idiomas del CEO SIN nivel. Junta directiva: disponibilidad,
+  nunca afirmar que Jonathan es o ha sido miembro de una junta.
 
 ## 5. Enlazado interno (cada página)
 
@@ -181,6 +191,8 @@ npm run build               # 0 avisos [seo]/[og]; falla si el frontmatter o el 
 npm run check               # 0 errores (slugs tipados)
 npm run verify:links        # enlaces internos y anclas existentes
 npm run verify:images       # OG única 1200×630 con alt en cada página
+npm run verify:seo          # metadatos, og:description ≤ 125, JSON-LD, sitemap, llms, enlazado (docs/SEO-GEO.md)
 ```
 
 Al terminar todas las páginas: añadirlas a `public/llms.txt` y a la tabla de keywords de `docs/SEO-GEO.md`.
+Mira la OG generada a tamaño completo y a ~400 px: titular y botón deben leerse (la CTA en la imagen no la verifica ningún script).
