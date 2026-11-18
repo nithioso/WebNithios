@@ -20,7 +20,7 @@ import { projectOgImage, pageOgImage } from '@/lib/images';
 const path = '/portafolio/';
 const title = 'Portafolio de software a medida en Colombia';
 const description =
-  'Software a medida de Nithios en Colombia: comercio internacional, logística y rutas, transporte para producciones audiovisuales y consultorios psicológicos.';
+  'Software a medida de Nithios en Colombia: un videojuego para activación de marca, comercio internacional, logística, transporte audiovisual y salud mental.';
 const whatsappMessage = 'Hola Nithios, vi su portafolio y quiero desarrollar un software a la medida para mi empresa.';
 const crumbs = [{ name: 'Portafolio', path }];
 
@@ -43,13 +43,13 @@ const principles = [
   },
   {
     icon: 'key' as const,
-    title: 'Roles y permisos desde el diseño',
-    text: 'Los cuatro proyectos controlan el acceso por rol o perfil: cada persona ve y gestiona solo lo que le corresponde.',
+    title: 'Acceso con criterio desde el diseño',
+    text: 'Cada proyecto controla quién entra y qué ve: roles y perfiles en las plataformas de gestión y en Krystal, y un código QR de un solo uso en Chelato Toons.',
   },
   {
     icon: 'phone' as const,
     title: 'De la oficina al campo',
-    text: 'Vistas móviles para conductores y personal en campo en los casos de logística y de transporte audiovisual, cinco idiomas en Dragon Global Trade y Krystal preparada para Android e iOS.',
+    text: 'Chelato Toons se juega en el celular a pantalla completa, los casos de logística y transporte tienen vistas móviles para el personal en campo y Krystal está preparada para Android e iOS.',
   },
   {
     icon: 'browser' as const,
@@ -78,7 +78,7 @@ const og = await pageOgImage('/portafolio/');
     eyebrow="Portafolio"
     title="Portafolio de software a medida"
     titleHtml='Portafolio de <span class="text-gold">software a medida</span>'
-    intro="Plataformas y aplicaciones a la medida diseñadas por Nithios: del comercio internacional y la logística de despachos al transporte para producciones audiovisuales y la atención psicológica en línea. Mira cómo pensamos, diseñamos y desarrollamos."
+    intro="Plataformas, aplicaciones y un videojuego en línea diseñados por Nithios: de una activación de marca que se juega desde el celular al comercio internacional, la logística de despachos, el transporte para producciones audiovisuales y la atención psicológica en línea. Mira cómo pensamos, diseñamos y desarrollamos."
     breadcrumbs={crumbs}
     whatsappMessage={whatsappMessage}
     secondary={desarrollo ? { label: 'Desarrollo a medida', href: desarrollo.path } : undefined}
@@ -102,7 +102,7 @@ const og = await pageOgImage('/portafolio/');
     id="como-construimos"
     eyebrow="Cómo construimos"
     title="Distintos sectores. El mismo estándar."
-    intro="Comercio internacional, logística, producción audiovisual y salud mental no se parecen en nada, pero el software que hacemos para cada uno nace del mismo método: entender el proceso, diseñar la experiencia y construir con tecnología moderna y segura."
+    intro="Una activación de marca, el comercio internacional, la logística, la producción audiovisual y la salud mental no se parecen en nada, pero el software que hacemos para cada uno nace del mismo método: entender el proceso, diseñar la experiencia y construir con tecnología moderna y segura."
     tone="raised"
   >
     <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -135,7 +135,7 @@ const og = await pageOgImage('/portafolio/');
             href={desarrollo.path}
             eyebrow="¿Ya tienes clara la idea?"
             title={desarrollo.shortName}
-            text="Diseñamos y desarrollamos tu plataforma web, app móvil o sistema interno a la medida, como Dragon Global Trade, Krystal y nuestras plataformas de logística y de transporte."
+            text="Diseñamos y desarrollamos tu plataforma web, app móvil, sistema interno o juego para tu marca a la medida, como Chelato Toons, Dragon Global Trade, Krystal y nuestras plataformas de logística y de transporte."
             icon="code"
             size="lg"
             revealDelay={100}

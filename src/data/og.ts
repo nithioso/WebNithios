@@ -41,7 +41,7 @@ export const pageOg = {
   },
   '/portafolio/': {
     src: portafolio,
-    alt: 'Portafolio de Nithios: capturas de Dragon Global Trade, la plataforma logística, la de transporte audiovisual y Krystal',
+    alt: 'Portafolio de Nithios: capturas de Chelato Toons, Dragon Global Trade, la plataforma logística y la de transporte audiovisual',
   },
   '/jonathan-osorio/': {
     src: ceo,

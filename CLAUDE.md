@@ -17,9 +17,10 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 
 ## Mapa de archivos
 - `src/data/` — FUENTE ÚNICA de contenido: `site.ts` (site, waLink(), absoluteUrl(), nav, cities, coverage), `services.ts` + `service-details.ts`, `projects.ts` (+ portfolioFaqs), `ceo.ts` (+ ceoPage), `faqs.ts`, `contact.ts`, `privacy.ts`, `og.ts` (OG por página + alt).
-- Páginas: todas las rutas del mapa están hechas (ver docs/ARQUITECTURA.md). Portafolio: Dragon Global Trade, «Plataforma logística para acero»,
+- Páginas: todas las rutas del mapa están hechas (ver docs/ARQUITECTURA.md). Portafolio: Chelato Toons (videojuego web EN LÍNEA en chelato.nithios.com para
+  «una marca de micheladas» —nunca nombrar a la empresa—; capturas móviles en `PhoneFrame` SIN personajes, que son de terceros), Dragon Global Trade, «Plataforma logística para acero»,
   «Plataforma de transporte audiovisual» (capturas reales 2880×1800 WebP en `src/assets/portfolio/<slug>/`) y Krystal (ilustración conceptual).
-  Los dos casos del medio están ANONIMIZADOS: nunca escribir en `src/` ni `public/` el nombre del cliente ni de su producto (correspondencia interna en docs/PENDIENTES.md).
+  Los casos de logística y transporte están ANONIMIZADOS: nunca escribir en `src/` ni `public/` el nombre del cliente ni de su producto (correspondencia interna en docs/PENDIENTES.md).
 - Servicios específicos: un archivo por página en `src/data/servicios/<slug>.ts` (tipo `ServicePage`) → `/servicios/<slug>/` automático.
   Guías: `src/content/guias/<slug>.md` (esquema zod en `src/content.config.ts`) → `/guias/<slug>/`. Slugs registrados en `src/data/mapa-contenido.ts`.
   Contrato de redacción OBLIGATORIO: `docs/CONTENIDO.md` (referencias: `cto-externo.ts` y `que-es-un-cto-externo.md`).
@@ -43,7 +44,7 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 - Clases de layout (`hidden`, `sm:block`) en un wrapper, no en `class` de Button (conflicto con `inline-flex`).
 - JS: solo `<script>` procesados por Astro (se emiten como módulos externos; `assetsInlineLimit: 0`), inicializados en `astro:page-load` y con AbortController si añaden listeners globales.
 - Hero (sobre el pliegue): `.hero-in`, nunca `data-reveal`. Animaciones decorativas finitas.
-- Copy: nunca presentar Dragon ni los casos de logística y transporte como productos terminados (son prototipos navegables con datos ficticios); nada de "clientes",
+- Copy: Chelato Toons es el único producto en línea (sin cifras, fechas ni resultados de campaña). Nunca presentar Dragon ni los casos de logística y transporte como productos terminados (son prototipos navegables con datos ficticios); nada de "clientes",
   "procesos reales" ni dominios no confirmados. No usar logos de terceros (en las capturas se oculta el logo del cliente).
 - CEO: hoja de vida SIN fechas y con empleadores ANONIMIZADOS (descriptores en `ceo.ts`); nunca nombrar empleadores ni sus marcas, ni correo/teléfono personal.
 - Medellín: Jonathan está radicado allí y Nithios se dirige desde Medellín (NO afirmar que la empresa 'nació' o fue 'fundada' en Medellín: no está confirmado). La empresa NO publica dirección; cobertura nacional remota.

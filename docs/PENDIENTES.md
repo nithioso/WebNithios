@@ -55,6 +55,15 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   La primera captura que sea `cover` no se repite en la galería. Nombres `krystal-<pantalla>.webp`. Al llegar, cambiar la
   plantilla de Krystal en `scripts/generate-og-images.mjs` para usar la captura `cover` y ejecutar `npm run og`.
 - [ ] Estado real de Krystal (hoy `status: 'sin-especificar'`).
+- [x] **Chelato Toons** (`chelato-toons`, producto EN LÍNEA en https://chelato.nithios.com): videojuego web de naves para una activación de marca
+  de una empresa de micheladas (NO nombrar a la empresa en `src/` ni `public/`; en el sitio: «una marca de micheladas»). Hechos verificados en los
+  archivos públicos del juego (index.html, config.js, js/game.js, js/net/api.js). 6 capturas reales en `src/assets/portfolio/chelato-toons/`
+  (5 móviles iPhone 14 1170×1992 + tabla de puntajes de escritorio 2880×1800), tomadas de una copia local con `mock: true` (modo sin servidor).
+  PROPIEDAD INTELECTUAL: los héroes y villanos del juego son personajes reconocibles de caricaturas de terceros → NO se publican: no se capturó la
+  selección de héroe y los sprites se sustituyeron por PNG transparentes al capturar (la partida muestra solo HUD, disparos y fondo).
+  Los nombres y puntajes de las capturas son datos de prueba (lo aclara `statusNote`). Si se recaptura, repetir ese tratamiento.
+- [ ] Chelato Toons: confirmar si se puede mencionar el nombre de la marca, fechas o resultados de la campaña (hoy no se publica ninguno) y si
+  los personajes tienen licencia (mientras no se confirme, seguir sin mostrarlos ni nombrarlos).
 - [ ] Stack tecnológico de Dragon Global Trade (hoy vacío).
 - [ ] Autorización para mencionar clientes/resultados (si aplica).
 

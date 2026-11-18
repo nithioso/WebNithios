@@ -2,9 +2,11 @@
 /**
  * Tarjeta de proyecto del portafolio (data-driven desde src/data/projects.ts).
  * Visual: <ProjectArt variant="card"> (cover → illustration → monograma; ver ProjectArt.astro).
- * Muestra `statusLabel` como chip cuando el proyecto es un prototipo.
+ * Chip de estado: «Prototipo» en los prototipos y `statusLabel` («En línea») en los productos en producción.
+ * `wide`: en ≥lg la tarjeta se vuelve horizontal (visual 7/12 + texto), para destacar un proyecto a todo el ancho.
  * <ProjectCard project={p} />
  * <ProjectCard project={p} size="lg" headingLevel="h2" />
+ * <ProjectCard project={p} size="lg" wide class="lg:col-span-2" />
  */
 import Icon from './Icon.astro';
 import ProjectArt from './ProjectArt.astro';
@@ -15,24 +17,27 @@ interface Props {
   size?: 'md' | 'lg';
   headingLevel?: 'h2' | 'h3';
   revealDelay?: number;
+  /** Horizontal en ≥lg (visual + texto lado a lado). Úsalo con `lg:col-span-2` en el contenedor. */
+  wide?: boolean;
   class?: string;
 }
 
-const { project: p, size = 'md', headingLevel: H = 'h3', revealDelay = 0, class: className } = Astro.props;
+const { project: p, size = 'md', headingLevel: H = 'h3', revealDelay = 0, wide = false, class: className } = Astro.props;
 ---
 
 <article
   class:list={[
+    wide && 'lg:flex-row',
     'group relative flex flex-col overflow-hidden rounded-(--radius-card) hairline bg-ink-850 transition-[transform,border-color] duration-500 ease-(--ease-apple) hover:-translate-y-1 hover:border-line-strong has-[a:focus-visible]:border-gold-400/60',
     className,
   ]}
   data-reveal
   style={revealDelay ? `--reveal-delay:${revealDelay}ms` : undefined}
 >
-  <div class:list={['relative overflow-hidden', size === 'lg' ? 'aspect-[16/10]' : 'aspect-[16/11]']}>
+  <div class:list={['relative overflow-hidden', size === 'lg' ? 'aspect-[16/10]' : 'aspect-[16/11]', wide && 'lg:aspect-auto lg:min-h-[24rem] lg:w-7/12 lg:shrink-0 lg:[&>img]:absolute lg:[&>img]:inset-0']}>
     <ProjectArt project={p} variant="card" />
   </div>
-  <div class:list={['flex flex-1 flex-col border-t border-line', size === 'lg' ? 'p-8 md:p-10' : 'p-7']}>
+  <div class:list={['flex flex-1 flex-col border-t border-line', size === 'lg' ? 'p-8 md:p-10' : 'p-7', wide && 'lg:justify-center lg:border-t-0 lg:border-l lg:p-12']}>
     <p class="mb-3 flex flex-wrap items-center gap-2 text-xs font-medium">
       <span class="uppercase tracking-[0.14em] text-smoke">{p.category}</span>
       {
@@ -40,6 +45,14 @@ const { project: p, size = 'md', headingLevel: H = 'h3', revealDelay = 0, class:
           <span class="inline-flex items-center gap-1.5 rounded-full border border-line-gold bg-gold-500/8 px-2.5 py-1 text-gold-200">
             <Icon name="sparkle" size={12} />
             Prototipo
+          </span>
+        )
+      }
+      {
+        p.status === 'en-produccion' && (
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-line-gold bg-gold-500/8 px-2.5 py-1 text-gold-200">
+            <span class="size-1.5 rounded-full bg-gold-300 shadow-[0_0_8px_rgb(212_175_55/0.9)]" aria-hidden="true" />
+            {p.statusLabel}
           </span>
         )
       }

@@ -147,6 +147,7 @@ const S = {
   dragon: (n) => shot('dragon-global-trade', n),
   log: (n) => shot('plataforma-logistica-acero', n),
   tra: (n) => shot('plataforma-transporte-audiovisual', n),
+  chelato: (n) => shot('chelato-toons', n),
 };
 
 // ---------- datos de páginas automáticas ----------
@@ -237,6 +238,8 @@ async function buildPages() {
   const logPanel = await img(S.log('panel-de-control'));
   const logCargue = await img(S.log('optimizacion-de-cargue'));
   const traTorre = await img(S.tra('torre-de-control'));
+  const chelatoTabla = await img(S.chelato('tabla-de-puntajes-en-vivo'));
+  const chelatoFin = await img(S.chelato('fin-de-partida-y-ranking'), 500);
   const krystal = await img(KRYSTAL_VISUAL);
   const photo = await img(r('src', 'assets', 'ceo', 'jonathan-osorio-ceo-nithios.jpg'), 900);
   const proto = 'Prototipo navegable · datos ficticios';
@@ -294,12 +297,12 @@ async function buildPages() {
         extra: `.mosaic{position:absolute;left:600px;top:70px;display:grid;grid-template-columns:330px 330px;gap:18px}
         .mosaic .frame{position:relative}`,
         body:
-          copy({ eyebrow: 'Portafolio', title: 'Software que <em>diseñamos y desarrollamos</em>', sub: 'Comercio internacional, logística, transporte y consultorios psicológicos.' }) +
+          copy({ eyebrow: 'Portafolio', title: 'Software que <em>diseñamos y desarrollamos</em>', sub: 'Activación de marca, comercio internacional, logística, transporte y salud mental.' }) +
           `<div class="mosaic">${[
+            [chelatoTabla, 'chelato.nithios.com'],
             [dragonTablero, 'Dragon Global Trade'],
             [logPanel, 'Logística para acero'],
             [traTorre, 'Transporte audiovisual'],
-            [krystal, 'Krystal · ilustración'],
           ]
             .map(([s, l]) => frame(s, l, 'width:330px;height:236px'))
             .join('')}</div>`,
@@ -390,6 +393,20 @@ async function buildPages() {
           ]
             .map((q, i) => `<div class="q glass${i === 0 ? ' open' : ''}">${q}<span>${i === 0 ? '−' : '+'}</span></div>`)
             .join('')}</div>`,
+      }),
+    },
+    {
+      // Chelato Toons: producto en línea. Sin personajes (propiedad de terceros): tabla de puntajes + fin de partida.
+      out: 'chelato-toons-videojuego-activacion-de-marca-og.png',
+      html: page({
+        vars: '--copy-w:470px;--h1:72px',
+        extra: `.phone{position:absolute;left:1000px;top:150px;width:170px;padding:7px;border-radius:30px;background:#161616;border:1px solid rgba(212,175,55,.38);box-shadow:0 30px 80px rgba(0,0,0,.8)}
+        .phone div{border-radius:24px;overflow:hidden;background:#000;padding-top:16px}
+        .phone img{display:block;width:100%}`,
+        body:
+          copy({ eyebrow: 'Caso de portafolio · En línea', title: 'Chelato <em>Toons</em>', sub: 'Videojuego web para activación de marca: se juega con código QR desde el celular.' }) +
+          frame(chelatoTabla, 'chelato.nithios.com', 'left:590px;top:96px;width:720px;height:440px') +
+          `<div class="phone"><div><img src="${chelatoFin}" alt=""></div></div>`,
       }),
     },
     {

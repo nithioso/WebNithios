@@ -134,11 +134,15 @@ Seo: `title`, `description`, `path`, `ogImage?`, `ogImageAlt?`, `ogImageWidth?`/
 - **CeoPortrait** — foto de `ceo.photo` con `<Image priority>` o monograma «JO» + isotipo NT en marco premium (respaldo si no hay foto). Props: `size?: 'sm'|'lg'`, `class?`.
 - **ContactForm** — arma el mensaje y abre wa.me (sin JS: GET a wa.me + enlace de respaldo; no guarda datos). Props: `class?`.
 - **BrowserFrame** — marco de navegador para capturas (slot). Props: `label?`, `glow?`, `class?`.
+- **PhoneFrame** — marco de teléfono para capturas verticales de móvil (slot; barra de estado propia para que la isla no tape la captura). Props: `glow?`, `class?` (el ancho lo da el contenedor).
 - **ProjectArt** — ÚNICA selección de visual de un proyecto: `cover` → `illustration` (mapa `illustrations = { krystal: KrystalMockup }`) → monograma.
   Props: `project`, `variant?: 'card'|'frame'`, `widths?` ([640,960,1280,1920]), `sizes?` (móvil 160vw card / 165vw frame, por el recorte ampliado), `priority?`.
   Nueva ilustración: componente + entrada en `illustrations` + valor en `Project['illustration']`.
-- **ProjectVisual** — `ProjectArt variant="frame"` dentro de BrowserFrame. Props: `project`, `priority?`, `glow?`, `sizes?`, `class?`.
-- **ProjectGallery** — galería de `ProjectImage[]`; cada captura enlaza al archivo completo (lupa + «Toca la imagen para ampliarla» en móvil). Props: `images`, `label?`, `class?`.
+- **ProjectVisual** — `ProjectArt variant="frame"` dentro de BrowserFrame (+ PhoneFrame superpuesto abajo a la derecha si hay `coverPhone`; barra con el dominio de `liveUrl`). Props: `project`, `priority?`, `glow?`, `sizes?`, `class?`.
+- **ProjectGallery** — galería de `ProjectImage[]`; cada captura enlaza al archivo completo (lupa + «Toca la imagen para ampliarla» en móvil). Capturas de escritorio en BrowserFrame (1.ª a todo el ancho + 2 columnas);
+  capturas verticales (`frame: 'phone'` o proporción vertical) en una fila centrada de PhoneFrame (2 / 3 / 5 por fila). Props: `images`, `label?`, `class?`.
+- **ProjectCard** — tarjeta de proyecto. Props: `project`, `size?`, `headingLevel?`, `revealDelay?`, `wide?` (horizontal en ≥lg; con `lg:col-span-2`: la home lo usa en el 1.er proyecto si el total es impar, sin huérfanos), `class?`.
+  Chip de estado: «Prototipo» o `statusLabel` («En línea») si `status: 'en-produccion'`.
 - **ServiceHeroArt** — tile de vidrio con borde dorado (ícono + entregables reales) para el `aside` de PageHero. Props: `items: {icon, title, points}[]`, `pointsLabel?`.
 - **PortfolioShowcase** — fila de proyecto en /portafolio/ (alterna lado por `index`). Props: `project`, `index?`, `headingLevel?`, `class?`.
 - **ServicePageContent** — cuerpo completo de un servicio específico (hero → qué es → para quién → problemas → qué incluye (bento sin huecos 3–7)

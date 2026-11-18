@@ -269,12 +269,14 @@ const reasons: { icon: IconName; title: string; text: string; span: string; tone
         tone="raised"
         eyebrow="Portafolio"
         title="Software que diseñamos y desarrollamos."
-        intro="Plataformas y aplicaciones diseñadas y desarrolladas por Nithios: del comercio internacional y la logística de pedidos, rutas y despachos al transporte para producciones audiovisuales y la atención psicológica remota."
+        intro="Plataformas, aplicaciones y un videojuego en línea diseñados y desarrollados por Nithios: de una activación de marca que se juega desde el celular al comercio internacional, la logística de pedidos, rutas y despachos, el transporte para producciones audiovisuales y la atención psicológica remota."
       >
         <div class="grid gap-5 lg:grid-cols-2">
-          {featuredProjects.map((p, i) => (
-            <ProjectCard project={p} size="lg" revealDelay={i * 120} />
-          ))}
+          {featuredProjects.map((p, i) => {
+            // Número impar de proyectos: el primero va a todo el ancho (horizontal en ≥lg) y el resto en 2 columnas, sin huérfanos.
+            const wide = featuredProjects.length % 2 === 1 && i === 0;
+            return <ProjectCard project={p} size="lg" wide={wide} class={wide ? 'lg:col-span-2' : undefined} revealDelay={(wide ? 0 : (i % 2)) * 120} />;
+          })}
         </div>
         <Fragment slot="actions">
           <Button href="/portafolio/" variant="glass" iconRight="arrow-right">

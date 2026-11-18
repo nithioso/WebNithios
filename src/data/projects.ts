@@ -13,6 +13,13 @@ import dragonOg from '@/assets/og/dragon-global-trade-plataforma-comercio-intern
 import logisticaOg from '@/assets/og/plataforma-logistica-acero-pedidos-rutas-y-despachos-og.png';
 import transporteOg from '@/assets/og/plataforma-transporte-audiovisual-operacion-de-rodajes-og.png';
 import krystalOg from '@/assets/og/krystal-software-consultorios-psicologicos-og.png';
+import chelatoOg from '@/assets/og/chelato-toons-videojuego-activacion-de-marca-og.png';
+import chelatoTablaEscritorio from '@/assets/portfolio/chelato-toons/chelato-toons-tabla-de-puntajes-en-vivo.webp';
+import chelatoAcceso from '@/assets/portfolio/chelato-toons/chelato-toons-acceso-con-codigo-qr.webp';
+import chelatoNombre from '@/assets/portfolio/chelato-toons/chelato-toons-nombre-del-jugador.webp';
+import chelatoPartida from '@/assets/portfolio/chelato-toons/chelato-toons-partida-puntaje-y-vidas.webp';
+import chelatoFin from '@/assets/portfolio/chelato-toons/chelato-toons-fin-de-partida-y-ranking.webp';
+import chelatoTablaMovil from '@/assets/portfolio/chelato-toons/chelato-toons-tabla-de-puntajes-movil.webp';
 import dragonTablero from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-tablero-comercio-internacional.webp';
 import dragonCotizaciones from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-modulo-comercial-cotizaciones.webp';
 import dragonContenedores from '@/assets/portfolio/dragon-global-trade/dragon-global-trade-logistica-de-contenedores.webp';
@@ -48,6 +55,11 @@ export interface ProjectImage {
   alt: string;
   /** Pie de foto visible. */
   caption: string;
+  /**
+   * Marco de la captura: 'browser' (escritorio 16:10) o 'phone' (vista móvil vertical).
+   * Por defecto se deduce de la proporción: vertical → 'phone'.
+   */
+  frame?: 'browser' | 'phone';
 }
 
 /** Punto de valor (beneficio esperado, sin métricas inventadas). */
@@ -106,6 +118,13 @@ export interface Project {
   /** Imagen OG 1200×630 del caso (render de `npm run og`; si falta se recorta `cover`). Alt en `ogImageAlt`. */
   ogImage?: ImageMetadata;
   ogImageAlt?: string;
+  /** Captura móvil vertical que acompaña al `cover` en el visual principal (marco de teléfono superpuesto). */
+  coverPhone?: ImageMetadata;
+  coverPhoneAlt?: string;
+  /** URL pública del producto en línea (solo dominios confirmados). Se enlaza con rel="noopener". */
+  liveUrl?: string;
+  /** Nota breve junto al enlace en vivo (p. ej. «Se juega con código QR»). */
+  liveNote?: string;
   featured: boolean;
   /** Orden de aparición (menor primero). */
   order: number;
@@ -123,6 +142,8 @@ export interface Project {
   statusNote: string;
   /** Capturas reales. Vacío = se usa `illustration` o el arte con monograma. */
   images: ProjectImage[];
+  /** Intro de la galería «Así se ve por dentro» cuando no es un prototipo (los prototipos usan un texto fijo). */
+  galleryIntro?: string;
   /** Ilustración conceptual (no captura) cuando aún no hay imágenes reales. */
   illustration?: 'krystal';
   /** Preguntas y respuestas del caso (GEO). Vacío = se oculta. */
@@ -130,6 +151,143 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'chelato-toons',
+    path: '/portafolio/chelato-toons/',
+    name: 'Chelato Toons',
+    tagline: 'Un videojuego arcade de naves para activar una marca desde el celular.',
+    category: 'Videojuego para activación de marca',
+    h1Subtitle: 'videojuego web para activación de marca',
+    summary:
+      'Videojuego web arcade de naves, estilo Galaga, que Nithios desarrolló como activación de marca para una marca de micheladas: se entra con un código QR de un solo uso, se juega en el celular y cada partida compite en una tabla de puntajes.',
+    seoTitle: 'Chelato Toons: videojuego para activación de marca',
+    seoDescription:
+      'Chelato Toons, juego web de naves que Nithios creó como activación para una marca de micheladas: acceso con código QR, ranking y juego desde el celular.',
+    description: [
+      'Chelato Toons es un videojuego web arcade de naves —un shoot ’em up estilo Galaga— que Nithios desarrolló como activación de marca para una marca de micheladas. Está en línea en chelato.nithios.com y se juega desde el navegador, sin instalar nada.',
+      'Está pensado primero para el celular, a pantalla completa: el jugador escribe su nombre, elige su héroe y juega moviendo con el dedo mientras el disparo es automático. En computador se juega con el mouse o con las flechas.',
+      'La partida tiene puntaje con multiplicador, niveles, vidas y derribos, pausa y sonido con opción de silencio. Al terminar, una pantalla muestra el puntaje, el nivel, los derribos y la posición del jugador en el ranking, y una tabla de puntajes reúne a todos los participantes.',
+      'El acceso es de un solo uso mediante código QR: sin código, la página muestra «Acceso solo con código QR». Esa mecánica permite ligar cada partida a una compra, a un consumo o a la entrega física del código.',
+    ],
+    status: 'en-produccion',
+    statusLabel: 'En línea',
+    features: [
+      { title: 'Acceso con código QR', text: 'Cada código es de un solo uso y queda ligado al dispositivo donde se activa. Sin código no se puede jugar.', icon: 'key' },
+      { title: 'Nombre del jugador', text: 'El jugador escribe su nombre al entrar y con él aparece en la tabla de puntajes.', icon: 'id' },
+      { title: 'Elección de héroe', text: 'Antes de cada partida el jugador elige con qué héroe jugar.', icon: 'users' },
+      { title: 'Control táctil', text: 'Se mueve con el dedo y el disparo es automático. En computador, con el mouse o las flechas.', icon: 'phone' },
+      { title: 'Puntaje con multiplicador', text: 'Los derribos suman puntos y el multiplicador premia a quien encadena aciertos.', icon: 'spark' },
+      { title: 'Niveles, vidas y derribos', text: 'La partida sube de nivel, descuenta vidas y lleva la cuenta de los derribos.', icon: 'target' },
+      { title: 'Pausa y sonido', text: 'Botones de pausa y de silencio siempre a mano durante la partida.', icon: 'clock' },
+      { title: 'Ranking y tabla de puntajes', text: 'Al terminar, el jugador ve su posición en el ranking; la tabla reúne a todos los participantes.', icon: 'award' },
+    ],
+    highlights: [
+      'En línea en chelato.nithios.com',
+      'Acceso de un solo uso con código QR',
+      'Pensado para el celular, a pantalla completa',
+      'Ranking y tabla de puntajes',
+    ],
+    platforms: ['Web móvil a pantalla completa', 'Navegador de escritorio'],
+    languages: ['Español'],
+    stack: ['HTML5 Canvas', 'JavaScript sin frameworks', 'PHP', 'MySQL', 'Hostinger'],
+    security: [
+      'Código QR de un solo uso (token) validado en el servidor',
+      'Cada código queda ligado al dispositivo donde se activa',
+      'Tokens y puntajes guardados en el servidor, no en el navegador',
+    ],
+    serviceSlug: 'desarrollo-de-software-a-medida',
+    relatedServicePages: ['desarrollo-de-aplicaciones-moviles', 'desarrollo-de-plataformas-web'],
+    monogram: 'C',
+    featured: true,
+    order: 1,
+    whatsappMessage: 'Hola Nithios, vi Chelato Toons y quiero un videojuego o una activación digital para mi marca.',
+    liveUrl: 'https://chelato.nithios.com/',
+    liveNote: 'Se juega con un código QR: sin código verás la pantalla de acceso.',
+    cover: chelatoTablaEscritorio,
+    coverAlt:
+      'Tabla de puntajes en vivo de Chelato Toons en pantalla grande: ranking con medallas, nivel y puntaje de cada jugador, con datos de prueba.',
+    coverPhone: chelatoFin,
+    coverPhoneAlt:
+      'Pantalla de fin de partida de Chelato Toons en el celular: puntaje, posición en el ranking, nivel y derribos, con datos de prueba.',
+    ogImage: chelatoOg,
+    ogImageAlt:
+      'Chelato Toons, caso de Nithios: tabla de puntajes en vivo y pantalla de fin de partida del videojuego en un celular',
+    headline: 'Escanea, juega y compite desde el celular.',
+    challenge:
+      'Una marca de consumo quiere que la gente interactúe con ella más allá del producto, en el momento de la compra o del consumo. Un volante o una publicación en redes se olvidan rápido, y una app para descargar pone una barrera que casi nadie cruza. Hace falta una experiencia que se abra al instante en el celular, que invite a volver a jugar y que se pueda ligar a un momento concreto con la marca.',
+    solution: [
+      'Chelato Toons es un juego arcade de naves que corre en el navegador del celular, a pantalla completa y sin instalar nada. El jugador escanea su código, escribe su nombre, elige su héroe y juega: mueve con el dedo y el disparo es automático. El puntaje con multiplicador, los niveles y las vidas le dan ritmo a cada partida.',
+      'El acceso es de un solo uso: cada código QR lleva un token que el servidor valida y que queda ligado al dispositivo donde se activa. Sin código, la página muestra «Acceso solo con código QR». Así, el código puede entregarse con una compra, con un consumo o en un punto físico, y cada partida queda ligada a ese momento.',
+      'El juego está hecho con HTML5 Canvas y JavaScript sin frameworks, para que cargue rápido en cualquier celular. Un backend en PHP y MySQL, alojado en Hostinger, guarda los tokens y los puntajes que alimentan el ranking y la tabla de puntajes, y un modo de prueba permite jugarlo sin servidor durante el desarrollo.',
+    ],
+    value: [
+      { title: 'Sin descargas', text: 'Se escanea el código y se juega en el navegador del celular, al instante.', icon: 'phone' },
+      { title: 'Acceso con control', text: 'Códigos QR de un solo uso, validados en el servidor y ligados a un dispositivo.', icon: 'key' },
+      { title: 'Ganas de volver a jugar', text: 'Puntaje con multiplicador, niveles y un ranking que invita a superar el mejor puntaje.', icon: 'award' },
+      { title: 'Ligado a un momento de marca', text: 'El código puede entregarse con una compra o en un punto físico.', icon: 'target' },
+    ],
+    statusNote:
+      'Chelato Toons está en línea y se juega solo con un código QR. El nombre de la empresa para la que se desarrolló se reserva. En las capturas se omiten los personajes del juego, y los nombres y puntajes que aparecen son datos de prueba.',
+    galleryIntro: 'Capturas del juego en el celular. Los personajes se omiten y los nombres y puntajes son datos de prueba.',
+    images: [
+      {
+        src: chelatoTablaEscritorio,
+        alt: 'Tabla de puntajes en vivo de Chelato Toons en pantalla grande: ranking con medallas, nivel y puntaje de cada jugador.',
+        caption: 'Tabla de puntajes en vivo: el ranking de todos los participantes, pensado también para pantalla grande.',
+      },
+      {
+        src: chelatoAcceso,
+        alt: 'Pantalla de acceso de Chelato Toons en el celular con el mensaje «Acceso solo con código QR. Escanea tu código para jugar».',
+        caption: 'Sin código QR no se juega: el acceso es de un solo uso.',
+      },
+      {
+        src: chelatoNombre,
+        alt: 'Pantalla de Chelato Toons en el celular que pide el nombre del jugador para la tabla de puntajes, con el botón «¡Vamos!».',
+        caption: 'El jugador escribe su nombre, que aparecerá en el ranking.',
+      },
+      {
+        src: chelatoPartida,
+        alt: 'Partida de Chelato Toons en el celular: puntaje con multiplicador, nivel, vidas y botones de sonido y pausa sobre fondo de estrellas.',
+        caption: 'En la partida: puntaje con multiplicador, nivel, vidas, sonido y pausa. Los personajes se omiten.',
+      },
+      {
+        src: chelatoFin,
+        alt: 'Pantalla de fin de partida de Chelato Toons en el celular: puntaje, posición en el ranking, nivel alcanzado y número de derribos.',
+        caption: 'Fin de la partida: puntaje, posición en el ranking, nivel y derribos.',
+      },
+      {
+        src: chelatoTablaMovil,
+        alt: 'Tabla de puntajes de Chelato Toons en el celular: jugadores ordenados por puntaje, con medallas para los tres primeros.',
+        caption: 'La tabla de puntajes, también desde el celular.',
+      },
+    ],
+    faqs: [
+      {
+        category: 'desarrollo',
+        question: '¿Qué es Chelato Toons?',
+        answer:
+          'Chelato Toons es un videojuego web arcade de naves, estilo Galaga, que Nithios desarrolló como activación de marca para una marca de micheladas. Se juega en el navegador del celular, sin instalar nada: el jugador escribe su nombre, elige su héroe, mueve con el dedo y el disparo es automático. Tiene puntaje con multiplicador, niveles, vidas, ranking y tabla de puntajes.',
+      },
+      {
+        category: 'desarrollo',
+        question: '¿Por qué Chelato Toons solo se juega con un código QR?',
+        answer:
+          'Porque el acceso es de un solo uso: cada código QR lleva un token que el servidor valida y que queda ligado al dispositivo donde se activa. Sin código, la página muestra «Acceso solo con código QR». Esa mecánica permite entregar el código con una compra, con un consumo o en un punto físico y ligar cada partida a ese momento.',
+      },
+      {
+        category: 'desarrollo',
+        question: '¿Con qué tecnología está hecho Chelato Toons?',
+        answer:
+          'El juego está hecho con HTML5 Canvas y JavaScript sin frameworks, con diseño mobile-first a pantalla completa. El backend, en PHP y MySQL, guarda los tokens de acceso y los puntajes del ranking, y está alojado en Hostinger. Además tiene un modo de prueba que funciona sin servidor.',
+      },
+      {
+        category: 'desarrollo',
+        question: '¿Nithios desarrolla videojuegos publicitarios o advergames para marcas en Colombia?',
+        answer:
+          'Sí. Desarrollamos juegos web y experiencias interactivas a la medida para activaciones de marca en toda Colombia, de forma remota. Definimos contigo la mecánica, cómo se entra al juego —por ejemplo, con un código QR— y qué se guarda de cada partida. Escríbenos por WhatsApp y lo revisamos contigo.',
+      },
+    ],
+  },
   {
     slug: 'dragon-global-trade',
     path: '/portafolio/dragon-global-trade/',
@@ -173,7 +331,7 @@ export const projects: Project[] = [
     relatedServicePages: ['desarrollo-de-plataformas-web'],
     monogram: 'D',
     featured: true,
-    order: 1,
+    order: 2,
     whatsappMessage: 'Hola Nithios, vi Dragon Global Trade y quiero una plataforma similar para mi empresa.',
     cover: dragonTablero,
     coverAlt:
@@ -302,7 +460,7 @@ export const projects: Project[] = [
     relatedServicePages: ['desarrollo-de-plataformas-web', 'automatizacion-de-procesos', 'desarrollo-de-aplicaciones-moviles'],
     monogram: 'L',
     featured: true,
-    order: 2,
+    order: 3,
     whatsappMessage: 'Hola Nithios, vi el caso de la plataforma logística para acero y quiero una plataforma logística a la medida para mi empresa.',
     cover: logisticaTablero,
     coverAlt:
@@ -429,7 +587,7 @@ export const projects: Project[] = [
     relatedServicePages: ['desarrollo-de-plataformas-web', 'automatizacion-de-procesos', 'desarrollo-de-aplicaciones-moviles'],
     monogram: 'T',
     featured: true,
-    order: 3,
+    order: 4,
     whatsappMessage: 'Hola Nithios, vi el caso de la plataforma de transporte audiovisual y quiero una plataforma de operación a la medida para mi empresa.',
     cover: transporteTorre,
     coverAlt:
@@ -552,7 +710,7 @@ export const projects: Project[] = [
     ogImage: krystalOg,
     ogImageAlt: 'Krystal, caso de portafolio de Nithios: ilustración conceptual de agenda semanal y videollamada para consultorios psicológicos',
     featured: true,
-    order: 4,
+    order: 5,
     whatsappMessage: 'Hola Nithios, vi Krystal y quiero una aplicación a la medida para mi consultorio o empresa.',
     headline: 'Agenda, consulta y seguimiento, en una sola app.',
     challenge:
@@ -603,7 +761,7 @@ export const portfolioFaqs: Faq[] = [
     category: 'desarrollo',
     question: '¿Qué tipo de software desarrolla Nithios?',
     answer:
-      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás cuatro ejemplos: Dragon Global Trade, para comercio internacional; una plataforma logística de pedidos, rutas y despachos para la distribución de acero; una plataforma de operación de transporte especial para producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
+      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás cinco ejemplos: Chelato Toons, un videojuego web para activación de marca; Dragon Global Trade, para comercio internacional; una plataforma logística de pedidos, rutas y despachos para la distribución de acero; una plataforma de operación de transporte especial para producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
   },
   {
     category: 'desarrollo',

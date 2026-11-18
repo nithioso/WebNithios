@@ -1,0 +1,36 @@
+---
+/**
+ * Marco tipo teléfono para capturas verticales (vista móvil) del portafolio. Hermano de BrowserFrame.
+ * <PhoneFrame><Image src={img} alt="…" class="block h-auto w-full" /></PhoneFrame>
+ * <PhoneFrame glow class="w-56">…</PhoneFrame>
+ * Decorativo: el bisel y la isla son aria-hidden; el contenido (slot) aporta el alt.
+ * La captura conserva su proporción (no se recorta): el marco se adapta al alto de la imagen.
+ */
+interface Props {
+  /** Halo dorado detrás del teléfono. */
+  glow?: boolean;
+  class?: string;
+}
+
+const { glow = false, class: className } = Astro.props;
+---
+
+<div class:list={['relative', className]}>
+  {
+    glow && (
+      <div
+        class="pointer-events-none absolute inset-x-[10%] top-[10%] bottom-[20%] -z-10 rounded-full bg-gold-500/20 blur-[70px]"
+        aria-hidden="true"
+      />
+    )
+  }
+  <div class="rounded-[2.25rem] border border-line-strong bg-ink-700 p-[0.4rem] shadow-soft md:rounded-[2.6rem] md:p-2">
+    <div class="overflow-hidden rounded-[1.9rem] bg-ink-950 md:rounded-[2.15rem]">
+      <!-- Barra de estado: la isla no tapa la captura -->
+      <div class="relative pt-[10%]" aria-hidden="true">
+        <span class="absolute left-1/2 top-1/2 h-[50%] w-[30%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black ring-1 ring-white/8"></span>
+      </div>
+      <slot />
+    </div>
+  </div>
+</div>

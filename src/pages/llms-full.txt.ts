@@ -111,7 +111,7 @@ export const GET: APIRoute = async () => {
   /* ---------- Portafolio ---------- */
   push(
     '## Portafolio',
-    'Dragon Global Trade, la plataforma logística para acero y la plataforma de transporte audiovisual son prototipos navegables de interfaz con datos ficticios; los nombres de los clientes de los dos casos anonimizados se reservan por confidencialidad.',
+    'Chelato Toons es un producto en línea (videojuego web para una activación de marca; el nombre de la empresa se reserva). Dragon Global Trade, la plataforma logística para acero y la plataforma de transporte audiovisual son prototipos navegables de interfaz con datos ficticios; los nombres de los clientes de los dos casos anonimizados se reservan por confidencialidad.',
   );
   for (const p of sortedProjects) {
     push(

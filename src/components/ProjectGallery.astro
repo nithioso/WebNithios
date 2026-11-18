@@ -1,7 +1,9 @@
 ---
 /**
- * Galería de capturas reales de un proyecto (figure + figcaption, marco de navegador).
- * La primera captura ocupa todo el ancho; el resto va en dos columnas.
+ * Galería de capturas reales de un proyecto (figure + figcaption).
+ * Capturas de escritorio (marco de navegador): la primera ocupa todo el ancho; el resto va en dos columnas.
+ * Capturas verticales de móvil (marco de teléfono, `frame: 'phone'` o proporción vertical): fila centrada
+ * de teléfonos (2 por fila en móvil, 3 en tableta, hasta 5 en escritorio) debajo de las de escritorio.
  * Cada captura enlaza al archivo a tamaño completo (en móvil los textos de un dashboard de 1440 px no se leen).
  * Accesibilidad: el alt descriptivo va en la <img> (nunca vacío: es contenido) y el nombre del enlace se compone
  * de ese alt + un texto sr-only que avisa de la pestaña nueva.
@@ -9,6 +11,7 @@
  */
 import { Image } from 'astro:assets';
 import BrowserFrame from './BrowserFrame.astro';
+import PhoneFrame from './PhoneFrame.astro';
 import Icon from './Icon.astro';
 import type { ProjectImage } from '@/data/projects';
 
@@ -18,7 +21,10 @@ interface Props {
   class?: string;
 }
 
-const { images, label, class: className } = Astro.props;
+const { images: all, label, class: className } = Astro.props;
+const isPhone = (img: ProjectImage) => (img.frame ?? (img.src.height > img.src.width ? 'phone' : 'browser')) === 'phone';
+const images = all.filter((img) => !isPhone(img));
+const phones = all.filter(isPhone);
 ---
 
 {
@@ -54,6 +60,34 @@ const { images, label, class: className } = Astro.props;
               {img.caption}
               <span class="mt-1 block text-xs text-smoke md:hidden">Toca la imagen para ampliarla.</span>
             </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+{
+  phones.length > 0 && (
+    <ul
+      class:list={['flex flex-wrap justify-center gap-x-5 gap-y-12 sm:gap-x-8 lg:gap-x-6', images.length > 0 && 'mt-16 md:mt-20', images.length === 0 && className]}
+      role="list"
+    >
+      {phones.map((img, i) => (
+        <li class="w-[calc(50%-0.625rem)] max-w-[15rem] sm:w-[calc(33.333%-1.35rem)] lg:w-[calc(20%-1.2rem)]" data-reveal style={`--reveal-delay:${(i % 5) * 70}ms`}>
+          <figure>
+            <a
+              href={img.src.src}
+              target="_blank"
+              rel="noopener"
+              class="group/zoom relative block rounded-[2.25rem] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-400 md:rounded-[2.6rem]"
+            >
+              <PhoneFrame class="transition-transform duration-500 ease-(--ease-apple) group-hover/zoom:-translate-y-1">
+                <Image src={img.src} alt={img.alt} widths={[240, 360, 480, 720]} sizes="(min-width: 1024px) 15rem, (min-width: 640px) 30vw, 46vw" class="block h-auto w-full" />
+              </PhoneFrame>
+              <span class="sr-only">(ver captura completa, se abre en una pestaña nueva)</span>
+            </a>
+            <figcaption class="mt-4 text-sm leading-relaxed text-mist">{img.caption}</figcaption>
           </figure>
         </li>
       ))}

@@ -31,7 +31,7 @@ src/
 | `/servicios/<slug>/` (servicios específicos) | `pages/servicios/[slug].astro` → `components/ServicePageContent.astro`; datos: un archivo por página en `data/servicios/<slug>.ts` (tipo `ServicePage`, `data/servicios/types.ts`), reunidos por `data/servicios/index.ts` (import.meta.glob + validación) | hechas (6): cto-externo, inteligencia-artificial-para-empresas, automatizacion-de-procesos, desarrollo-de-aplicaciones-moviles, desarrollo-de-plataformas-web, modernizacion-de-sistemas |
 | `/guias/` · `/guias/<slug>/` | `pages/guias/index.astro` + `pages/guias/[slug].astro`; colección `guias` (`src/content/guias/*.md`, esquema zod en `src/content.config.ts`) | hechas (índice + 6 guías del mapa) |
 | `/portafolio/` | `pages/portafolio/index.astro` | hecha |
-| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (dragon-global-trade, plataforma-logistica-acero, plataforma-transporte-audiovisual, krystal; los dos del medio están anonimizados, ver docs/PENDIENTES.md) |
+| `/portafolio/<slug>/` | `pages/portafolio/[slug].astro` (getStaticPaths desde `projects`) | hechas (chelato-toons [en línea], dragon-global-trade, plataforma-logistica-acero, plataforma-transporte-audiovisual, krystal; logística y transporte están anonimizados, ver docs/PENDIENTES.md) |
 | `/jonathan-osorio/` | `pages/jonathan-osorio.astro` + `components/CeoPortrait.astro` | hecha |
 | `/contacto/` · `/preguntas-frecuentes/` · `/politica-de-privacidad/` | `pages/*.astro` (+ `components/ContactForm.astro`) | hechas |
 | 404 | `pages/404.astro` | hecha |
@@ -54,7 +54,9 @@ src/
   `services`, `getService(slug)`.
 - **projects.ts**: `Project` {slug, path, name, tagline, category, summary, seoTitle, seoDescription, description[], status, statusLabel,
   features[{title,text,icon}], highlights[], platforms[], languages[], stack[], security[], serviceSlug, cover?, coverAlt?, monogram,
-  h1Subtitle (2.ª línea del h1, alineada con seoTitle), ogImage?/ogImageAlt? (OG 1200×630 sin cover), featured, order, whatsappMessage}. `projects`, `sortedProjects`, `getProject(slug)`.
+  h1Subtitle (2.ª línea del h1, alineada con seoTitle), ogImage?/ogImageAlt? (OG 1200×630 sin cover), coverPhone?/coverPhoneAlt? (móvil superpuesto al cover),
+  liveUrl?/liveNote? (producto en línea: enlace al dominio confirmado), galleryIntro?, featured, order, whatsappMessage}. `projects`, `sortedProjects`, `getProject(slug)`.
+  `ProjectImage.frame?: 'browser'|'phone'` (por defecto según proporción).
   Status `'sin-especificar'` = no confirmado (no mostrar badge de estado como hecho).
 - **ceo.ts**: `ceo` {name, fullName 'Jonathan Osorio Correa', givenName, familyName, familyNames, professionalHeadline, location{locality,region,country,countryCode},
   languages[], jobTitle 'CEO y Fundador', company, path, experienceSummary, headline, summary, bio[], quote (''), focusAreas[], sectors[], experience[],

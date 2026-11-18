@@ -41,7 +41,9 @@ const relatedServices = serviceLinks(p.relatedServicePages ?? []);
 const gallery = p.images.filter((img) => img.src !== p.cover);
 const isPrototype = p.status === 'prototipo' && p.stack.length === 0;
 const inSentence = p.nameInSentence || p.name;
-const frameLabel = p.status === 'prototipo' ? `${p.name} · prototipo` : p.name;
+const frameLabel = p.liveUrl ? new URL(p.liveUrl).hostname : p.status === 'prototipo' ? `${p.name} · prototipo` : p.name;
+const liveHost = p.liveUrl ? new URL(p.liveUrl).hostname : undefined;
+const isLive = p.status === 'en-produccion';
 
 // Imagen OG 1200×630 (render propio o captura real). Sin imagen → og-default con alt del caso.
 const og = await projectOgImage(p);
@@ -84,7 +86,7 @@ const specs = [
         <ul class="mt-10 flex flex-wrap gap-2" aria-label={`Datos clave de ${p.name}`} data-reveal style="--reveal-delay:300ms">
           {p.status !== 'sin-especificar' && (
             <li class="inline-flex items-center gap-2 rounded-full border border-line-gold bg-gold-500/8 px-3.5 py-1.5 text-xs font-medium text-gold-200">
-              <Icon name="sparkle" size={14} />
+              {isLive ? <span class="size-2 rounded-full bg-gold-300 shadow-[0_0_10px_rgb(212_175_55/0.9)]" aria-hidden="true" /> : <Icon name="sparkle" size={14} />}
               {p.statusLabel}
             </li>
           )}
@@ -92,6 +94,18 @@ const specs = [
             <li class="rounded-full border border-line px-3.5 py-1.5 text-xs text-mist">{pl}</li>
           ))}
         </ul>
+      )
+    }
+    {
+      p.liveUrl && (
+        <div class="hero-in hero-in-3 mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+          <div>
+            <Button href={p.liveUrl} variant="outline" size="sm" iconRight="arrow-up-right" ariaLabel={`Ver ${liveHost} (se abre en una pestaña nueva)`}>
+              Ver {liveHost}
+            </Button>
+          </div>
+          {p.liveNote && <p class="text-sm text-smoke">{p.liveNote}</p>}
+        </div>
       )
     }
   </PageHero>
@@ -142,7 +156,7 @@ const specs = [
         id="funcionalidades"
         eyebrow={p.status === 'prototipo' ? 'Módulos' : 'Funcionalidades'}
         title={`Qué incluye ${inSentence}.`}
-        intro="Cada pieza responde a una necesidad concreta de la operación."
+        intro={p.status === 'prototipo' ? 'Cada pieza responde a una necesidad concreta de la operación.' : 'Cada pieza responde a una necesidad concreta del producto.'}
       >
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {p.features.map((f, i) => (
@@ -160,7 +174,7 @@ const specs = [
         id="capturas"
         eyebrow="Recorrido"
         title="Así se ve por dentro."
-        intro={p.statusNote ? 'Capturas del prototipo navegable, en tema oscuro. Los datos que aparecen son ficticios.' : undefined}
+        intro={p.galleryIntro ?? (p.status === 'prototipo' && p.statusNote ? 'Capturas del prototipo navegable, en tema oscuro. Los datos que aparecen son ficticios.' : undefined)}
         tone="raised"
       >
         <ProjectGallery images={gallery} label={frameLabel} />

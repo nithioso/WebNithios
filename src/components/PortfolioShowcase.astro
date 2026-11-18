@@ -3,6 +3,7 @@
  * Fila destacada del índice del portafolio: visual grande + ficha del proyecto. Alterna lado con `reverse`.
  * <PortfolioShowcase project={p} index={0} />
  * Enlace principal al caso ("Ver el caso completo"); el visual enlaza también pero fuera del orden de tabulación.
+ * Producto en línea (`liveUrl`): enlace secundario al dominio público (pestaña nueva, rel noopener) + `liveNote`.
  */
 import ProjectVisual from './ProjectVisual.astro';
 import Button from './Button.astro';
@@ -20,6 +21,7 @@ const { project: p, index = 0, headingLevel: H = 'h2', class: className } = Astr
 const reverse = index % 2 === 1;
 const num = String(index + 1).padStart(2, '0');
 const headingId = `caso-${p.slug}`;
+const liveHost = p.liveUrl ? new URL(p.liveUrl).hostname : undefined;
 ---
 
 <article
@@ -50,7 +52,7 @@ const headingId = `caso-${p.slug}`;
     {
       p.status !== 'sin-especificar' && (
         <p class="mt-6 inline-flex items-center gap-2 rounded-full border border-line-gold bg-gold-500/8 px-3.5 py-1.5 text-xs font-medium text-gold-200" data-reveal style="--reveal-delay:160ms">
-          <Icon name="sparkle" size={14} />
+          {p.status === 'en-produccion' ? <span class="size-2 rounded-full bg-gold-300 shadow-[0_0_10px_rgb(212_175_55/0.9)]" aria-hidden="true" /> : <Icon name="sparkle" size={14} />}
           {p.statusLabel}
         </p>
       )
@@ -69,6 +71,12 @@ const headingId = `caso-${p.slug}`;
     }
     <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap" data-reveal style="--reveal-delay:220ms">
       <Button href={p.path} variant="glass" iconRight="arrow-right" ariaLabel={`Ver el caso completo de ${p.name}`}>Ver el caso completo</Button>
+      {liveHost && (
+        <Button href={p.liveUrl} variant="link" iconRight="arrow-up-right" ariaLabel={`Ver ${liveHost} (se abre en una pestaña nueva)`}>
+          Ver {liveHost}
+        </Button>
+      )}
     </div>
+    {p.liveUrl && p.liveNote && <p class="mt-3 text-sm text-smoke" data-reveal style="--reveal-delay:240ms">{p.liveNote}</p>}
   </div>
 </article>

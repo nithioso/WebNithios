@@ -34,6 +34,7 @@ lo entienda en una frase y escriba por WhatsApp.
 | `/guias/como-elegir-una-empresa-de-desarrollo-de-software-en-colombia/` | cómo elegir una empresa de desarrollo de software | criterios para elegir proveedor de software, preguntas a un proveedor de software, propiedad del código (intención INFORMATIVA; la comercial «empresa de desarrollo de software en Colombia/Bogotá/Medellín» es de `/servicios/desarrollo-de-software-a-medida/`) |
 | `/guias/transformacion-digital-para-pymes-por-donde-empezar/` | transformación digital para pymes | por dónde empezar la transformación digital, digitalizar una pyme |
 | `/portafolio/` | portafolio de desarrollo de software | casos, plataformas desarrolladas |
+| `/portafolio/chelato-toons/` | desarrollo de videojuegos publicitarios (advergames) en Colombia | juego web para activación de marca, juego con código QR, juego de naves en el celular (producto EN LÍNEA; nunca nombrar a la empresa: «una marca de micheladas») |
 | `/portafolio/dragon-global-trade/` | plataforma de gestión de comercio internacional | software comercio exterior, multiidioma |
 | `/portafolio/krystal/` | software para consultorio psicológico | agenda de citas, videollamadas, historia clínica |
 | `/jonathan-osorio/` | Jonathan Osorio | CEO y Fundador de Nithios, ejecutivo de tecnología |
@@ -68,7 +69,7 @@ servicios se habla de «la normativa colombiana de protección de datos personal
 - Primera frase de cada bloque = respuesta directa y autocontenida.
 - Preguntas como subtítulos (h2/h3) con respuesta inmediata en 40–60 palabras (FAQ, bloque "¿Cómo contacto a Nithios?").
 - Entidades explícitas: Nithios (dirigida desde Medellín, cobertura nacional remota), Jonathan Osorio Correa (CEO y Fundador; sameAs LinkedIn), Colombia + ciudades,
-  Dragon Global Trade, plataforma logística para acero y plataforma de transporte audiovisual (anonimizadas), Krystal, tecnologías.
+  Chelato Toons (en línea, chelato.nithios.com), Dragon Global Trade, plataforma logística para acero y plataforma de transporte audiovisual (anonimizadas), Krystal, tecnologías.
 - Intenciones objetivo: "consultoría tecnológica en Colombia", "desarrollo de software a medida en Colombia",
   "empresa de desarrollo de software Bogotá/Medellín", "transformación digital para empresas", "inteligencia artificial para empresas".
 - Ciudades: mención natural ("atendemos de forma remota empresas en Bogotá, Medellín…"); nunca dirección ni "oficina en".
