@@ -217,7 +217,7 @@ export default {
         },
         {
           title: 'Rol y modalidad',
-          text: 'Elegimos una de las cuatro modalidades: miembro independiente, asesor permanente, comité de tecnología o sesiones puntuales. Acordamos también la confidencialidad y la información previa a cada sesión.',
+          text: 'Elegimos una de las cuatro modalidades: miembro independiente, asesor permanente, comité de tecnología o sesiones puntuales. Acordamos también la confidencialidad y la información previa a cada sesión. Jonathan participa de forma presencial o remota, según lo que necesite tu junta.',
         },
         {
           title: 'Preparación de cada sesión',

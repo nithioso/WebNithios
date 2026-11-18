@@ -49,7 +49,7 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   marca → «Plataforma de comercio», razones sociales propias → «Empresa Colombia»/«Empresa China»/«Empresa aliada» (y la razón social china → 贸易公司),
   clientes ficticios → «Cliente A…H», proveedores → «Proveedor A…K» / 供应商 A…K, dominio de correos de demo → `demo.example`.
   Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT|dragon|\bdgt\b" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
-- [ ] **Exposición fuera del sitio (decisión del usuario pendiente):** el subdominio público `dragon.nithios.com` y el repo público
+- [x] **Exposición fuera del sitio — RESUELTO (nov 2026): el usuario decidió que el nombre solo no debe publicarse en nithios.com; el subdominio y el repo público pueden quedar como están.** el subdominio público `dragon.nithios.com` y el repo público
   `nithioso/dragon-global-trade-prototipo` siguen mostrando el nombre del cliente (título, logo, `<meta description>`, datos de demo). El sitio no enlaza
   ninguno de los dos. Opciones: renombrar/privatizar el repo, anonimizar el prototipo o retirar el subdominio.
 - [ ] Casos anonimizados: stack definitivo (hoy vacío), estado real más allá del prototipo y, si algún día se autoriza, publicar el nombre.
@@ -96,7 +96,7 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 ## Miembro de junta directiva (`src/data/servicios/miembro-de-junta-directiva-tecnologia.ts`) — CONFIRMAR CON EL USUARIO
 - [x] **Experiencia previa en juntas** — RESUELTO: ha sido miembro de la junta directiva de la Asociación Drupal Colombia (`ceo.ts › governance`,
   ficha, bloque de junta, FAQ, perfil del servicio, JSON-LD `affiliation`, llms.txt). En pasado; no afirmar otras juntas ni membresía actual.
-- [ ] (Opcional) **Periodo y cargo** en la junta de la Asociación Drupal Colombia, solo si el usuario quiere publicarlos (hoy: sin fechas ni cargo).
+- [x] **Periodo y cargo** en la junta de la Asociación Drupal Colombia: el usuario decidió NO publicarlos (nov 2026).
 - [x] **Modalidades que realmente ofrece** — RESUELTO: las cuatro (miembro independiente, asesor permanente, comité de tecnología,
   sesiones puntuales) en `sections.modalities` con «Cuándo conviene».
 - [ ] **¿Lo presta él personalmente?** (hoy sí: `providedByCeo: true`, Person como provider en JSON-LD). ¿Presencial en otras ciudades o solo remoto?
@@ -125,3 +125,5 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
 - [ ] Tras desplegar: confirmar `Cache-Control: … immutable` en `/_astro/*` (`curl -sI`) y las redirecciones de un solo salto.
 
 - [x] **Regla de conflicto de interés (servicio de junta):** el usuario eligió la versión flexible (nov 2026): el conflicto se declara y se maneja según las reglas de cada junta, sin ejemplos ni compromisos de exclusión de Nithios como proveedor.
+
+- [x] **Servicio de junta: presencial y remoto** (confirmado por el usuario, nov 2026); publicado en el paso «Rol y modalidad».
