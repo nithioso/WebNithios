@@ -29,7 +29,7 @@ Los slugs están registrados en `src/data/mapa-contenido.ts`. Solo se escriben a
 | Guía | `transformacion-digital-para-pymes-por-donde-empezar` | — |
 
 Líneas existentes (también enlazables): `consultoria-tecnologica`, `desarrollo-de-software-a-medida`.
-Casos: `chelato-toons`, `plataforma-comercio-internacional`, `plataforma-logistica-acero`, `plataforma-transporte-audiovisual`, `krystal`.
+Casos: `chelato-toons`, `software-itsm-mesa-de-servicio`, `plataforma-comercio-internacional`, `plataforma-logistica-acero`, `plataforma-transporte-audiovisual`, `krystal`.
 
 **Enlaces a páginas planificadas que aún no existen**: en los campos tipados (`related`, `relatedServices`, `relatedGuides`)
 puedes usar cualquier slug registrado; si la página todavía no está publicada, el enlace se omite solo y aparece cuando exista.
@@ -155,9 +155,10 @@ clientes, testimonios, casos, premios, certificaciones, alianzas, herramientas �
   Ya verificada en el sitio: Ley 1581 de 2012 (protección de datos personales).
 - Hechos de Nithios permitidos (están en `src/data/`): dos líneas de servicio; proceso de trabajo; contacto único WhatsApp
   +57 305 302 7559; cobertura remota en toda Colombia, dirigida desde Medellín (no «fundada en» ni «oficina en»);
-  portafolio de 5 casos (Chelato Toons, videojuego web EN LÍNEA y hoy ABIERTO (nació con acceso por QR para una activación de marca) de «una marca de micheladas», sin nombrar a la empresa;
+  portafolio de 6 casos (Chelato Toons, videojuego web EN LÍNEA y hoy ABIERTO (nació con acceso por QR para una activación de marca) de «una marca de micheladas», sin nombrar a la empresa;
   plataforma de comercio internacional, plataforma logística para acero y plataforma de transporte audiovisual son
-  **prototipos navegables con datos ficticios**; Krystal); Jonathan Osorio, CEO y Fundador, con los logros anonimizados de
+  **prototipos navegables con datos ficticios**; software ITSM y mesa de servicio: producto en la nube alineado con ITIL que se ofrece
+  con demostración, anonimizado (ni el producto ni la empresa que lo comercializa; sin cifras de usuarios, clientes ni años; sin stack); Krystal); Jonathan Osorio, CEO y Fundador, con los logros anonimizados de
   `ceo.ts` (sin fechas ni empleadores).
 - Casos anonimizados: nunca el nombre del cliente ni de su producto. No presentes los prototipos como productos en producción.
 - Prohibido: «clientes», «casos de éxito», «procesos reales», «más de N proyectos», dominios no confirmados, logos de terceros.

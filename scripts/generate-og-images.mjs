@@ -9,8 +9,8 @@
  * Línea visual (v2): negro + dorado, logo oficial K «NTOS en sello» (design/logo/final/logo-horizontal.svg), Inter Variable
  * incrustada, titular ≥ 64 px, propuesta de valor corta, BOTÓN DORADO con la llamada a la acción y nithios.com.
  * Zona segura 1080×560 (los chats y redes recortan los bordes); ningún texto < 26 px. Ver docs/SEO-GEO.md › Imágenes.
- * Las capturas salen de src/assets/portfolio/**; la ilustración de Krystal se captura de dist/ (si existe, tras
- * `npm run build`) en design/og/krystal-ilustracion-agenda-y-videollamada.png y se reutiliza si no hay dist/.
+ * Las capturas salen de src/assets/portfolio/**; las ilustraciones conceptuales (Krystal y el software ITSM) se capturan de dist/
+ * (si existe, tras `npm run build`) en design/og/*.png y se reutilizan si no hay dist/ (ILLUSTRATIONS).
  *
  * Página nueva: añade una entrada a `pages` (out + plantilla), ejecuta `npm run og`, importa el PNG en src/data/og.ts
  * con su alt y pasa `ogImage`/`ogImageAlt` a BaseLayout (docs/SEO-GEO.md › Imágenes Open Graph).
@@ -34,7 +34,15 @@ import { parse as parseYaml } from 'yaml';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const r = (...p) => path.join(root, ...p);
 const OUT_DIR = r('src', 'assets', 'og');
-const KRYSTAL_VISUAL = r('design', 'og', 'krystal-ilustracion-agenda-y-videollamada.png');
+/** Ilustraciones conceptuales capturadas de dist/ (casos sin capturas reales). `label` = inicio del aria-label del componente. */
+const ILLUSTRATIONS = {
+  krystal: { slug: 'krystal', file: r('design', 'og', 'krystal-ilustracion-agenda-y-videollamada.png'), label: 'Ilustración conceptual de Krystal' },
+  itsm: {
+    slug: 'software-itsm-mesa-de-servicio',
+    file: r('design', 'og', 'software-itsm-ilustracion-tablero-de-casos.png'),
+    label: 'Ilustración conceptual de un software ITSM',
+  },
+};
 
 let chromium;
 try {
@@ -62,12 +70,14 @@ const hl = (text, part) => {
 };
 const shot = (slug, name) => r('src', 'assets', 'portfolio', slug, `${slug}-${name}.webp`);
 
-// ---------- captura de la ilustración de Krystal desde dist/ ----------
-async function captureKrystal(browser) {
+// ---------- captura de las ilustraciones conceptuales desde dist/ ----------
+async function captureIllustrations(browser) {
   const dist = r('dist');
-  if (!existsSync(path.join(dist, 'portafolio', 'krystal', 'index.html'))) {
-    if (!existsSync(KRYSTAL_VISUAL)) throw new Error('Falta la ilustración de Krystal: ejecuta `npm run build` y luego `npm run og`.');
-    console.log('dist/ no existe: se reutiliza', path.relative(root, KRYSTAL_VISUAL));
+  const all = Object.values(ILLUSTRATIONS);
+  if (!all.every((it) => existsSync(path.join(dist, 'portafolio', it.slug, 'index.html')))) {
+    for (const it of all)
+      if (!existsSync(it.file)) throw new Error(`Falta ${path.relative(root, it.file)}: ejecuta \`npm run build\` y luego \`npm run og\`.`);
+    console.log('dist/ incompleto: se reutilizan las ilustraciones de design/og/');
     return;
   }
   const server = http.createServer(async (req, res) => {
@@ -85,15 +95,17 @@ async function captureKrystal(browser) {
   await new Promise((ok) => server.listen(0, '127.0.0.1', ok));
   const { port } = server.address();
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 2, reducedMotion: 'reduce' });
-  await page.goto(`http://127.0.0.1:${port}/portafolio/krystal/`, { waitUntil: 'networkidle' });
-  const el = page.locator('[role="img"][aria-label^="Ilustración conceptual de Krystal"]').first();
-  await el.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(400);
-  await mkdir(path.dirname(KRYSTAL_VISUAL), { recursive: true });
-  await writeFile(KRYSTAL_VISUAL, await sharp(await el.screenshot({ type: 'png' })).png({ compressionLevel: 9 }).toBuffer());
+  for (const it of all) {
+    await page.goto(`http://127.0.0.1:${port}/portafolio/${it.slug}/`, { waitUntil: 'networkidle' });
+    const el = page.locator(`[role="img"][aria-label^="${it.label}"]`).first();
+    await el.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(400);
+    await mkdir(path.dirname(it.file), { recursive: true });
+    await writeFile(it.file, await sharp(await el.screenshot({ type: 'png' })).png({ compressionLevel: 9 }).toBuffer());
+    console.log('Ilustración capturada:', path.relative(root, it.file));
+  }
   await page.close();
   server.close();
-  console.log('Ilustración de Krystal capturada:', path.relative(root, KRYSTAL_VISUAL));
 }
 
 // ---------- plantilla base (v2: titular + propuesta de valor + botón de llamada a la acción) ----------
@@ -287,7 +299,8 @@ async function buildPages() {
   const traTorre = await img(S.tra('torre-de-control'));
   const chelatoTabla = await img(S.chelato('tabla-de-puntajes-en-vivo'));
   const chelatoFin = await img(S.chelato('fin-de-partida-y-ranking'), 500);
-  const krystal = await img(KRYSTAL_VISUAL);
+  const krystal = await img(ILLUSTRATIONS.krystal.file);
+  const itsm = await img(ILLUSTRATIONS.itsm.file);
   const photo = await img(r('src', 'assets', 'ceo', 'jonathan-osorio-ceo-nithios.jpg'), 900);
 
   return [
@@ -432,6 +445,11 @@ async function buildPages() {
       out: 'krystal-software-consultorios-psicologicos-og.png',
       html: caseCard({ eyebrow: 'Caso de portafolio', name: '<em>Krystal</em>', sub: 'Software para consultorios psicológicos.', visual: krystal }),
     },
+    {
+      // Caso anonimizado (sin nombre del producto ni de la empresa): ilustración conceptual, no captura.
+      out: 'software-itsm-mesa-de-servicio-ti-itil-og.png',
+      html: caseCard({ eyebrow: 'Caso de portafolio', name: 'Software <em>ITSM</em>', sub: 'Mesa de servicio de TI en la nube, alineada con ITIL.', visual: itsm }),
+    },
   ];
 }
 
@@ -442,8 +460,8 @@ const wanted = (job) => !only || only.some((o) => (o === 'auto' ? job.auto : job
 
 const browser = await chromium.launch();
 try {
-  // La captura de Krystal solo hace falta para las OG manuales (portafolio y Krystal).
-  if (!only || only.some((o) => /krystal|portafolio/.test(o))) await captureKrystal(browser);
+  // Las ilustraciones solo hacen falta para las OG manuales de Krystal y del software ITSM.
+  if (!only || only.some((o) => /krystal|itsm/.test(o))) await captureIllustrations(browser);
   await mkdir(OUT_DIR, { recursive: true });
   const tab = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
   const manual = only && only.every((o) => o === 'auto') ? [] : await buildPages();

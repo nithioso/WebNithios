@@ -8,6 +8,7 @@
  */
 import { Image } from 'astro:assets';
 import KrystalMockup from './KrystalMockup.astro';
+import ItsmMockup from './ItsmMockup.astro';
 import type { Project } from '@/data/projects';
 
 interface Props {
@@ -20,7 +21,7 @@ interface Props {
   priority?: boolean;
 }
 
-const illustrations = { krystal: KrystalMockup } satisfies Record<NonNullable<Project['illustration']>, unknown>;
+const illustrations = { krystal: KrystalMockup, itsm: ItsmMockup } satisfies Record<NonNullable<Project['illustration']>, unknown>;
 
 const { project: p, variant = 'frame', priority = false } = Astro.props;
 const isCard = variant === 'card';

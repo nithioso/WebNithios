@@ -40,6 +40,10 @@ const relatedServices = serviceLinks(p.relatedServicePages ?? []);
 // La galería omite la captura que ya se muestra como visual principal.
 const gallery = p.images.filter((img) => img.src !== p.cover);
 const isPrototype = p.status === 'prototipo' && p.stack.length === 0;
+// Sin stack ni seguridad confirmados pero con modo de uso / implementación: la sección explica cómo se usa y se pone en marcha.
+const deployment = p.deployment ?? [];
+const steps = p.implementation ?? [];
+const isUsage = !isPrototype && p.stack.length === 0 && p.security.length === 0 && (deployment.length > 0 || steps.length > 0);
 const inSentence = p.nameInSentence || p.name;
 const frameLabel = p.liveUrl ? new URL(p.liveUrl).hostname : p.status === 'prototipo' ? `${p.name} · prototipo` : p.name;
 const liveHost = p.liveUrl ? new URL(p.liveUrl).hostname : undefined;
@@ -127,7 +131,7 @@ const specs = [
       {
         !p.cover && p.illustration && (
           <p class="mx-auto mt-6 max-w-3xl text-center text-sm text-smoke" data-reveal>
-            Ilustración conceptual de la experiencia. Las capturas reales de {p.name} se publicarán próximamente.
+            Ilustración conceptual de la experiencia: no es una captura de pantalla de {inSentence}.
           </p>
         )
       }
@@ -185,13 +189,47 @@ const specs = [
   <!-- Tecnología, seguridad y ficha (en un prototipo sin stack confirmado: decisiones de diseño) -->
   <Section
     id="tecnologia"
-    eyebrow={isPrototype ? 'Prototipo' : 'Tecnología'}
-    title={isPrototype ? 'Diseño del prototipo.' : 'Construido para durar.'}
+    eyebrow={isPrototype ? 'Prototipo' : isUsage ? 'Uso e implementación' : 'Tecnología'}
+    title={isPrototype ? 'Diseño del prototipo.' : isUsage ? 'Cómo se usa y cómo se pone en marcha.' : 'Construido para durar.'}
     intro={isPrototype
       ? 'Decisiones de diseño e interfaz del prototipo navegable.'
-      : 'Las decisiones técnicas que sostienen el producto, explicadas sin rodeos.'}
+      : isUsage
+        ? 'Dónde funciona, cómo llega al equipo y qué pasos tiene su implementación.'
+        : 'Las decisiones técnicas que sostienen el producto, explicadas sin rodeos.'}
   >
     <div class="grid gap-5 md:grid-cols-6">
+      {
+        isUsage && deployment.length > 0 && (
+          <Card class="md:col-span-3" title="En la nube" icon="browser" tone="glass">
+            <ul class="mt-5 space-y-3">
+              {deployment.map((s) => (
+                <li class="flex gap-3 text-mist">
+                  <Icon name="check" size={18} class="mt-1 shrink-0 text-gold-400" />
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )
+      }
+      {
+        isUsage && steps.length > 0 && (
+          <Card class={deployment.length > 0 ? 'md:col-span-3' : 'md:col-span-6'} title="Implementación por etapas" icon="workflow" tone="glass" revealDelay={80}>
+            <ol class="mt-5 space-y-4">
+              {steps.map((st, i) => (
+                <li class="flex gap-4">
+                  <span class="flex size-7 shrink-0 items-center justify-center rounded-full border border-line-gold bg-gold-500/10 text-xs font-semibold text-gold-200" aria-hidden="true">
+                    {i + 1}
+                  </span>
+                  <span class="text-mist">
+                    <strong class="font-semibold text-pearl">{st.title}.</strong> {st.text}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </Card>
+        )
+      }
       {
         p.stack.length > 0 && (
           <Card class="md:col-span-4" title="Stack tecnológico" icon="code" tone="glass">
@@ -217,8 +255,8 @@ const specs = [
           </Card>
         )
       }
-      <Card class={p.stack.length > 0 ? 'md:col-span-6' : 'md:col-span-3'} title="Ficha del proyecto" icon="layers" tone="outline" revealDelay={120}>
-        <dl class:list={['mt-6 grid gap-6', p.stack.length > 0 ? 'sm:grid-cols-3' : '']}>
+      <Card class={p.stack.length > 0 || isUsage ? 'md:col-span-6' : 'md:col-span-3'} title="Ficha del proyecto" icon="layers" tone="outline" revealDelay={120}>
+        <dl class:list={['mt-6 grid gap-6', p.stack.length > 0 ? 'sm:grid-cols-3' : isUsage && specs.length > 1 ? 'sm:grid-cols-2' : '']}>
           {specs.map((s) => (
             <div>
               <dt class="text-xs font-medium uppercase tracking-[0.14em] text-smoke">{s.label}</dt>

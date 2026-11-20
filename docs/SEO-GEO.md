@@ -37,6 +37,7 @@ lo entienda en una frase y escriba por WhatsApp.
 | `/portafolio/` | portafolio de desarrollo de software | casos, plataformas desarrolladas |
 | `/portafolio/chelato-toons/` | desarrollo de videojuegos publicitarios (advergames) en Colombia | juego web para activación de marca, juego con código QR, juego de naves en el celular (producto EN LÍNEA; nunca nombrar a la empresa: «una marca de micheladas») |
 | `/portafolio/plataforma-comercio-internacional/` | software para importadores y exportadores | plataforma de comercio exterior a medida, importar desde China, multiidioma (caso anonimizado) |
+| `/portafolio/software-itsm-mesa-de-servicio/` | software ITSM | mesa de servicio ITIL, software de mesa de ayuda a medida, inventario de TI tipo CMDB (caso anonimizado; ilustración conceptual) |
 | `/portafolio/krystal/` | software para consultorio psicológico | agenda de citas, videollamadas, historia clínica |
 | `/jonathan-osorio/` | Jonathan Osorio | CEO y Fundador de Nithios, ejecutivo de tecnología (bloque «Disponible como miembro de junta directiva» → enlaza al servicio, que es el dueño de la intención «junta») |
 | `/contacto/` | contactar empresa de software en Colombia | cotizar software, WhatsApp Nithios |
@@ -81,7 +82,7 @@ servicios se habla de «la normativa colombiana de protección de datos personal
 - Primera frase de cada bloque = respuesta directa y autocontenida.
 - Preguntas como subtítulos (h2/h3) con respuesta inmediata en 40–60 palabras (FAQ, bloque "¿Cómo contacto a Nithios?").
 - Entidades explícitas: Nithios (dirigida desde Medellín, cobertura nacional remota), Jonathan Osorio Correa (CEO y Fundador; sameAs LinkedIn), Colombia + ciudades,
-  Chelato Toons (en línea, chelato.nithios.com), plataformas de comercio internacional, logística para acero y transporte audiovisual (anonimizadas), Krystal, tecnologías.
+  Chelato Toons (en línea, chelato.nithios.com), plataformas de comercio internacional, logística para acero y transporte audiovisual (anonimizadas), software ITSM y mesa de servicio (anonimizado), Krystal, tecnologías.
 - Intenciones objetivo: "consultoría tecnológica en Colombia", "desarrollo de software a medida en Colombia",
   "empresa de desarrollo de software Bogotá/Medellín", "transformación digital para empresas", "inteligencia artificial para empresas".
 - Ciudades: mención natural ("atendemos de forma remota empresas en Bogotá, Medellín…"); nunca dirección ni "oficina en".
@@ -125,7 +126,7 @@ servicios se habla de «la normativa colombiana de protección de datos personal
   Privacidad y 404 usan og-default. Astro publica cada PNG como JPEG 1200×630 (q88, < 110 KB) con el nombre base + hash.
 - **Generación reproducible**: `npm run og` (`scripts/generate-og-images.mjs`, Playwright + sharp; también lo corre `npm run brand`).
   Plantillas HTML con el logo oficial de `design/logo/final/`, Inter Variable del proyecto incrustada, negro/dorado y pie `nithios.com`.
-  La ilustración de Krystal se captura de `dist/` (ejecuta `npm run build` antes si cambió `KrystalMockup`) en `design/og/`.
+  Las ilustraciones de Krystal y del software ITSM se capturan de `dist/` (ejecuta `npm run build` antes si cambió `KrystalMockup` o `ItsmMockup`) en `design/og/` (`ILLUSTRATIONS` del script).
 - **OG automáticas**: servicios específicos (`nithios-<slug>-colombia-og.png`, plantilla «Qué incluye») y guías (`<slug>-guia-nithios-og.png`,
   plantilla «En esta guía» con los `## `) se generan desde los datos con `npm run og` (o `npm run og -- --only=auto`); `src/data/og.ts` las recoge con
   import.meta.glob y el alt se genera del título (`ogAlt` lo sobrescribe). Si falta el PNG, el build avisa `[og]` y usa og-default.

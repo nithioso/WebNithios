@@ -1,0 +1,161 @@
+---
+/**
+ * Ilustración conceptual del caso «Software ITSM y mesa de servicio» (NO es una captura): tablero de casos por estado
+ * con su prioridad, ficha de un incidente con historial y panel de inventario ligado a los casos.
+ * Solo HTML/CSS, sin textos ni datos (barras abstractas). Se reemplaza por capturas reales cuando existan (docs/PENDIENTES.md).
+ * <BrowserFrame label="Software ITSM y mesa de servicio"><ItsmMockup /></BrowserFrame>
+ */
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+type Prio = 'alta' | 'media' | 'baja';
+/** Columnas de estado del tablero (nuevos · en curso · resueltos) con la prioridad de cada tarjeta. */
+const columns: { dot: string; cards: Prio[]; done?: boolean }[] = [
+  { dot: 'bg-gold-300', cards: ['alta', 'media', 'baja'] },
+  { dot: 'bg-gold-600', cards: ['alta', 'media'] },
+  { dot: 'bg-ink-500', cards: ['media', 'baja', 'baja'], done: true },
+];
+/** Franja lateral = prioridad. */
+const stripe: Record<Prio, string> = { alta: 'bg-gold-300', media: 'bg-gold-600', baja: 'bg-ink-500' };
+/** Inventario: tipo de activo + casos ligados (puntos dorados). */
+const assets = [
+  { icon: 'cpu', links: 2 },
+  { icon: 'browser', links: 1 },
+  { icon: 'key', links: 0 },
+] as const;
+const sz = 'size-[clamp(0.5rem,1.1vw,0.875rem)]';
+---
+
+<div
+  class:list={['relative aspect-[16/10] w-full overflow-hidden bg-ink-850 select-none', className]}
+  role="img"
+  aria-label="Ilustración conceptual de un software ITSM: a la izquierda, un tablero de casos en tres estados con la prioridad de cada uno; a la derecha, la ficha de un incidente con su historial y un panel de inventario de equipos ligados a los casos."
+>
+  <div class="absolute inset-0 grid grid-cols-[7%_1fr_35%] gap-[2.2%] p-[2.6%]" aria-hidden="true">
+    <!-- Barra lateral -->
+    <div class="flex flex-col items-center gap-[12%] rounded-xl border border-line bg-ink-800 py-[40%]">
+      <span class="block aspect-square w-1/2 rounded-lg bg-gold-500/80"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-gold-500/25 ring-1 ring-gold-500/50"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-ink-500"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-ink-500"></span>
+      <span class="block aspect-square w-[42%] rounded-md bg-ink-500"></span>
+    </div>
+
+    <!-- Tablero de casos por estado -->
+    <div class="flex min-h-0 min-w-0 flex-col rounded-xl border border-line bg-ink-800 p-[3.5%]">
+      <div class="mb-[4%] flex items-center justify-between">
+        <span class="flex items-center gap-2 text-gold-300">
+          <Icon name="clipboard" size={16} class="size-[clamp(0.6rem,1.4vw,1rem)]" />
+          <span class="block h-[0.35rem] w-14 rounded-full bg-pearl/70 md:h-2 md:w-24"></span>
+        </span>
+        <span class="flex gap-1">
+          <span class="block h-[0.35rem] w-4 rounded-full bg-gold-300 md:h-2 md:w-7"></span>
+          <span class="block h-[0.35rem] w-4 rounded-full bg-gold-600 md:h-2 md:w-7"></span>
+          <span class="block h-[0.35rem] w-4 rounded-full bg-ink-500 md:h-2 md:w-7"></span>
+        </span>
+      </div>
+      <div class="grid min-h-0 flex-1 grid-cols-3 gap-[4%]">
+        {
+          columns.map((col) => (
+            <div class="flex min-h-0 flex-col gap-[5%] rounded-lg border border-dashed border-line/70 p-[6%]">
+              <span class="flex items-center gap-[8%]">
+                <span class:list={['block size-[0.35rem] shrink-0 rounded-full md:size-2', col.dot]} />
+                <span class="block h-[0.3rem] w-1/2 rounded-full bg-pearl/35 md:h-1.5" />
+              </span>
+              {col.cards.map((prio) => (
+                <span class:list={['relative block flex-1 overflow-hidden rounded-md border max-h-[26%]', col.done ? 'border-line bg-ink-700/60' : 'border-line-strong bg-ink-700']}>
+                  <span class:list={['absolute inset-y-0 left-0 block w-[5%] min-w-[2px]', stripe[prio]]} />
+                  <span class:list={['absolute left-[16%] top-[22%] block h-[0.22rem] w-[30%] rounded-full md:h-1', prio === 'alta' ? 'bg-gold-200/90' : 'bg-pearl/45']} />
+                  <span class="absolute left-[16%] top-[50%] block h-[0.22rem] w-[58%] rounded-full bg-pearl/20 md:h-1" />
+                  <span class:list={['absolute right-[8%] top-[18%] block h-[0.3rem] w-[18%] rounded-full md:h-1.5', prio === 'alta' ? 'bg-gold-300/80' : prio === 'media' ? 'bg-gold-600/70' : 'bg-ink-500']} />
+                  <span class="absolute bottom-[14%] right-[8%] block aspect-square w-[12%] rounded-full bg-ink-500 ring-1 ring-line-strong" />
+                  {col.done && <span class="absolute bottom-[16%] left-[16%] block h-[0.22rem] w-[22%] rounded-full bg-gold-500/40 md:h-1" />}
+                </span>
+              ))}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Ficha del incidente + inventario -->
+    <div class="flex min-h-0 min-w-0 flex-col gap-[4%]">
+      <div class="gold-ring relative flex min-h-0 flex-[1.35] flex-col overflow-hidden rounded-xl bg-[radial-gradient(120%_90%_at_50%_0%,rgb(212_175_55/0.16),transparent_60%),linear-gradient(180deg,#161616,#0a0a0a)] p-[6%]">
+        <span class="flex items-center justify-between">
+          <span class="flex items-center gap-1.5 text-gold-300">
+            <Icon name="bolt" size={14} class={sz} />
+            <span class="block h-[0.3rem] w-10 rounded-full bg-pearl/70 md:h-1.5 md:w-16"></span>
+          </span>
+          <span class="flex items-center gap-1 rounded-full bg-gold-500/20 px-1.5 py-0.5 ring-1 ring-gold-500/50 md:px-2">
+            <span class="block size-1 rounded-full bg-gold-300 md:size-1.5"></span>
+            <span class="block h-[0.22rem] w-3 rounded-full bg-gold-200/80 md:h-1 md:w-5"></span>
+          </span>
+        </span>
+        <!-- Campos: responsable, estado, activo -->
+        <span class="mt-[7%] grid shrink-0 grid-cols-2 gap-x-[8%] gap-y-[9%]">
+          {
+            [0, 1, 2, 3].map((i) => (
+              <span class="flex flex-col gap-[0.2rem] md:gap-1">
+                <span class="block h-[0.2rem] w-1/2 rounded-full bg-pearl/20 md:h-1" />
+                <span class:list={['block h-[0.3rem] rounded-full md:h-1.5', i === 1 ? 'w-2/3 bg-gold-400/70' : 'w-4/5 bg-pearl/45']} />
+              </span>
+            ))
+          }
+        </span>
+        <!-- Descripción del caso -->
+        <span class="mt-[8%] flex min-h-0 flex-1 flex-col gap-[0.3rem] overflow-hidden rounded-lg border border-line bg-ink-900/60 p-[5%] md:gap-2">
+          <span class="block h-[0.22rem] w-11/12 rounded-full bg-pearl/25 md:h-1"></span>
+          <span class="block h-[0.22rem] w-4/5 rounded-full bg-pearl/25 md:h-1"></span>
+          <span class="block h-[0.22rem] w-3/5 rounded-full bg-pearl/25 md:h-1"></span>
+          <span class="mt-auto flex items-center gap-[5%]">
+            <span class="block aspect-square w-[9%] rounded-full bg-gold-500/40 ring-1 ring-gold-500/60"></span>
+            <span class="block h-[0.22rem] w-1/3 rounded-full bg-pearl/40 md:h-1"></span>
+          </span>
+        </span>
+        <!-- Historial del caso -->
+        <span class="relative mt-[8%] flex shrink-0 flex-col gap-[0.35rem] md:gap-2">
+          <span class="absolute bottom-1 left-[2.5px] top-1 w-px bg-line-strong md:left-[3.5px]"></span>
+          {
+            ['bg-gold-300', 'bg-gold-600', 'bg-ink-500'].map((c, i) => (
+              <span class="relative flex items-center gap-[6%]">
+                <span class:list={['block size-1.5 shrink-0 rounded-full md:size-2', c]} />
+                <span class:list={['block h-[0.22rem] rounded-full md:h-1', i === 0 ? 'w-3/4 bg-pearl/40' : 'w-1/2 bg-pearl/20']} />
+              </span>
+            ))
+          }
+        </span>
+      </div>
+      <div class="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-line bg-ink-800 p-[6%]">
+        <span class="mb-[6%] flex items-center gap-1.5 text-gold-300">
+          <Icon name="database" size={14} class={sz} />
+          <span class="block h-[0.3rem] w-10 rounded-full bg-pearl/60 md:h-1.5 md:w-16"></span>
+        </span>
+        <span class="flex flex-1 flex-col justify-around">
+          {
+            assets.map((a) => (
+              <span class="flex items-center gap-[6%] text-mist">
+                <span class="inline-flex aspect-square w-[13%] shrink-0 items-center justify-center rounded-md bg-ink-600">
+                  <Icon name={a.icon} size={12} class="size-[clamp(0.4rem,0.9vw,0.75rem)]" />
+                </span>
+                <span class="block h-[0.25rem] flex-1 rounded-full bg-pearl/25 md:h-1" />
+                <span class="flex w-[16%] shrink-0 justify-end gap-[12%]">
+                  {Array.from({ length: a.links }).map(() => (
+                    <span class="block size-1 rounded-full bg-gold-400 md:size-1.5" />
+                  ))}
+                </span>
+              </span>
+            ))
+          }
+        </span>
+      </div>
+    </div>
+  </div>
+  <span class="absolute bottom-2 left-2 rounded-full border border-line bg-ink-950/80 px-2 py-0.5 text-[0.625rem] font-medium text-mist md:bottom-4 md:left-4 md:px-3 md:py-1 md:text-[0.6875rem]">
+    Ilustración conceptual
+  </span>
+</div>

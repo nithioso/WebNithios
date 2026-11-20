@@ -39,6 +39,7 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   | `plataforma-comercio-internacional` («Plataforma de comercio internacional») | `nithioso/dragon-global-trade-prototipo` (subdominio `dragon.nithios.com`) | Dragon Global Trade (DGT; importaciones y exportaciones desde China hacia todo el mundo) |
   | `plataforma-logistica-acero` («Plataforma logística para acero») | `nithioso/armetales` | Armetales |
   | `plataforma-transporte-audiovisual` («Plataforma de transporte audiovisual») | `nithioso/lsto-propuestas-diseno/lystrax-propuesta-unificada.html` | L&STO GROUP S.A.S. (producto «LYSTRAX CONNECT») |
+  | `software-itsm-mesa-de-servicio` («Software ITSM y mesa de servicio») | producto THEMYOS (software ITSM; sin capturas: ilustración conceptual `ItsmMockup`) | ONOVATEC (empresa que lo desarrolla según su página pública y lo comercializa) |
   En el sitio no aparecen esos nombres (ni en textos, alt, JSON-LD, WhatsApp, llms.txt, rutas ni nombres de archivo); `statusNote` y las FAQ dicen
   que el nombre se reserva por confidencialidad. Las 18 capturas (tema oscuro, 1440×900 @2x → 2880×1800 WebP q80) están en
   `src/assets/portfolio/plataforma-comercio-internacional/`, `.../plataforma-logistica-acero/` y `.../plataforma-transporte-audiovisual/`. Al capturarlas con Playwright se ocultaron los logos
@@ -48,7 +49,8 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   Comercio internacional (nov 2026): capturas del prototipo servido en local (superadmin, tema oscuro; la del idioma con locale `zh`), logo oculto,
   marca → «Plataforma de comercio», razones sociales propias → «Empresa Colombia»/«Empresa China»/«Empresa aliada» (y la razón social china → 贸易公司),
   clientes ficticios → «Cliente A…H», proveedores → «Proveedor A…K» / 供应商 A…K, dominio de correos de demo → `demo.example`.
-  Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT|dragon|\bdgt\b" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
+  Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT|dragon|\bdgt\b|themyos|onovatec" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
+  `verify:seo` no comprueba nombres de clientes (solo el proveedor de hosting): añadirlos allí los escribiría en `scripts/`; se hace con este grep.
 - [x] **Exposición fuera del sitio — RESUELTO (nov 2026): el usuario decidió que el nombre solo no debe publicarse en nithios.com; el subdominio y el repo público pueden quedar como están.** el subdominio público `dragon.nithios.com` y el repo público
   `nithioso/dragon-global-trade-prototipo` siguen mostrando el nombre del cliente (título, logo, `<meta description>`, datos de demo). El sitio no enlaza
   ninguno de los dos. Opciones: renombrar/privatizar el repo, anonimizar el prototipo o retirar el subdominio.
@@ -62,6 +64,13 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   La primera captura que sea `cover` no se repite en la galería. Nombres `krystal-<pantalla>.webp`. Al llegar, cambiar la
   plantilla de Krystal en `scripts/generate-og-images.mjs` para usar la captura `cover` y ejecutar `npm run og`.
 - [ ] Estado real de Krystal (hoy `status: 'sin-especificar'`).
+- [ ] **Software ITSM y mesa de servicio** (`software-itsm-mesa-de-servicio`, anonimizado; fuente de hechos: la página pública del producto, sin copiar frases ni cifras):
+  - [ ] Capturas reales (hoy `images: []` + `illustration: 'itsm'`, `ItsmMockup.astro`): 4–6 capturas 1440×900 @2x SIN nombre ni logo del producto ni de la empresa
+    (tablero de casos, ficha de incidente, base de conocimiento, inventario, catálogo, reportes) en `src/assets/portfolio/software-itsm-mesa-de-servicio/`
+    con nombres `software-itsm-mesa-de-servicio-<pantalla>.webp`; llenar `images` y `cover`, retirar `illustration` y cambiar la plantilla OG del caso a la captura.
+  - [ ] Stack tecnológico (hoy vacío), medidas de seguridad e idiomas de la interfaz (hoy vacíos ⇒ ocultos).
+  - [ ] Estado (hoy `sin-especificar`, `statusLabel` «Producto en la nube que se ofrece con demostración»): ¿está en producción? No publicar número de usuarios, clientes ni años.
+  - [ ] Rol exacto de Nithios (hoy «desarrollado por Nithios», indicación del usuario; la página pública del producto lo atribuye a la empresa que lo comercializa) y si se autoriza nombrar el producto.
 - [x] **Chelato Toons** (`chelato-toons`, producto EN LÍNEA en https://chelato.nithios.com): videojuego web de naves para una activación de marca
   de una empresa de micheladas (NO nombrar a la empresa en `src/` ni `public/`; en el sitio: «una marca de micheladas»). Hechos verificados en los
   archivos públicos del juego (index.html, config.js, js/game.js, js/net/api.js). 6 capturas reales en `src/assets/portfolio/chelato-toons/`

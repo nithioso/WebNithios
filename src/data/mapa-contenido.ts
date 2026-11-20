@@ -41,7 +41,14 @@ export const guideSlugs = [
 export type GuideSlug = (typeof guideSlugs)[number];
 
 /** Casos del portafolio (src/data/projects.ts). */
-export const projectSlugs = ['chelato-toons', 'plataforma-comercio-internacional', 'plataforma-logistica-acero', 'plataforma-transporte-audiovisual', 'krystal'] as const;
+export const projectSlugs = [
+  'chelato-toons',
+  'software-itsm-mesa-de-servicio',
+  'plataforma-comercio-internacional',
+  'plataforma-logistica-acero',
+  'plataforma-transporte-audiovisual',
+  'krystal',
+] as const;
 export type ProjectSlug = (typeof projectSlugs)[number];
 
 /** Línea a la que pertenece un servicio específico. 'ambas' = consultoría + desarrollo. */

@@ -121,7 +121,7 @@ export const GET: APIRoute = async () => {
   /* ---------- Portafolio ---------- */
   push(
     '## Portafolio',
-    'Chelato Toons es un producto en línea (videojuego web para una activación de marca; el nombre de la empresa se reserva). La plataforma de comercio internacional, la plataforma logística para acero y la plataforma de transporte audiovisual son prototipos navegables de interfaz con datos ficticios; los nombres de los clientes de los tres casos anonimizados se reservan por confidencialidad.',
+    'Chelato Toons es un producto en línea (videojuego web para una activación de marca; el nombre de la empresa se reserva). El software ITSM y mesa de servicio es un producto en la nube que se ofrece con demostración; el nombre del producto y el de la empresa que lo comercializa se reservan. La plataforma de comercio internacional, la plataforma logística para acero y la plataforma de transporte audiovisual son prototipos navegables de interfaz con datos ficticios; los nombres de los clientes y productos de los cuatro casos anonimizados se reservan por confidencialidad.',
   );
   for (const p of sortedProjects) {
     push(
@@ -134,6 +134,8 @@ export const GET: APIRoute = async () => {
       ...(p.languages.length ? [`Idiomas de la interfaz: ${p.languages.join(', ')}.`] : []),
       ...(p.stack.length ? [`Tecnologías: ${p.stack.join(', ')}.`] : []),
       ...(p.security.length ? [`Seguridad: ${p.security.join('; ')}.`] : []),
+      ...(p.deployment?.length ? [`Cómo se usa: ${p.deployment.join('; ')}.`] : []),
+      ...(p.implementation?.length ? [`**Implementación.**\n${p.implementation.map((s, i) => `${i + 1}. **${s.title}.** ${s.text}`).join('\n')}`] : []),
       ...(p.statusNote ? [p.statusNote] : []),
     );
   }

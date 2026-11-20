@@ -79,7 +79,7 @@ export const pageSocial = {
     'Decide qué tecnología adoptar, en qué orden y cómo implementarla, con un diagnóstico y un plan claros para tu empresa.',
   '/servicios/desarrollo-de-software-a-medida/':
     'Plataformas web, apps móviles y sistemas de gestión hechos para tu operación. Desarrollo a medida en toda Colombia.',
-  '/portafolio/': 'Un videojuego en línea para una marca, prototipos de comercio exterior, logística y transporte, y software para consultorios.',
+  '/portafolio/': 'Un juego en línea, una mesa de servicio ITSM, prototipos de comercio, logística y transporte, y software para consultorios.',
   '/guias/': 'Guías claras para decidir sobre software a medida, CTO externo, inteligencia artificial y transformación digital.',
   '/jonathan-osorio/': 'CTO y líder de innovación con casi 20 años en retail, educación y servicios. Conoce al CEO y Fundador de Nithios.',
   '/contacto/': 'Escríbenos por WhatsApp al +57 305 302 7559 y cuéntanos tu proyecto. Atención remota para empresas de toda Colombia.',

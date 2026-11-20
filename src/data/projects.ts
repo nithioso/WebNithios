@@ -7,13 +7,14 @@
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '@/lib/icons';
 import type { Faq } from '@/data/faqs';
-import type { ServicePageSlug } from '@/data/mapa-contenido';
+import type { AnyServiceSlug } from '@/data/mapa-contenido';
 // OG 1200×630 de cada caso: generadas con `npm run og` (scripts/generate-og-images.mjs).
 import comercioOg from '@/assets/og/plataforma-comercio-internacional-importaciones-y-exportaciones-og.png';
 import logisticaOg from '@/assets/og/plataforma-logistica-acero-pedidos-rutas-y-despachos-og.png';
 import transporteOg from '@/assets/og/plataforma-transporte-audiovisual-operacion-de-rodajes-og.png';
 import krystalOg from '@/assets/og/krystal-software-consultorios-psicologicos-og.png';
 import chelatoOg from '@/assets/og/chelato-toons-videojuego-activacion-de-marca-og.png';
+import itsmOg from '@/assets/og/software-itsm-mesa-de-servicio-ti-itil-og.png';
 import chelatoTablaEscritorio from '@/assets/portfolio/chelato-toons/chelato-toons-tabla-de-puntajes-en-vivo.webp';
 import chelatoAcceso from '@/assets/portfolio/chelato-toons/chelato-toons-acceso-con-codigo-qr.webp';
 import chelatoNombre from '@/assets/portfolio/chelato-toons/chelato-toons-nombre-del-jugador.webp';
@@ -62,6 +63,12 @@ export interface ProjectImage {
   frame?: 'browser' | 'phone';
 }
 
+/** Paso de implementación (título + qué ocurre en él). */
+export interface ProjectStep {
+  title: string;
+  text: string;
+}
+
 /** Punto de valor (beneficio esperado, sin métricas inventadas). */
 export interface ProjectValue {
   title: string;
@@ -108,10 +115,17 @@ export interface Project {
   stack: string[];
   /** Medidas de seguridad (vacío si no está confirmado). */
   security: string[];
+  /**
+   * Cómo se usa / se despliega (p. ej. en la nube, desde el navegador). Solo hechos confirmados.
+   * Si `stack` y `security` están vacíos, la sección «Tecnología» pasa a «Cómo se usa y cómo se implementa».
+   */
+  deployment?: string[];
+  /** Pasos de implementación confirmados (lista numerada en la misma sección). */
+  implementation?: ProjectStep[];
   /** Línea de servicio relacionada (slug de services.ts). */
   serviceSlug: string;
-  /** Servicios específicos que ilustra el caso (src/data/servicios/): bloque «Servicios relacionados» de la página del caso. */
-  relatedServicePages?: ServicePageSlug[];
+  /** Servicios (específicos de src/data/servicios/ o líneas) que ilustra el caso: bloque «Servicios relacionados» de la página del caso. */
+  relatedServicePages?: AnyServiceSlug[];
   /** Imagen de portada optimizable con astro:assets (pendiente: ver docs/PENDIENTES.md). */
   cover?: ImageMetadata;
   coverAlt?: string;
@@ -147,7 +161,7 @@ export interface Project {
   /** Intro de la galería «Así se ve por dentro» cuando no es un prototipo (los prototipos usan un texto fijo). */
   galleryIntro?: string;
   /** Ilustración conceptual (no captura) cuando aún no hay imágenes reales. */
-  illustration?: 'krystal';
+  illustration?: 'krystal' | 'itsm';
   /** Preguntas y respuestas del caso (GEO). Vacío = se oculta. */
   faqs: Faq[];
 }
@@ -291,6 +305,119 @@ export const projects: Project[] = [
     ],
   },
   {
+    // Caso ANONIMIZADO: nunca escribir en src/ ni public/ el nombre del producto ni de la empresa que lo comercializa
+    // (correspondencia interna en docs/PENDIENTES.md). Sin capturas: ilustración conceptual (ItsmMockup.astro).
+    slug: 'software-itsm-mesa-de-servicio',
+    path: '/portafolio/software-itsm-mesa-de-servicio/',
+    name: 'Software ITSM y mesa de servicio',
+    nameInSentence: 'la mesa de servicio ITSM',
+    shortName: 'Software ITSM',
+    tagline: 'Una mesa de servicio en la nube para que el área de TI atienda con orden.',
+    category: 'Gestión de servicios de TI (ITSM)',
+    h1Subtitle: 'mesa de servicio de TI alineada con ITIL',
+    summary:
+      'Software ITSM en la nube desarrollado por Nithios: una mesa de servicio alineada con buenas prácticas ITIL que reúne incidentes y solicitudes, base de conocimiento, inventario tecnológico, catálogo de servicios y reportes.',
+    seoTitle: 'Software ITSM: mesa de servicio ITIL en la nube',
+    seoDescription:
+      'Software ITSM desarrollado por Nithios: mesa de servicio ITIL en la nube con incidentes, base de conocimiento, inventario de TI y reportes para varias sedes.',
+    ogDescription: 'Mesa de servicio en la nube, alineada con ITIL: casos, conocimiento e inventario de TI en un solo lugar.',
+    description: [
+      'Este caso es un software ITSM (gestión de servicios de TI) desarrollado por Nithios: una mesa de servicio que funciona en la nube, se usa desde el navegador y está alineada con buenas prácticas ITIL. El nombre del producto y el de la empresa que lo comercializa se reservan por confidencialidad.',
+      'Concentra en una sola herramienta el trabajo diario del área de tecnología: el reporte de casos por un canal único, la atención de incidentes y solicitudes, la base de conocimiento, el inventario de equipos y licencias, el catálogo de servicios y los reportes.',
+      'Está pensado para áreas de TI de empresas y pymes, colegios, universidades, clínicas y entidades públicas en Colombia, y permite atender varias sedes desde la misma mesa de servicio. Se pone en marcha por etapas: de una demostración y un diagnóstico a la capacitación y el acompañamiento inicial.',
+    ],
+    status: 'sin-especificar',
+    statusLabel: 'Producto en la nube que se ofrece con demostración',
+    features: [
+      { title: 'Mesa de servicio', text: 'Un canal único para que los usuarios reporten; cada caso queda con un técnico responsable.', icon: 'message' },
+      { title: 'Incidentes y solicitudes', text: 'Cada caso lleva número, prioridad, estado e historial: una falla no se atiende igual que un pedido.', icon: 'clipboard' },
+      { title: 'Base de conocimiento', text: 'Las soluciones quedan documentadas para que cualquier técnico las reutilice.', icon: 'folder' },
+      { title: 'Inventario tecnológico', text: 'Equipos, licencias y dispositivos registrados y ligados a sus casos, al estilo de una CMDB.', icon: 'database' },
+      { title: 'Catálogo de servicios', text: 'Los servicios de TI publicados, para que el usuario sepa qué puede pedir y cómo.', icon: 'grid' },
+      { title: 'Reportes', text: 'Casos abiertos, carga de trabajo por técnico y fallas que se repiten.', icon: 'chart' },
+      { title: 'Varias sedes, una mesa', text: 'Sedes o bloques de un campus atendidos desde la misma mesa de servicio.', icon: 'map-pin' },
+      { title: 'En la nube', text: 'Usuarios y técnicos entran desde el navegador, sin instalar nada en cada equipo.', icon: 'browser' },
+    ],
+    highlights: [
+      'Alineado con buenas prácticas ITIL',
+      'Incidentes, conocimiento e inventario en un solo lugar',
+      'En la nube, desde el navegador',
+      'Varias sedes desde una misma mesa',
+    ],
+    platforms: ['Web en la nube'],
+    // Idiomas de la interfaz y stack: no confirmados (docs/PENDIENTES.md).
+    languages: [],
+    stack: [],
+    security: [],
+    deployment: [
+      'Se usa desde el navegador, en la sede o en trabajo remoto',
+      'Diseñado para la nube: no exige mantener un servidor propio para la herramienta',
+      'Las mejoras llegan a todos los usuarios sin reinstalar nada en cada equipo',
+      'Varias sedes o bloques atendidos desde la misma mesa de servicio',
+    ],
+    implementation: [
+      { title: 'Demostración y diagnóstico', text: 'Se revisa cómo le llegan hoy los casos al equipo de TI.' },
+      { title: 'Propuesta', text: 'Alcance, modalidad de contratación y acompañamiento, por escrito.' },
+      { title: 'Configuración', text: 'Catálogo, categorías, usuarios y responsables según la forma de trabajo del equipo.' },
+      { title: 'Carga inicial', text: 'El inventario de equipos, por ejemplo desde una hoja de cálculo, y los primeros artículos de conocimiento.' },
+      { title: 'Capacitación y acompañamiento', text: 'Técnicos y usuarios aprenden a usarlo, con acompañamiento en las primeras semanas.' },
+    ],
+    serviceSlug: 'desarrollo-de-software-a-medida',
+    relatedServicePages: ['desarrollo-de-plataformas-web', 'automatizacion-de-procesos', 'consultoria-tecnologica'],
+    monogram: 'TI',
+    ogImage: itsmOg,
+    ogImageAlt:
+      'Software ITSM y mesa de servicio, caso de Nithios: ilustración de un tablero de casos, la ficha de un incidente y el botón Ver el caso',
+    featured: true,
+    order: 2,
+    whatsappMessage:
+      'Hola Nithios, vi el caso del software ITSM y quiero una mesa de servicio o una herramienta de gestión de TI a la medida para mi empresa.',
+    headline: 'Cada caso de TI, con responsable, prioridad e historial.',
+    challenge:
+      'En muchas áreas de TI los pedidos de ayuda llegan por correo, por chat, por teléfono o en el pasillo. Sin un registro único se atiende primero a quien más presiona, las soluciones dependen de la memoria de un técnico, el inventario vive en una hoja de cálculo desactualizada y, cuando la gerencia pregunta cuánto trabajo atiende el equipo, no hay datos para responder.',
+    solution: [
+      'La mesa de servicio les da a los usuarios un canal único para reportar. Cada caso recibe un número, una prioridad y un técnico responsable, y su historial queda a la vista para seguirlo sin tener que preguntar por chat cómo va.',
+      'Lo que el equipo resuelve se documenta en la base de conocimiento, y el inventario tecnológico conecta cada equipo, licencia o dispositivo con los casos que ha tenido, al estilo de una CMDB. El catálogo publica los servicios de TI disponibles para que cada usuario sepa qué puede pedir.',
+      'Los reportes muestran los casos abiertos, la carga de cada técnico y las fallas que se repiten. Todo funciona en la nube, desde el navegador; una misma mesa atiende varias sedes, y los módulos siguen las prácticas ITIL que más usan las mesas de servicio.',
+    ],
+    value: [
+      { title: 'Orden en la entrada', text: 'Un canal único en lugar de correos, chats y llamadas sueltos.', icon: 'workflow' },
+      { title: 'Conocimiento que se queda', text: 'Las soluciones documentadas no se van con la persona que las encontró.', icon: 'layers' },
+      { title: 'Inventario al día', text: 'Cada equipo ligado a su historial de casos, no en una hoja aparte.', icon: 'database' },
+      { title: 'Datos para decidir', text: 'Carga de trabajo y fallas repetidas medidas, para sustentar decisiones ante la gerencia.', icon: 'chart' },
+    ],
+    statusNote:
+      'El nombre del producto y el de la empresa que lo comercializa se reservan por confidencialidad.',
+    images: [],
+    illustration: 'itsm',
+    faqs: [
+      {
+        category: 'desarrollo',
+        question: '¿Qué es el software ITSM de este caso?',
+        answer:
+          'Es un software de gestión de servicios de TI (ITSM) desarrollado por Nithios: una mesa de servicio en la nube, alineada con buenas prácticas ITIL, que reúne incidentes y solicitudes, base de conocimiento, inventario tecnológico, catálogo de servicios y reportes. El nombre del producto y el de la empresa que lo comercializa se reservan por confidencialidad.',
+      },
+      {
+        category: 'desarrollo',
+        question: '¿Para qué organizaciones sirve una mesa de servicio ITIL como esta?',
+        answer:
+          'Para áreas de TI que atienden a usuarios internos: empresas, pymes, colegios, universidades, clínicas y entidades públicas en Colombia. Una misma mesa puede atender varias sedes y, como funciona en la nube, usuarios y técnicos entran desde el navegador, sin instalar nada en cada equipo.',
+      },
+      {
+        category: 'desarrollo',
+        question: '¿Qué quiere decir que una mesa de servicio esté alineada con ITIL?',
+        answer:
+          'ITIL es un marco reconocido de buenas prácticas para gestionar servicios de TI. Que la herramienta esté alineada con él significa que sus módulos siguen prácticas como la mesa de servicio y la gestión de incidentes, solicitudes y activos. No es una certificación del software ni de la organización que lo usa.',
+      },
+      {
+        category: 'desarrollo',
+        question: '¿Pueden desarrollar un software de mesa de ayuda a medida para mi empresa?',
+        answer:
+          'Sí. Desarrollamos software a medida en toda Colombia, incluidas mesas de ayuda y herramientas de gestión de TI adaptadas a tus categorías, sedes y responsables. Si una solución existente te sirve, también te lo decimos: la guía [software a medida o empaquetado](/guias/software-a-medida-vs-software-empaquetado/) ayuda a decidir. Escríbenos por WhatsApp para empezar.',
+      },
+    ],
+  },
+  {
     slug: 'plataforma-comercio-internacional',
     path: '/portafolio/plataforma-comercio-internacional/',
     name: 'Plataforma de comercio internacional',
@@ -336,7 +463,7 @@ export const projects: Project[] = [
     relatedServicePages: ['desarrollo-de-plataformas-web'],
     monogram: 'C',
     featured: true,
-    order: 2,
+    order: 3,
     whatsappMessage: 'Hola Nithios, vi el caso de la plataforma de comercio internacional y quiero una plataforma similar para mi empresa de importación o exportación.',
     cover: comercioTablero,
     coverAlt:
@@ -466,7 +593,7 @@ export const projects: Project[] = [
     relatedServicePages: ['desarrollo-de-plataformas-web', 'automatizacion-de-procesos', 'desarrollo-de-aplicaciones-moviles'],
     monogram: 'L',
     featured: true,
-    order: 3,
+    order: 4,
     whatsappMessage: 'Hola Nithios, vi el caso de la plataforma logística para acero y quiero una plataforma logística a la medida para mi empresa.',
     cover: logisticaTablero,
     coverAlt:
@@ -594,7 +721,7 @@ export const projects: Project[] = [
     relatedServicePages: ['desarrollo-de-plataformas-web', 'automatizacion-de-procesos', 'desarrollo-de-aplicaciones-moviles'],
     monogram: 'T',
     featured: true,
-    order: 4,
+    order: 5,
     whatsappMessage: 'Hola Nithios, vi el caso de la plataforma de transporte audiovisual y quiero una plataforma de operación a la medida para mi empresa.',
     cover: transporteTorre,
     coverAlt:
@@ -718,7 +845,7 @@ export const projects: Project[] = [
     ogImage: krystalOg,
     ogImageAlt: 'Krystal, caso de Nithios: ilustración conceptual de agenda y videollamada para consultorios y el botón Ver el caso',
     featured: true,
-    order: 5,
+    order: 6,
     whatsappMessage: 'Hola Nithios, vi Krystal y quiero una aplicación a la medida para mi consultorio o empresa.',
     headline: 'Agenda, consulta y seguimiento, en una sola app.',
     challenge:
@@ -769,7 +896,7 @@ export const portfolioFaqs: Faq[] = [
     category: 'desarrollo',
     question: '¿Qué tipo de software desarrolla Nithios?',
     answer:
-      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás cinco ejemplos: Chelato Toons, un videojuego web para activación de marca; una plataforma de comercio internacional para importaciones y exportaciones desde China; una plataforma logística de pedidos, rutas y despachos para la distribución de acero; una plataforma de operación de transporte especial para producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
+      'Nithios desarrolla software a medida con nuevas tecnologías: plataformas web de gestión, aplicaciones móviles, sistemas internos y soluciones con inteligencia artificial. En este portafolio verás seis ejemplos: Chelato Toons, un videojuego web para activación de marca; un software ITSM con una mesa de servicio de TI alineada con ITIL; una plataforma de comercio internacional para importaciones y exportaciones desde China; una plataforma logística de pedidos, rutas y despachos para la distribución de acero; una plataforma de operación de transporte especial para producciones audiovisuales, y Krystal, para consultorios psicológicos con atención remota.',
   },
   {
     category: 'desarrollo',

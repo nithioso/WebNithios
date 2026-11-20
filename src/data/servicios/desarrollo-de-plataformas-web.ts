@@ -248,7 +248,7 @@ export default {
       'cuanto-cuesta-desarrollar-software-a-medida-en-colombia',
       'como-elegir-una-empresa-de-desarrollo-de-software-en-colombia',
     ],
-    projects: ['plataforma-comercio-internacional', 'plataforma-logistica-acero'],
+    projects: ['plataforma-comercio-internacional', 'software-itsm-mesa-de-servicio'],
   },
 
   cta: {

@@ -19,9 +19,10 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 - `src/data/` — FUENTE ÚNICA de contenido: `site.ts` (site, waLink(), absoluteUrl(), nav, cities, coverage), `services.ts` + `service-details.ts`, `projects.ts` (+ portfolioFaqs), `ceo.ts` (+ ceoPage), `faqs.ts`, `contact.ts`, `privacy.ts`, `og.ts` (OG por página + alt).
 - Páginas: todas las rutas del mapa están hechas (ver docs/ARQUITECTURA.md). Portafolio: Chelato Toons (videojuego web EN LÍNEA y ABIERTO —nació con acceso por QR para la activación— en chelato.nithios.com para
   «una marca de micheladas» —nunca nombrar a la empresa—; capturas móviles en `PhoneFrame` SIN personajes, que son de terceros), «Plataforma de comercio internacional», «Plataforma logística para acero»,
-  «Plataforma de transporte audiovisual» (capturas reales 2880×1800 WebP en `src/assets/portfolio/<slug>/`) y Krystal (ilustración conceptual).
-  Los TRES casos de comercio internacional, logística y transporte están ANONIMIZADOS: nunca escribir en `src/` ni `public/` el nombre del cliente ni de su producto
-  (tampoco siglas, rutas ni nombres de archivo; correspondencia interna y grep de comprobación en docs/PENDIENTES.md).
+  «Plataforma de transporte audiovisual» (capturas reales 2880×1800 WebP en `src/assets/portfolio/<slug>/`), «Software ITSM y mesa de servicio» (mesa de servicio
+  de TI en la nube alineada con ITIL; producto que se ofrece con demo, NO prototipo; sin capturas: ilustración conceptual `ItsmMockup`) y Krystal (ilustración conceptual).
+  Los CUATRO casos de comercio internacional, logística, transporte y software ITSM están ANONIMIZADOS: nunca escribir en `src/` ni `public/` el nombre del cliente ni de su producto
+  (en el ITSM: ni el del producto ni el de la empresa que lo comercializa; tampoco siglas, rutas ni nombres de archivo; correspondencia interna y grep de comprobación en docs/PENDIENTES.md).
 - Servicios específicos: un archivo por página en `src/data/servicios/<slug>.ts` (tipo `ServicePage`) → `/servicios/<slug>/` automático.
   Guías: `src/content/guias/<slug>.md` (esquema zod en `src/content.config.ts`) → `/guias/<slug>/`. Slugs registrados en `src/data/mapa-contenido.ts`.
   Contrato de redacción OBLIGATORIO: `docs/CONTENIDO.md` (referencias: `cto-externo.ts` y `que-es-un-cto-externo.md`).

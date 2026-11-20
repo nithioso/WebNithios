@@ -135,7 +135,7 @@ Seo: `title`, `description`, `path`, `ogImage?`, `ogImageAlt?`, `ogImageWidth?`/
 - **ContactForm** — arma el mensaje y abre wa.me (sin JS: GET a wa.me + enlace de respaldo; no guarda datos). Props: `class?`.
 - **BrowserFrame** — marco de navegador para capturas (slot). Props: `label?`, `glow?`, `class?`.
 - **PhoneFrame** — marco de teléfono para capturas verticales de móvil (slot; barra de estado propia para que la isla no tape la captura). Props: `glow?`, `class?` (el ancho lo da el contenedor).
-- **ProjectArt** — ÚNICA selección de visual de un proyecto: `cover` → `illustration` (mapa `illustrations = { krystal: KrystalMockup }`) → monograma.
+- **ProjectArt** — ÚNICA selección de visual de un proyecto: `cover` → `illustration` (mapa `illustrations = { krystal: KrystalMockup, itsm: ItsmMockup }`) → monograma.
   Props: `project`, `variant?: 'card'|'frame'`, `widths?` ([640,960,1280,1920]), `sizes?` (móvil 160vw card / 165vw frame, por el recorte ampliado), `priority?`.
   Nueva ilustración: componente + entrada en `illustrations` + valor en `Project['illustration']`.
 - **ProjectVisual** — `ProjectArt variant="frame"` dentro de BrowserFrame (+ PhoneFrame superpuesto abajo a la derecha si hay `coverPhone`; barra con el dominio de `liveUrl`). Props: `project`, `priority?`, `glow?`, `sizes?`, `class?`.
@@ -156,6 +156,7 @@ Seo: `title`, `description`, `path`, `ogImage?`, `ogImageAlt?`, `ogImageWidth?`/
   índice de contenidos (móvil: `<details>`; ≥lg: lateral fijo con `aria-current` de la sección visible), prosa `.prose-guia`, FAQ, nota editorial, relacionados, CtaBand.
   El título del índice lateral es un `<p>` (no h2) y su CTA es `variant="outline"` (máx. 1–2 acentos dorados por vista). /guias/ usa bento de 6 columnas sin huecos.
 - **KrystalMockup** — ilustración CSS rotulada «Ilustración conceptual» (no es captura). Props: `class?`.
+- **ItsmMockup** — ilustración CSS del caso «Software ITSM y mesa de servicio» (tablero de casos por estado y prioridad, ficha de incidente con historial, inventario ligado a casos), rotulada «Ilustración conceptual», sin textos ni datos. Props: `class?`.
 
 Nota Button: en móvil (<sm) el texto puede partir en dos líneas (`text-balance`); desde `sm` es `whitespace-nowrap`. Mantén las etiquetas de
 botones lg ≤ ~24 caracteres para que quepan en una línea a 390 px (p. ej. «Habla con Jonathan», «Abrir WhatsApp directo»). Botones de formulario: `<Button type="submit">`, nunca copiar clases.

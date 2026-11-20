@@ -20,6 +20,8 @@ relatedGuides:
   - cuanto-cuesta-desarrollar-software-a-medida-en-colombia
   - como-elegir-una-empresa-de-desarrollo-de-software-en-colombia
   - que-es-un-cto-externo
+relatedProjects:
+  - software-itsm-mesa-de-servicio
 faqs:
   - question: '¿Qué es un software empaquetado o «enlatado»?'
     answer: 'Es un programa hecho para muchas empresas a la vez, que se compra o se alquila tal como existe y se adapta con la configuración que el fabricante permite. Hoy suele venderse como suscripción en la nube. Su ventaja es que ya funciona; su límite es que tu empresa se adapta a su forma de trabajar, y no al revés.'

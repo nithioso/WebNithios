@@ -257,7 +257,7 @@ export default {
       'software-a-medida-vs-software-empaquetado',
       'como-empezar-con-inteligencia-artificial-en-tu-empresa',
     ],
-    projects: ['plataforma-logistica-acero'],
+    projects: ['plataforma-logistica-acero', 'software-itsm-mesa-de-servicio'],
   },
 
   cta: {
