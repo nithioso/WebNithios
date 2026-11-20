@@ -6,14 +6,14 @@ consultoría tecnológica + desarrollo de software a medida. Idioma es-CO, tuteo
 ## Stack
 Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'`) · Tailwind CSS 4 (`@tailwindcss/vite`, tokens en `@theme`) ·
 `@astrojs/sitemap` · TypeScript strict (TS 6; `@astrojs/check` aún no soporta TS 7) · Inter Variable autoalojada (fontsource) ·
-`<ClientRouter />` (View Transitions). Sin frameworks de UI, sin CDNs, sin analytics, sin cookies. Hosting: Hostinger estático (`public/.htaccess`). NUNCA nombrar el proveedor de hosting en `src/` ni `public/` (seguridad; `verify:seo` lo comprueba).
+`<ClientRouter />` (View Transitions). Sin frameworks de UI ni CDNs. Analítica: Google Tag Manager (`site.gtmId`) + GA4 con Consent Mode v2: todo «denied» por defecto, cookies de Google Analytics SOLO si el visitante acepta el banner propio (`ConsentBanner`); solo en nithios.com (docs/ANALITICA.md). Nunca afirmar «sin cookies/analítica»; no añadir píxeles, otros rastreadores ni etiquetas «HTML personalizado» en GTM (la CSP las bloquea). Hosting: Hostinger estático (`public/.htaccess`). NUNCA nombrar el proveedor de hosting en `src/` ni `public/` (seguridad; `verify:seo` lo comprueba).
 
 ## Comandos
 - `npm run dev` · `npm run build` (debe pasar sin warnings) · `npm run preview` · `npm run check` (0 errores)
 - `npm run build` ejecuta `postbuild` (`scripts/csp-hashes.mjs`): falla si cambias un `<script is:inline>` y no actualizas su hash en la CSP de `public/.htaccess`.
 - `npm run brand` → regenera favicon e íconos PWA desde los SVG de `design/logo/final/` (logo oficial K «NTOS en sello», derivados de `design/logo/v3/ntos-sello/`; sharp + Playwright, ambos en devDependencies) y luego corre `npm run og`.
 - `npm run kit` → regenera el kit gráfico `design/brand-kit/` (vectores, PNG, favicon/app, redes, impresión) desde `design/logo/v3/ntos-sello/`.
-- `npm run og` → regenera las OG 1200×630 (`public/og-default.png` + `src/assets/og/*-og.png`, incluidas las automáticas de servicios específicos y guías; solo esas: `npm run og -- --only=auto`) · `npm run verify:images` → auditoría de OG, alt y nombres sobre `dist/` · `npm run verify:links` → enlaces internos y anclas sobre `dist/` · `npm run verify:seo` → metadatos, og:description ≤ 125, JSON-LD, sitemap, robots, llms y enlazado (también `-- --remote=https://nithios.com`). Los tres deben pasar.
+- `npm run og` → regenera las OG 1200×630 (`public/og-default.png` + `src/assets/og/*-og.png`, incluidas las automáticas de servicios específicos y guías; solo esas: `npm run og -- --only=auto`) · `npm run verify:images` → auditoría de OG, alt y nombres sobre `dist/` · `npm run verify:links` → enlaces internos y anclas sobre `dist/` · `npm run verify:seo` → metadatos, og:description ≤ 125, JSON-LD, sitemap, robots, llms y enlazado (también `-- --remote=https://nithios.com`) · `npm run verify:analytics` → módulo de analítica en todas las páginas, consent default antes de gtm.js, carga diferida, nada fuera de producción, CSP de Google y sin afirmaciones «sin cookies». Los cuatro deben pasar.
 
 ## Mapa de archivos
 - `src/data/` — FUENTE ÚNICA de contenido: `site.ts` (site, waLink(), absoluteUrl(), nav, cities, coverage), `services.ts` + `service-details.ts`, `projects.ts` (+ portfolioFaqs), `ceo.ts` (+ ceoPage), `faqs.ts`, `contact.ts`, `privacy.ts`, `og.ts` (OG por página + alt).
@@ -30,10 +30,11 @@ Astro 7 (output estático, `trailingSlash: 'always'`, `build.format: 'directory'
 - Enlazado: guías destacadas en home/`/servicios/`/líneas → `src/data/guias.ts › featuredGuides` (`GuidesBlock`); casos → servicios: `projects.ts › relatedServicePages`.
 - GEO: `public/llms.txt` (a mano, una línea por página) · `/llms-full.txt` GENERADO por `src/pages/llms-full.txt.ts` (no editar a mano) · sitemap con `<image:image>` (serialize en `astro.config.mjs`).
 - `src/lib/schema.ts` — builders JSON-LD · `src/lib/icons.ts` — set de íconos (`IconName`).
-- `src/layouts/BaseLayout.astro` — head SEO, header, footer, FAB, reveal. Todas las páginas lo usan.
+- `src/layouts/BaseLayout.astro` — head SEO, header, footer, FAB, banner de cookies, reveal. Todas las páginas lo usan.
+- `src/scripts/analytics.ts` — GTM + Consent Mode v2 + eventos del dataLayer (`page_view`, `whatsapp_click`, `outbound_click`, `contact_form_submit`); enlaces a WhatsApp con `data-wa-location` (prop `location` de `WhatsAppButton`). Textos del banner: `privacy.ts › cookieBanner`. Dominios de Google en la CSP: docs/ANALITICA.md.
 - `src/components/` — ver docs/DISENO.md (props + ejemplos de cada uno).
 - `src/styles/global.css` — tokens y utilidades de marca.
-- `docs/ARQUITECTURA.md` · `docs/DISENO.md` · `docs/SEO-GEO.md` · `docs/CONTENIDO.md` · `docs/PENDIENTES.md`.
+- `docs/ARQUITECTURA.md` · `docs/DISENO.md` · `docs/SEO-GEO.md` · `docs/CONTENIDO.md` · `docs/ANALITICA.md` · `docs/PENDIENTES.md`.
 
 ## Convenciones
 - Rutas internas SIEMPRE con slash final (`/servicios/`). `path` de BaseLayout igual a la ruta.

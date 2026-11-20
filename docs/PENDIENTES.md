@@ -49,7 +49,7 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   Comercio internacional (nov 2026): capturas del prototipo servido en local (superadmin, tema oscuro; la del idioma con locale `zh`), logo oculto,
   marca → «Plataforma de comercio», razones sociales propias → «Empresa Colombia»/«Empresa China»/«Empresa aliada» (y la razón social china → 贸易公司),
   clientes ficticios → «Cliente A…H», proveedores → «Proveedor A…K» / 供应商 A…K, dominio de correos de demo → `demo.example`.
-  Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT|dragon|\bdgt\b|themyos|onovatec" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`).
+  Comprobación: `grep -riE "armetal|lystrax|l&st|lsto|CONNECT|dragon|\bdgt\b|themyos|onovatec" src public dist` debe dar 0 (salvo la directiva CSP `connect-src`, `disconnect()` de los observadores y `localStorage` —«lSto»— del módulo de analítica `src/scripts/analytics.ts`, que no son nombres de clientes).
   `verify:seo` no comprueba nombres de clientes (solo el proveedor de hosting): añadirlos allí los escribiría en `scripts/`; se hace con este grep.
 - [x] **Exposición fuera del sitio — RESUELTO (nov 2026): el usuario decidió que el nombre solo no debe publicarse en nithios.com; el subdominio y el repo público pueden quedar como están.** el subdominio público `dragon.nithios.com` y el repo público
   `nithioso/dragon-global-trade-prototipo` siguen mostrando el nombre del cliente (título, logo, `<meta description>`, datos de demo). El sitio no enlaza
@@ -132,6 +132,17 @@ La página `/jonathan-osorio/` oculta cada bloque mientras su campo esté vacío
   (webmail., staging…) añadir `includeSubDomains`; `preload` solo después y registrando en hstspreload.org.
 - [ ] (Opcional) `<lastmod>` del sitemap con fechas reales por página (campo `updatedAt` en src/data o `git log -1 --format=%cI`); hoy se omite.
 - [ ] Tras desplegar: confirmar `Cache-Control: … immutable` en `/_astro/*` (`curl -sI`) y las redirecciones de un solo salto.
+
+### Analítica (GTM `GTM-TQBGPNW3` + GA4, docs/ANALITICA.md)
+- [ ] **Propiedad GA4 e ID de medición:** el contenedor publicado ya apunta a `G-JF8YP2TR0V` (detectado el 20 nov 2026). El usuario debe
+  confirmar que esa propiedad es suya (o crear una y pasar el ID `G-XXXX`) y aplicar la configuración de docs/ANALITICA.md › «Configuración paso a paso»:
+  `send_page_view=false`, desmarcar «Cambios de página basados en eventos del historial», desactivar «Clics salientes» e «Interacciones con
+  formularios», etiquetas de evento GA4, `whatsapp_click` como evento clave, vista previa y publicar.
+- [ ] **Desactivar la recopilación automática de datos proporcionados por el usuario** (hoy activa en el contenedor: correo/teléfono/dirección) y mantener Google Signals desactivado.
+- [ ] **Revisión legal del banner y de la sección 4 «Cookies y analítica» de la política** (consentimiento previo, modo avanzado con avisos
+  sin cookies, transferencia internacional a Google, plazo de retención de GA4 elegido). Textos: `src/data/privacy.ts` (`privacyPolicy`, `cookieBanner`).
+- [ ] Decidir si se mantiene el modo de consentimiento **avanzado** (GTM carga siempre; avisos sin cookies antes de aceptar) o se pasa al
+  **básico** (requerir `analytics_storage` en las etiquetas); si cambia, ajustar la sección 4 de la política.
 
 - [x] **Regla de conflicto de interés (servicio de junta):** el usuario eligió la versión flexible (nov 2026): el conflicto se declara y se maneja según las reglas de cada junta, sin ejemplos ni compromisos de exclusión de Nithios como proveedor.
 

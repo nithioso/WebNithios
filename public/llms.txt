@@ -13,7 +13,7 @@
 - Idioma de atención: español
 - CEO y Fundador: Jonathan Osorio Correa, Ingeniero de Sistemas (Universidad Salazar y Herrera) y Especialista en Gerencia de TI (Universidad Pontificia Bolivariana), CTO y líder de innovación radicado en Medellín, con casi 20 años de experiencia en retail, educación y servicios. Ha sido miembro de la junta directiva de la Asociación Drupal Colombia. Resultados de su trayectoria: más de 45 % de mejora en eficiencia con la migración de un ERP, reducción del 36 % mensual en costos de nube Kubernetes, más de 40 % de incremento en ventas con una app B2B y 35 % más de ROI en canales digitales de telecomunicaciones. Marcos: ITIL, COBIT, TOGAF, Scrum, DevOps. Idiomas: español e inglés. Perfil: https://nithios.com/jonathan-osorio/
 - Canal de contacto único: WhatsApp +57 305 302 7559 — https://wa.me/573053027559
-- Privacidad: el sitio no usa cookies ni analítica
+- Privacidad: analítica con Google Analytics (vía Google Tag Manager) solo si el visitante la acepta; sin publicidad
 
 ## Servicios
 

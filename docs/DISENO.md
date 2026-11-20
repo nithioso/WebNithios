@@ -38,7 +38,7 @@ Todos aceptan `class`. Importa con `@/components/X.astro`.
 ### BaseLayout (`@/layouts/BaseLayout.astro`)
 Props: `title`, `description`, `path`, `ogImage?`, `ogImageAlt?`, `ogImageWidth?`/`ogImageHeight?` (por defecto 1200×630), `ogType?`, `jsonLd?: object[]`, `noindex?`, `breadcrumbs?: Crumb[]`,
 `pageType?` (`'AboutPage'|'ContactPage'|'FAQPage'|'CollectionPage'|'ProfilePage'`…), `mainEntityId?`, `whatsappMessage?`. Slot `head`.
-Incluye Header, Footer, WhatsAppFab, skip link, `<main id="contenido">`. El contenido de la página empieza bajo el header fijo: usa `PageHero` (ya compensa `--header-h`).
+Incluye Header, Footer, WhatsAppFab, ConsentBanner, módulo de analítica (`src/scripts/analytics.ts`), skip link, `<main id="contenido">`. El contenido de la página empieza bajo el header fijo: usa `PageHero` (ya compensa `--header-h`).
 
 ### PageHero — hero de páginas internas (contiene el `<h1>`)
 Props: `title`, `titleHtml?`, `eyebrow?`, `intro?`, `breadcrumbs?: Crumb[]`, `whatsappMessage?: string | false`, `ctaLabel?`,
@@ -85,9 +85,10 @@ Ojo: no pases `hidden`/`sm:inline-flex` en `class` (choca con `inline-flex`); en
 ```
 
 ### WhatsAppButton — CTA principal
-Props: `message?`, `label?` ('Hablemos por WhatsApp'), `size?`, `variant?: 'gold'|'glass'|'outline'`, `fullWidth?`.
+Props: `message?`, `label?` ('Hablemos por WhatsApp'), `size?`, `variant?: 'gold'|'glass'|'outline'`, `fullWidth?`, `location?` (→ `data-wa-location`:
+`link_location` del evento `whatsapp_click`, docs/ANALITICA.md; sin él se deduce de la sección).
 ```astro
-<WhatsAppButton message="Hola Nithios, quiero cotizar una app" size="lg" />
+<WhatsAppButton message="Hola Nithios, quiero cotizar una app" size="lg" location="cta-band" />
 ```
 
 ### CtaBand — cierre de página
@@ -123,6 +124,11 @@ Fuente de verdad: los SVG de `design/logo/final/` (derivados de `design/logo/v3/
 logo-mono, wordmark, app-icon, app-icon-square, app-icon-maskable). Si cambia la geometría: actualiza v3/ntos-sello/, deriva final/, copia los paths a Logo.astro y ejecuta `npm run brand` y `npm run kit`.
 Zona de respeto: ¼ del diámetro. Tamaño mínimo: moneda 24 px con corte óptico (la NT se lee desde ~24–32 px; la S se descubre desde ~64 px; a 16 px es una moneda con una marca oscura), horizontal 32 px de alto.
 Sobre fondos claros usa `tone="mono"` o los SVG `-pos`. La NT es un hueco: deja ver el fondo.
+
+### ConsentBanner — aviso de cookies (incluido por BaseLayout)
+Sin props. Solo si `site.gtmId`. Region no modal (`aria-label`), fija abajo (móvil: ancho completo sobre el FAB; ≥ md: abajo a la izquierda),
+«Rechazar»/«Aceptar» con el mismo estilo (`.consent-btn`, 44 px), animación solo con `prefers-reduced-motion: no-preference`, `transition:persist`.
+Cualquier `[data-consent-open]` lo reabre (enlace «Preferencias de cookies» del footer). Textos: `privacy.ts › cookieBanner`. Ver docs/ANALITICA.md.
 
 ### Header / Footer / WhatsAppFab / Seo
 Incluidos por BaseLayout. Header: `path`, `whatsappMessage?`. Footer: `whatsappMessage?`. WhatsAppFab: `message?`.

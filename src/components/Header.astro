@@ -51,7 +51,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 
       <div class="flex items-center gap-2">
         <div class="hidden sm:block">
-          <WhatsAppButton message={whatsappMessage} size="sm" />
+          <WhatsAppButton message={whatsappMessage} size="sm" location="header" />
         </div>
         <button
           type="button"
@@ -92,9 +92,9 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
         }
       </ul>
       <div class="mt-auto pt-10">
-        <WhatsAppButton message={whatsappMessage} size="lg" fullWidth />
+        <WhatsAppButton message={whatsappMessage} size="lg" fullWidth location="menu-movil" />
         <p class="mt-4 text-center text-sm text-smoke">
-          <a href={waLink(whatsappMessage)} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center hover:text-pearl">
+          <a href={waLink(whatsappMessage)} target="_blank" rel="noopener noreferrer" data-wa-location="menu-movil" class="inline-flex min-h-11 items-center hover:text-pearl">
             {site.whatsapp.display}
           </a>{' '}
           · Atención en toda Colombia
@@ -148,7 +148,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     controller = new AbortController();
     const { signal } = controller;
     document.documentElement.style.overflow = '';
-    for (const sel of ['main', 'body > footer', '.wa-fab']) document.querySelector(sel)?.removeAttribute('inert');
+    for (const sel of ['main', 'body > footer', '.wa-fab', '#consent-banner']) document.querySelector(sel)?.removeAttribute('inert');
     const header = document.querySelector<HTMLElement>('[data-header]');
     const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
     const menu = document.querySelector<HTMLElement>('[data-menu]');
@@ -166,7 +166,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       document.documentElement.style.overflow = open ? 'hidden' : '';
       if (label) label.textContent = open ? 'Cerrar menú' : 'Abrir menú';
       // Comportamiento modal: el resto de la página queda fuera del árbol de accesibilidad.
-      for (const sel of ['main', 'body > footer', '.wa-fab']) {
+      for (const sel of ['main', 'body > footer', '.wa-fab', '#consent-banner']) {
         document.querySelector(sel)?.toggleAttribute('inert', open);
       }
       if (open) {

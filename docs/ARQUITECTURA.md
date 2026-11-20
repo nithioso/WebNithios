@@ -10,6 +10,7 @@ scripts/generate-og-images.mjs      npm run og: OG 1200×630 por página (Playwr
 scripts/verify-images.mjs           npm run verify:images: auditoría de og:image, alt, nombres de imagen y sitemap de imágenes sobre dist/
 scripts/verify-links.mjs            npm run verify:links: enlaces internos (existencia, slash final, anclas) sobre dist/
 scripts/verify-seo.mjs              npm run verify:seo: metadatos, OG (og:description ≤ 125), JSON-LD, sitemap, robots, llms y enlazado (dist/ o --remote=URL)
+scripts/verify-analytics.mjs        npm run verify:analytics: GTM + Consent Mode (orden del dataLayer ejecutando el módulo publicado, carga diferida, hosts, CSP, sin «sin cookies»)
 scripts/csp-hashes.mjs   postbuild: verifica los hashes sha256 de los <script is:inline> contra la CSP de public/.htaccess; falla el build si falta alguno
 design/logo/            exploración y logo oficial K «NTOS en sello» (DECISION.md, v3/ntos-sello/ → final/*.svg → npm run brand; v2/, v3/ y monograma/ = archivo)
 design/brand-kit/       kit gráfico descargable (npm run kit, LEEME.md)
@@ -18,6 +19,7 @@ src/
   content/guias/        guías en Markdown (colección de contenido; esquema en src/content.config.ts)
   lib/schema.ts         JSON-LD builders · lib/images.ts imágenes OG/JSON-LD optimizadas · lib/icons.ts íconos
   layouts/BaseLayout.astro
+  scripts/analytics.ts  GTM + Consent Mode v2 + eventos del dataLayer (docs/ANALITICA.md)
   components/           UI (docs/DISENO.md)
   styles/global.css     tokens @theme + utilidades
   pages/                rutas (ver mapa)
@@ -118,3 +120,5 @@ const crumbs = [{ name: 'Servicios', path: '/servicios/' }, { name: s.shortName,
 - `WhatsAppFab`: en móvil se oculta mientras el hero está visible (IntersectionObserver). `Header`: menú móvil modal (`inert` en main/footer/FAB).
 - `Header`: menú móvil + estado `is-scrolled`, con AbortController por navegación.
 - Inline en `<head>`: añade clase `js` a `<html>` (sin JS el contenido no se oculta).
+- `src/scripts/analytics.ts` (importado por BaseLayout y ConsentBanner): GTM `GTM-TQBGPNW3` con Consent Mode v2, carga diferida tras `load`,
+  solo en nithios.com; `page_view` por navegación del ClientRouter y delegación de clics (`whatsapp_click`, `outbound_click`) + `contact_form_submit`. Ver docs/ANALITICA.md.

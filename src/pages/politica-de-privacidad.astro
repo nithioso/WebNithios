@@ -94,6 +94,18 @@ const og = await pageOgImage('/politica-de-privacidad/');
                 </ul>
               )}
               {s.after?.map((t) => <p>{t}</p>)}
+              {s.links && (
+                <ul>
+                  {s.links.map((l) => (
+                    <li>
+                      <a href={l.href} target="_blank" rel="noopener noreferrer">
+                        {l.label}
+                        <span class="sr-only"> (se abre en una pestaña nueva)</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </section>
           ))
         }

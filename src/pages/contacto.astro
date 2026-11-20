@@ -51,7 +51,7 @@ const og = await pageOgImage('/contacto/');
     <p class="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-smoke" data-reveal style="--reveal-delay:300ms">
       <Icon name="whatsapp" size={18} class="text-gold-400" />
       <span>WhatsApp</span>
-      <a href={waLink(c.whatsappMessage)} target="_blank" rel="noopener noreferrer" class="link-underline text-base font-medium text-pearl">
+      <a href={waLink(c.whatsappMessage)} target="_blank" rel="noopener noreferrer" data-wa-location="contacto-canal" class="link-underline text-base font-medium text-pearl">
         {site.whatsapp.display}
       </a>
     </p>
@@ -139,7 +139,7 @@ const og = await pageOgImage('/contacto/');
     <div class="mt-12 grid gap-5 md:grid-cols-3">
       <Card tone="solid" icon="globe" title="100 % remoto" text="Reuniones, revisiones y entregas en línea. Trabajas con nosotros desde tu oficina, en cualquier ciudad." revealDelay={0} />
       <Card tone="solid" icon="whatsapp" title="Un canal directo" text="Hablas por WhatsApp directamente con Nithios, sin intermediarios ni correos que se pierden en una bandeja." revealDelay={100} />
-      <Card tone="solid" icon="shield" title="Tus datos, cuidados" text="Este sitio no usa cookies ni analítica. Solo conocemos lo que tú decides contarnos por WhatsApp." revealDelay={200} />
+      <Card tone="solid" icon="shield" title="Tus datos, cuidados" text="Sin publicidad, y la analítica solo con tu permiso. De ti solo conocemos lo que decides contarnos por WhatsApp." revealDelay={200} />
     </div>
   </Section>
 

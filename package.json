@@ -16,7 +16,8 @@
     "verify:links": "node scripts/verify-links.mjs",
     "kit": "node scripts/build-brand-kit.mjs",
     "astro": "astro",
-    "verify:seo": "node scripts/verify-seo.mjs"
+    "verify:seo": "node scripts/verify-seo.mjs",
+    "verify:analytics": "node scripts/verify-analytics.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.5",

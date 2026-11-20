@@ -91,7 +91,7 @@ const hasAside = Astro.slots.has('aside');
           <div
             class:list={['hero-in hero-in-3 mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap', center && 'sm:justify-center']}
           >
-            {whatsappMessage !== false && <WhatsAppButton message={whatsappMessage} label={ctaLabel} size="lg" />}
+            {whatsappMessage !== false && <WhatsAppButton message={whatsappMessage} label={ctaLabel} size="lg" location="hero" />}
             {secondary && (
               <Button href={secondary.href} variant="glass" size="lg" iconRight="arrow-right">
                 {secondary.label}

@@ -21,6 +21,7 @@ const { message } = Astro.props;
   class="wa-fab group fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-40 inline-flex size-14 items-center justify-center rounded-full bg-gold text-ink-950 shadow-gold transition-[transform,opacity,translate] duration-300 ease-(--ease-apple) hover:scale-105 active:scale-95 md:bottom-8 md:right-8 md:size-16 [&.wa-fab--hidden]:pointer-events-none [&.wa-fab--hidden]:translate-y-4 [&.wa-fab--hidden]:opacity-0"
   aria-label="Escríbenos por WhatsApp (se abre en una pestaña nueva)"
   data-cta="whatsapp-fab"
+  data-wa-location="fab"
 >
   <span class="absolute inset-0 rounded-full bg-gold-400/40 motion-safe:animate-ping-soft" aria-hidden="true"></span>
   <Icon name="whatsapp" size={28} class="relative" />

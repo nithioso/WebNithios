@@ -21,6 +21,12 @@ export const site = {
   defaultOgImageAlt:
     'Logo de Nithios, «Consultoría tecnológica y software a medida» en dorado sobre negro y el botón Hablemos por WhatsApp',
   themeColor: '#000000',
+  /**
+   * Contenedor de Google Tag Manager (docs/ANALITICA.md). Vacío ⇒ no se carga GTM, no hay banner de cookies
+   * ni enlace «Preferencias de cookies». Solo se carga en los hosts de `analyticsHosts` (nunca en localhost ni vistas previas).
+   */
+  gtmId: 'GTM-TQBGPNW3',
+  analyticsHosts: ['nithios.com', 'www.nithios.com'],
   founder: 'Jonathan Osorio',
   whatsapp: {
     /** Formato E.164 sin '+', usado por wa.me */

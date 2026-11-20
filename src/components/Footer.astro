@@ -11,6 +11,7 @@ import { services } from '@/data/services';
 import { servicePages, servicePagePath } from '@/data/servicios';
 import { sortedProjects } from '@/data/projects';
 import { ceo } from '@/data/ceo';
+import { cookieBanner } from '@/data/privacy';
 
 interface Props {
   whatsappMessage?: string;
@@ -57,7 +58,7 @@ const columns = [
           desarrollo de software a medida con nuevas tecnologías.
         </p>
         <div class="mt-8">
-          <WhatsAppButton message={whatsappMessage} />
+          <WhatsAppButton message={whatsappMessage} location="footer" />
         </div>
       </div>
 
@@ -91,6 +92,7 @@ const columns = [
           href={waLink(whatsappMessage)}
           target="_blank"
           rel="noopener noreferrer"
+          data-wa-location="footer-telefono"
           class="mt-6 inline-flex min-h-11 items-center gap-2 text-[0.9375rem] text-mist hover:text-gold-200"
         >
           <Icon name="whatsapp" size={18} class="text-gold-400" />
@@ -111,6 +113,16 @@ const columns = [
               </a>
             </li>
           ))
+        }
+        {
+          site.gtmId && (
+            <li>
+              {/* Sin JS lleva a la sección de cookies de la política; con JS reabre el banner (ConsentBanner). */}
+              <a href={cookieBanner.policyHref} class="inline-flex min-h-11 items-center hover:text-pearl" data-consent-open>
+                {cookieBanner.preferencesLabel}
+              </a>
+            </li>
+          )
         }
       </ul>
     </div>

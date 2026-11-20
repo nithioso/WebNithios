@@ -57,7 +57,7 @@ export const pageOg = {
   },
   '/politica-de-privacidad/': {
     src: privacidad,
-    alt: 'Política de privacidad de Nithios según la Ley 1581 de 2012: sin cookies ni analítica y datos solo para responderte',
+    alt: 'Política de privacidad de Nithios según la Ley 1581 de 2012: analítica solo si la aceptas y datos solo para responderte',
   },
   '/preguntas-frecuentes/': {
     src: preguntas,
@@ -84,7 +84,7 @@ export const pageSocial = {
   '/jonathan-osorio/': 'CTO y líder de innovación con casi 20 años en retail, educación y servicios. Conoce al CEO y Fundador de Nithios.',
   '/contacto/': 'Escríbenos por WhatsApp al +57 305 302 7559 y cuéntanos tu proyecto. Atención remota para empresas de toda Colombia.',
   '/preguntas-frecuentes/': 'Qué hace Nithios, cómo trabaja, cuánto cuesta un proyecto y cómo empezar: respuestas claras antes de escribirnos.',
-  '/politica-de-privacidad/': 'Sin cookies ni analítica: qué datos tratamos cuando nos escribes, para qué los usamos y cómo ejercer tus derechos.',
+  '/politica-de-privacidad/': 'Analítica solo con tu permiso: qué datos tratamos, para qué los usamos y cómo ejercer tus derechos.',
 } satisfies Record<string, string>;
 
 /* ---------- OG automáticas (servicios específicos y guías) ---------- */

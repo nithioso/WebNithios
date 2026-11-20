@@ -33,6 +33,7 @@ const error = 'mt-2 hidden text-sm text-red-300';
 
   <form
     id="contact-form"
+    data-wa-location="formulario"
     class="mt-8 grid gap-6"
     action={`https://wa.me/${site.whatsapp.number}`}
     method="get"
@@ -139,7 +140,7 @@ const error = 'mt-2 hidden text-sm text-red-300';
       <span>{f.privacyNote} <a href="/politica-de-privacidad/" class="link-inline">Política de privacidad</a>.</span>
     </p>
     <div class="mt-5">
-      <WhatsAppButton message={contactPage.whatsappMessage} label={f.fallbackLabel} variant="outline" />
+      <WhatsAppButton message={contactPage.whatsappMessage} label={f.fallbackLabel} variant="outline" location="formulario-respaldo" />
     </div>
   </div>
 </div>
@@ -240,12 +241,19 @@ const error = 'mt-2 hidden text-sm text-red-300';
         // Enlace temporal: abre en pestaña nueva dentro del gesto del usuario (no lo bloquean los popups).
         const a = document.createElement('a');
         a.href = url;
+        a.dataset.waLocation = 'formulario';
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
         document.body.appendChild(a);
         a.click();
         a.remove();
 
+        // Analítica (src/scripts/analytics.ts → contact_form_submit). Solo el servicio elegido: nunca nombre, empresa ni mensaje.
+        document.dispatchEvent(
+          new CustomEvent('nithios:contact-form-submit', {
+            detail: { service: (form.querySelector<HTMLSelectElement>('#cf-servicio')?.value ?? '').trim() },
+          }),
+        );
         if (status) status.textContent = 'Abrimos WhatsApp con tu mensaje listo para enviar.';
         done?.classList.remove('hidden');
       },

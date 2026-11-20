@@ -2,7 +2,8 @@
 /**
  * Atajo del CTA principal: "Hablemos por WhatsApp" (botón dorado).
  * <WhatsAppButton message="Hola, quiero cotizar una app" />
- * <WhatsAppButton size="lg" label="Escríbenos ahora" variant="outline" />
+ * <WhatsAppButton size="lg" label="Escríbenos ahora" variant="outline" location="cta-band" />
+ * `location` → data-wa-location: parámetro link_location del evento whatsapp_click (docs/ANALITICA.md). Sin él, se deduce de la sección.
  */
 import Button from './Button.astro';
 import { waLink } from '@/data/site';
@@ -14,9 +15,11 @@ interface Props {
   variant?: 'gold' | 'glass' | 'outline';
   fullWidth?: boolean;
   class?: string;
+  /** Ubicación para analítica (header, hero, cta-band, footer…). */
+  location?: string;
 }
 
-const { message, label = 'Hablemos por WhatsApp', size = 'md', variant = 'gold', fullWidth, class: className } = Astro.props;
+const { message, label = 'Hablemos por WhatsApp', size = 'md', variant = 'gold', fullWidth, class: className, location } = Astro.props;
 ---
 
 <Button
@@ -28,6 +31,7 @@ const { message, label = 'Hablemos por WhatsApp', size = 'md', variant = 'gold',
   fullWidth={fullWidth}
   class={className}
   data-cta="whatsapp"
+  data-wa-location={location}
 >
   {label}
 </Button>

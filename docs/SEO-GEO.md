@@ -168,6 +168,10 @@ servicios se habla de «la normativa colombiana de protección de datos personal
      mientras exista ClientRouter, así que se pospone.
   5. El JSON-LD (`type="application/ld+json"`) no se ejecuta y no necesita hash.
   6. `form-action` permite `https://wa.me` y `https://api.whatsapp.com` (respaldo sin JS del formulario de contacto).
+  7. Google Tag Manager + GA4 (Consent Mode v2): `script-src`, `img-src`, `connect-src`, `style-src` y `font-src` añaden solo los dominios de la
+     guía oficial de CSP de GTM (GA4 sin Ads + vista previa); tabla y motivo de cada uno en **docs/ANALITICA.md**. GTM lo inyecta un módulo
+     propio, así que no hay nonce ni `'unsafe-inline'` en `script-src`; las etiquetas «HTML personalizado» de GTM no funcionan por diseño.
+     `npm run verify:analytics` comprueba la coherencia.
   **`npm run build` ejecuta `postbuild` → `scripts/csp-hashes.mjs` y falla si un hash no está en la CSP** (copia el que marque `FALTA`).
 
 ## Verificación automática: `npm run verify:seo`
@@ -211,7 +215,7 @@ prometer un puesto ni una cita.
   y luego www→apex). Inocuo para SEO; se resolvería con la redirección www→apex en el panel/CDN.
 
 ## Checklist de publicación
-1. `npm run build` sin avisos `[seo]`/`[og]` (incluye la verificación de hashes CSP); `npm run check` sin errores; `npm run verify:links`, `verify:images` y `verify:seo` OK.
+1. `npm run build` sin avisos `[seo]`/`[og]` (incluye la verificación de hashes CSP); `npm run check` sin errores; `npm run verify:links`, `verify:images`, `verify:seo` y `verify:analytics` OK.
 2. Subir `dist/` a `public_html` de Hostinger (incluye `.htaccess`). Activar SSL (Let's Encrypt) para `nithios.com` y `www.nithios.com`.
 3. Probar: `http://` y `www.` redirigen a `https://nithios.com/`; `/contacto` → `/contacto/`; una URL inexistente muestra la 404 con estado 404;
    cabeceras en https://securityheaders.com y consola del navegador sin errores de CSP; formulario de contacto abre WhatsApp.

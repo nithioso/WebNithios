@@ -1,0 +1,167 @@
+---
+/**
+ * Banner de consentimiento de cookies de analítica (Google Consent Mode v2; docs/ANALITICA.md).
+ * Lo incluye BaseLayout. Solo se publica si `site.gtmId` tiene valor; textos en src/data/privacy.ts › cookieBanner.
+ * - No modal (region con nombre accesible): no atrapa el foco ni bloquea la página. Fijo abajo: no causa CLS.
+ * - Móvil: ancho completo POR ENCIMA del FAB de WhatsApp; ≥ md: abajo a la izquierda (el FAB está a la derecha).
+ * - Se muestra solo si no hay decisión guardada y se mide en este host (o en `npm run dev`).
+ * - Cualquier elemento con [data-consent-open] (enlace «Preferencias de cookies» del footer) lo reabre.
+ * - transition:persist: sobrevive a las navegaciones del ClientRouter sin parpadear.
+ */
+import { site } from '@/data/site';
+import { cookieBanner as cb } from '@/data/privacy';
+---
+
+{
+  site.gtmId && (
+    <section
+      id="consent-banner"
+      class="consent-banner fixed inset-x-3 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+4.25rem)] z-40 rounded-3xl border border-line-gold bg-ink-850/95 p-4 text-pearl shadow-[0_24px_60px_-20px_rgb(0_0_0/0.9)] backdrop-blur-xl sm:p-5 md:inset-x-auto md:bottom-8 md:left-8 md:w-[26rem]"
+      aria-label={cb.label}
+      aria-describedby="consent-texto"
+      data-status-granted={cb.status.granted}
+      data-status-denied={cb.status.denied}
+      data-saved-granted={cb.saved.granted}
+      data-saved-denied={cb.saved.denied}
+      tabindex="-1"
+      hidden
+      transition:persist="consent-banner"
+    >
+      <p class="text-[0.9375rem] font-semibold text-gold-200 max-sm:sr-only" id="consent-titulo">
+        {cb.title}
+      </p>
+      <p id="consent-texto" class="text-[0.8125rem] leading-relaxed text-mist sm:mt-1.5 sm:text-sm">
+        {cb.text}{' '}
+        <a href={cb.policyHref} class="link-inline whitespace-nowrap">
+          {cb.policyLabel}
+        </a>
+      </p>
+      <p class="mt-2 hidden text-xs text-smoke" data-consent-status></p>
+      <div class="mt-3 grid grid-cols-2 gap-3 sm:mt-3.5">
+        <button type="button" class="consent-btn" data-consent="denied">
+          {cb.reject}
+        </button>
+        <button type="button" class="consent-btn" data-consent="granted">
+          {cb.accept}
+        </button>
+      </div>
+    </section>
+    <p class="sr-only" aria-live="polite" id="consent-live" transition:persist="consent-live" />
+  )
+}
+
+<style>
+  /* Mismo peso visual para Aceptar y Rechazar (sin patrones oscuros). */
+  .consent-btn {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: 1px solid var(--color-line-gold);
+    background-color: rgb(212 175 55 / 0.1);
+    padding-inline: 1rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-pearl);
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease;
+  }
+  .consent-btn:hover {
+    background-color: rgb(212 175 55 / 0.2);
+    border-color: var(--color-gold-400);
+  }
+  .consent-btn:focus-visible,
+  .consent-banner a:focus-visible,
+  .consent-banner:focus-visible {
+    outline: 2px solid var(--color-gold-400);
+    outline-offset: 3px;
+  }
+  .consent-banner:focus:not(:focus-visible) {
+    outline: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .consent-banner:not([hidden]) {
+      animation: consent-in 0.4s cubic-bezier(0.25, 1, 0.5, 1) both;
+    }
+  }
+  @keyframes consent-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+  }
+</style>
+
+<script>
+  import { analyticsEnabled, readConsent, saveConsent, type ConsentChoice } from '@/scripts/analytics';
+
+  let returnFocus: HTMLElement | null = null;
+  const get = () => document.getElementById('consent-banner');
+
+  function open(fromUser: boolean) {
+    const banner = get();
+    if (!banner) return;
+    const current = readConsent();
+    const status = banner.querySelector<HTMLElement>('[data-consent-status]');
+    if (status) {
+      status.textContent = current ? (banner.dataset[current === 'granted' ? 'statusGranted' : 'statusDenied'] ?? '') : '';
+      status.classList.toggle('hidden', !current);
+    }
+    banner.hidden = false;
+    // Abierto a petición (footer): el foco va al banner; en la primera visita NO se roba el foco.
+    if (fromUser) banner.focus();
+  }
+
+  function close() {
+    const banner = get();
+    if (!banner || banner.hidden) return;
+    const hadFocus = banner.contains(document.activeElement);
+    banner.hidden = true;
+    if (hadFocus) (returnFocus?.isConnected ? returnFocus : document.getElementById('contenido'))?.focus();
+    returnFocus = null;
+  }
+
+  function decide(choice: ConsentChoice) {
+    saveConsent(choice);
+    const banner = get();
+    const live = document.getElementById('consent-live');
+    if (live && banner) live.textContent = banner.dataset[choice === 'granted' ? 'savedGranted' : 'savedDenied'] ?? '';
+    close();
+  }
+
+  function bind(banner: HTMLElement) {
+    if (banner.dataset.bound) return;
+    banner.dataset.bound = '1';
+    banner.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((btn) =>
+      btn.addEventListener('click', () => decide(btn.dataset.consent as ConsentChoice)),
+    );
+    banner.addEventListener('keydown', (e) => {
+      // Esc cierra solo si ya hay una decisión (reapertura desde el footer).
+      if (e.key === 'Escape' && readConsent()) close();
+    });
+  }
+
+  function initBanner() {
+    const banner = get();
+    if (!banner) return;
+    bind(banner);
+    if (!readConsent() && (analyticsEnabled() || import.meta.env.DEV)) open(false);
+  }
+
+  // Delegación única: el enlace del footer se reemplaza en cada navegación. En fase de captura para
+  // cancelar el clic ANTES de que el ClientRouter lo convierta en navegación a la política.
+  document.addEventListener(
+    'click',
+    (e) => {
+      const trigger = (e.target as Element | null)?.closest?.<HTMLElement>('[data-consent-open]');
+      if (!trigger || !get()) return;
+      e.preventDefault();
+      returnFocus = trigger;
+      open(true);
+    },
+    { capture: true },
+  );
+  document.addEventListener('astro:page-load', initBanner);
+</script>

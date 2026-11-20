@@ -402,7 +402,7 @@ async function buildPages() {
         title: 'Política de <em>privacidad</em>',
         sub: 'Qué datos tratamos, para qué y cómo ejercer tus derechos.',
         cta: 'Lee la política',
-        visual: panel('EN POCAS PALABRAS', ['Sin cookies ni analítica', 'Datos solo para responderte', 'Nunca vendemos tus datos']),
+        visual: panel('EN POCAS PALABRAS', ['Analítica solo si la aceptas', 'Datos solo para responderte', 'Nunca vendemos tus datos']),
       }),
     },
     {

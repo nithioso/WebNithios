@@ -11,6 +11,7 @@
  *   jsonLd={[service(s)]}                                 // nodos extra (sin @context)
  *   whatsappMessage="Hola Nithios, …"                     // mensaje del FAB/Header/Footer
  * >
+ * Analítica: <ConsentBanner /> + src/scripts/analytics.ts (GTM con Consent Mode v2; solo en producción, docs/ANALITICA.md).
  * Siempre incluye en el @graph: Organization/ProfessionalService, WebSite, Person (completo solo en /jonathan-osorio/) y WebPage.
  */
 import '@/styles/global.css';
@@ -21,6 +22,7 @@ import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import WhatsAppFab from '@/components/WhatsAppFab.astro';
 import IconSprite from '@/components/IconSprite.astro';
+import ConsentBanner from '@/components/ConsentBanner.astro';
 import { site } from '@/data/site';
 import { ceoPhotoUrl } from '@/lib/images';
 import { ceo } from '@/data/ceo';
@@ -133,7 +135,12 @@ const nodes: JsonLd[] = [
     </main>
     <Footer whatsappMessage={whatsappMessage} />
     <WhatsAppFab message={whatsappMessage} />
+    <ConsentBanner />
 
+    <script>
+      // Analítica: GTM + Consent Mode v2 (docs/ANALITICA.md). Módulo externo: una sola evaluación por documento.
+      import '@/scripts/analytics';
+    </script>
     <script>
       /** Scroll reveal global: añade .is-visible a [data-reveal] al entrar en viewport. */
       let observer: IntersectionObserver | undefined;

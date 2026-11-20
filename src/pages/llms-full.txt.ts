@@ -42,7 +42,7 @@ export const GET: APIRoute = async () => {
       `CEO y Fundador: ${ceo.fullName} (${absoluteUrl(ceo.path)})`,
       `Contacto: WhatsApp ${site.whatsapp.display}`,
       'Precios: no publica precios genéricos; cada propuesta se ajusta al alcance del caso',
-      'Privacidad: el sitio no usa cookies ni analítica',
+      'Privacidad: analítica con Google Analytics (vía Google Tag Manager) solo si el visitante la acepta; sin publicidad',
     ]),
   );
 

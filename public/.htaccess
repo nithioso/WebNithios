@@ -53,14 +53,26 @@ AddType font/woff2 .woff2
   Header always set Cross-Origin-Opener-Policy "same-origin"
   Header always unset X-Powered-By
 
-  # CSP estricta. script-src: solo archivos propios + el hash del único <script is:inline>
+  # CSP estricta. script-src: archivos propios + el hash del único <script is:inline>
   # de BaseLayout (añade la clase .js a <html>). `npm run build` verifica el hash (postbuild →
   # scripts/csp-hashes.mjs) y falla si no está aquí.
   # style-src mantiene 'unsafe-inline' solo por los atributos style="--reveal-delay:…"/"--i:…" y los
   # estilos que inyecta <ClientRouter /> durante las transiciones. Astro no incrusta hojas
   # (build.inlineStylesheets: 'never'). El JSON-LD no se ejecuta: no requiere hash.
   # form-action: el formulario de /contacto/ sin JS hace GET a wa.me (redirige a api.whatsapp.com).
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-ST5hXlu+RzZCsJHZCtCdToKKYMaGyv+BZPmpmycks/4='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com; frame-ancestors 'none'; upgrade-insecure-requests"
+  # Google Tag Manager + Google Analytics 4 con Consent Mode (docs/ANALITICA.md; guía oficial «Content Security Policy»
+  # de Google Tag Manager, variante «GA4 sin funciones de Ads» + «modo de vista previa»). GTM se inyecta desde un
+  # módulo propio (src/scripts/analytics.ts), así que NO hace falta nonce ni 'unsafe-inline' en script-src:
+  #   script-src  www.googletagmanager.com (gtm.js y gtag/js) · tagmanager.google.com (vista previa / Tag Assistant)
+  #   img-src     www.googletagmanager.com · *.google-analytics.com (hits) · ssl.gstatic.com, www.gstatic.com (vista previa)
+  #   connect-src www.googletagmanager.com · *.google-analytics.com (region1…/g/collect) · *.google.com (analytics.google.com y
+  #               www.google.com, que GA4 usa para medir; la guía lo exige)
+  #   style-src   www.googletagmanager.com, tagmanager.google.com, fonts.googleapis.com (solo la insignia de vista previa)
+  #   font-src    fonts.gstatic.com (solo vista previa)
+  # Sin dominios regionales google.<TLD> ni doubleclick: el sitio no usa funciones de Ads (ad_* siempre «denied»).
+  # Por diseño NO funcionan: etiquetas «HTML personalizado» (scripts inline) y variables «JavaScript personalizado»
+  # ('unsafe-eval'). Usa plantillas de etiqueta de la galería. Un dominio nuevo de un proveedor exige editar esta línea.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-ST5hXlu+RzZCsJHZCtCdToKKYMaGyv+BZPmpmycks/4=' https://www.googletagmanager.com https://tagmanager.google.com; style-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://tagmanager.google.com https://fonts.googleapis.com; img-src 'self' data: https://www.googletagmanager.com https://*.google-analytics.com https://ssl.gstatic.com https://www.gstatic.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://*.google-analytics.com https://*.google.com; manifest-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com; frame-ancestors 'none'; upgrade-insecure-requests"
 
   # --- Caché ---------------------------------------------------------------
   # HTML y archivos de texto: siempre revalidar (los despliegues se ven al instante)

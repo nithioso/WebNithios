@@ -32,7 +32,7 @@ export const contactPage = {
       'Completa estos datos y prepararemos el mensaje por ti. Al enviarlo se abre WhatsApp con todo listo: solo revisas y presionas enviar.',
     submitLabel: 'Continuar en WhatsApp',
     privacyNote:
-      'Este formulario no guarda ni envía tus datos a ningún servidor. Solo arma el mensaje en tu navegador; tú decides si lo envías desde WhatsApp.',
+      'Este formulario no guarda ni envía tus datos ni tu mensaje a ningún servidor. Solo arma el mensaje en tu navegador; tú decides si lo envías desde WhatsApp.',
     noJsNote:
       'Tu navegador tiene JavaScript desactivado: al enviar, abriremos WhatsApp solo con el texto de tu mensaje. Incluye en él tu nombre y tu empresa.',
     fallbackLabel: 'Abrir WhatsApp directo',
